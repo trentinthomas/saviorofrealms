@@ -1,6 +1,9 @@
 package Game.TrentinAndErikGame.ui;
 
 import javax.swing.JPanel;
+
+import Game.TrentinAndErikGame.Util.GameSessionFactory;
+
 import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -38,6 +41,7 @@ public class MainMenu extends JPanel implements GUICard{
 		btnPlayGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WorldPanel.startTimer = true;
+				GameSessionFactory.createGameSession();
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
 			}
 		});
@@ -50,7 +54,6 @@ public class MainMenu extends JPanel implements GUICard{
 	
     public Image requestImage() {
         Image image = null;
-        //herzingLogo.setIcon(new ImageIcon(MainMenu.class.getResource("/resources/herzing.jpg")));
         File file = new File("./TrentinAndErikGame/Resources/bkg_main.jpg");
         file.getAbsolutePath();
 //        try 

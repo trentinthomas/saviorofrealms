@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Game.TrentinAndErikGame.Util.GameSessionFactory;
+
 public class MainFrame extends JFrame implements KeyListener{
 
 	private static JPanel cards;
@@ -75,32 +77,42 @@ public class MainFrame extends JFrame implements KeyListener{
 	}
 
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
 		if(e.getKeyCode() == KeyEvent.VK_UP)
 		{
-			WorldPanel.player.setYVel(-WorldPanel.player.getSpeed());
-			System.out.println("Up pressed");
+			GameSessionFactory.getGameSession().getPlayer().setYVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
 		}
 		if(e.getKeyCode() == KeyEvent.VK_LEFT)
 		{
-			WorldPanel.player.setXVel(-WorldPanel.player.getSpeed());
-			System.out.println("Left pressed");
+			GameSessionFactory.getGameSession().getPlayer().setXVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
 		}
 		if(e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
-			WorldPanel.player.setYVel(WorldPanel.player.getSpeed());
-			System.out.println("down pressed");
+			GameSessionFactory.getGameSession().getPlayer().setYVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
 		}
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
-			WorldPanel.player.setXVel(WorldPanel.player.getSpeed());
-			System.out.println("Right pressed");
+			GameSessionFactory.getGameSession().getPlayer().setXVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
+		if(e.getKeyCode() == KeyEvent.VK_UP)
+		{
+			GameSessionFactory.getGameSession().getPlayer().setYVel(0);
+		}
+		if(e.getKeyCode() == KeyEvent.VK_LEFT)
+		{
+			GameSessionFactory.getGameSession().getPlayer().setXVel(0);
+		}
+		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+		{
+			GameSessionFactory.getGameSession().getPlayer().setYVel(0);
+		}
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+		{
+			GameSessionFactory.getGameSession().getPlayer().setXVel(0);
+		}
 	}
 
 }

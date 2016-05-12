@@ -30,6 +30,8 @@ public abstract class Entity
 		this.xCoord = xCoord;
 		this.yCoord = yCoord;
 		this.entityType = entityType;
+		this.width = width;
+		this.height = height;
 	}
 	
 	/**

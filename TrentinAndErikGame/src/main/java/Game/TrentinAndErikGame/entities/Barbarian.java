@@ -9,7 +9,7 @@ public class Barbarian extends Player
 	
 	public Barbarian()
 	{
-		super(10, 100, 10, 10, 200, 200, EntityType.PLAYER, 40, 40);
+		super(10, 100, 20, 10, 200, 200, EntityType.PLAYER, 40, 40);
 	}
 
 }
