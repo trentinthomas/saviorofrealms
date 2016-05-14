@@ -2,6 +2,11 @@ package Game.TrentinAndErikGame.entities;
 
 import java.awt.Graphics;
 
+/**
+ * Entity is a superclass that all Entities will extend to keep track of all entities on the screen
+ * @author Trentin
+ *
+ */
 public abstract class Entity 
 {
 	protected int damage;
