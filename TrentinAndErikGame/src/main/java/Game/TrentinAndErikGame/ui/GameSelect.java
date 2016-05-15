@@ -149,7 +149,7 @@ public class GameSelect extends JPanel implements GUICard{
 		WorldPanel.startTimer = true;
 		GameSessionFactory.getGameSession().setGameFile(saveFileName);
 		//TODO: create new method that is called loadWorld() which contains loadPlayer.
-		WorldPanel.player = loadPlayer();
+		GameSessionFactory.getGameSession().setPlayer(loadPlayer());
 		MainFrame.changeCard(MainFrame.WORLD_PANEL);
 		
 	}
@@ -160,48 +160,6 @@ public class GameSelect extends JPanel implements GUICard{
 		FileInputStream f_in = null;
 		ObjectInputStream obj_in = null;
 		File file = new File(GameSessionFactory.getGameSession().getGameFile());
-		try{
-			f_in = new FileInputStream("save1.data");
-			obj_in = new ObjectInputStream(f_in);
-			Object obj = obj_in.readObject();
-			
-			if( obj instanceof Barbarian)
-			{
-				player = (Barbarian)obj;
-				
-				WorldPanel.player = player;
-				System.out.println(player.getxCoord());
-			}
-			if( obj instanceof Ranger)
-			{
-				player = (Ranger)obj;
-				
-				WorldPanel.player = player;
-				System.out.println(player.getxCoord());
-			}
-			if( obj instanceof Wizard)
-			{
-				player = (Wizard)obj;
-				WorldPanel.player = player;
-				System.out.println(player.getxCoord());
-			}
-		}
-		catch(IOException ioe)
-		{
-			ioe.printStackTrace();
-		}
-		catch(ClassNotFoundException cnfe)
-		{
-			cnfe.printStackTrace();
-		}
-		return player;
-	}
-	
-	private static void loadPreviousObjects()
-	{
-		FileInputStream f_in = null;
-		ObjectInputStream obj_in = null;
-		File file = new File("save1.data");
 		if(file.exists())
 		{
 			try{
@@ -209,12 +167,20 @@ public class GameSelect extends JPanel implements GUICard{
 				obj_in = new ObjectInputStream(f_in);
 				Object obj = obj_in.readObject();
 				
-				if( obj instanceof Player)
+				if( obj instanceof Barbarian)
 				{
-					Player player = (Player)obj;
-					
-					WorldPanel.player = player;
-					System.out.println(player.getxCoord());
+					player = (Barbarian)obj;
+					GameSessionFactory.getGameSession().setPlayer(player);
+				}
+				else if( obj instanceof Ranger)
+				{
+					player = (Ranger)obj;
+					GameSessionFactory.getGameSession().setPlayer(player);
+				}
+				else if( obj instanceof Wizard)
+				{
+					player = (Wizard)obj;
+					GameSessionFactory.getGameSession().setPlayer(player);
 				}
 			}
 			catch(IOException ioe)
@@ -226,6 +192,7 @@ public class GameSelect extends JPanel implements GUICard{
 				cnfe.printStackTrace();
 			}
 		}
-		
+		return player;
 	}
+	
 }

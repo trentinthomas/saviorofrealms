@@ -165,7 +165,7 @@ public class MainFrame extends JFrame implements KeyListener{
 		FileOutputStream f_out = null;
 		ObjectOutputStream obj_out = null;
 		try {
-			f_out = new FileOutputStream("save1.data");
+			f_out = new FileOutputStream(GameSessionFactory.getGameSession().getGameFile());
 			obj_out = new ObjectOutputStream(f_out);
 			
 			obj_out.writeObject(player);

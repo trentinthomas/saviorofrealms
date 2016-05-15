@@ -42,7 +42,7 @@ public class CharacterSelect extends JPanel implements GUICard {
 		btnBarbarian.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Player player = new Barbarian();
-				WorldPanel.player = player;
+				GameSessionFactory.getGameSession().setPlayer(player);
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
 			}
 		});
@@ -53,7 +53,7 @@ public class CharacterSelect extends JPanel implements GUICard {
 		btnRanger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Player player = new Ranger();
-				WorldPanel.player = player;
+				GameSessionFactory.getGameSession().setPlayer(player);
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
 			}
 		});
@@ -64,7 +64,7 @@ public class CharacterSelect extends JPanel implements GUICard {
 		btnWizard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Player player = new Wizard();
-				WorldPanel.player = player;
+				GameSessionFactory.getGameSession().setPlayer(player);
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
 			}
 		});

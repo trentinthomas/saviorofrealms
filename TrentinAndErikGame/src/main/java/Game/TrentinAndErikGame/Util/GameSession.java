@@ -59,7 +59,11 @@ public class GameSession
 	
 	public void setPlayer(Player player)
 	{
-		this.player = player;
+		if(this.player == null)
+		{
+			this.player = player;
+			entities.add(player);
+		}
 	}
 	
 	public String getGameFile()

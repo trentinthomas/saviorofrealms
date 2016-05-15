@@ -20,17 +20,12 @@ import java.awt.Graphics;
 
 public class WorldPanel extends JPanel implements GUICard, ActionListener
 {
-
-	public ArrayList<Entity> entities;
-	public static Player player;
 	private Timer gameTimer = new Timer(20, this);
 	public static boolean startTimer;
 	
 	public WorldPanel() {
 		super();
 		startTimer = false;
-		entities = new ArrayList<Entity>();
-		//player = new Barbarian(); //TODO make into whatever player chooses.
 		initUI();
 	}
 
@@ -41,7 +36,6 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 	
 	public void initUI()
 	{
-		addAllEntities();
 		setLayout(null);
 		if(startTimer)
 		{
@@ -65,19 +59,11 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		for(Entity entity : entities)
+		ArrayList<Entity> entities = GameSessionFactory.getGameSession().getEntities();
+		for( Entity entity : entities )
 		{
 			entity.move();
 			entity.paint(g);
-		}
-	}
-	
-	private void addAllEntities()
-	{
-		if(player != null)
-		{
-			GameSessionFactory.getGameSession().setPlayer(player);
-			entities.add(player);
 		}
 	}
 
