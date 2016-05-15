@@ -1,5 +1,8 @@
 package Game.TrentinAndErikGame.entities;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class Ranger extends Player
 {
 	
@@ -10,5 +13,12 @@ public class Ranger extends Player
 	public Ranger()
 	{
 		super(10, 100, 10, 10, 0, 0, EntityType.PLAYER, 40, 40);
+	}
+	
+	@Override
+	public void paint(Graphics g)
+	{
+		g.setColor(Color.GREEN);
+		g.fillRect(xCoord, yCoord, width, height);
 	}
 }

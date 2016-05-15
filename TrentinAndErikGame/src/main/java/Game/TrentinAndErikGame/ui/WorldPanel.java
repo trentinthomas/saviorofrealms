@@ -22,7 +22,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 {
 
 	public ArrayList<Entity> entities;
-	public Player player;
+	public static Player player;
 	private Timer gameTimer = new Timer(20, this);
 	public static boolean startTimer;
 	
@@ -30,8 +30,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 		super();
 		startTimer = false;
 		entities = new ArrayList<Entity>();
-		player = new Barbarian(); //TODO make into whatever player chooses.
-		entities.add(player);
+		//player = new Barbarian(); //TODO make into whatever player chooses.
 		initUI();
 	}
 
@@ -42,6 +41,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 	
 	public void initUI()
 	{
+		addAllEntities();
 		setLayout(null);
 		if(startTimer)
 		{
@@ -69,6 +69,15 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 		{
 			entity.move();
 			entity.paint(g);
+		}
+	}
+	
+	private void addAllEntities()
+	{
+		if(player != null)
+		{
+			GameSessionFactory.getGameSession().setPlayer(player);
+			entities.add(player);
 		}
 	}
 

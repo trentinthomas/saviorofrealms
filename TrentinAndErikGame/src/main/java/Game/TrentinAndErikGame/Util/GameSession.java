@@ -16,6 +16,7 @@ public class GameSession
 	private ArrayList<Entity> entities;
 	
 	private Player player;
+	private String gameFile;
 	
 	public GameSession()
 	{
@@ -57,6 +58,16 @@ public class GameSession
 	public void setPlayer(Player player)
 	{
 		this.player = player;
+	}
+	
+	public String getGameFile()
+	{
+		return gameFile;
+	}
+	
+	public void setGameFile(String gameFile)
+	{
+		this.gameFile = gameFile;
 	}
 
 }

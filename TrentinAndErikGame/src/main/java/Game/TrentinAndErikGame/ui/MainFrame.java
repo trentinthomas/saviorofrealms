@@ -6,11 +6,19 @@ import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Game.TrentinAndErikGame.Util.GameSessionFactory;
+import Game.TrentinAndErikGame.entities.Player;
 
 public class MainFrame extends JFrame implements KeyListener{
 
@@ -19,6 +27,9 @@ public class MainFrame extends JFrame implements KeyListener{
 	public static String MAIN_MENU = "0";
 	public static String WORLD_PANEL = "1";
 	public static String PLAYER_SELECT = "2";
+	public static String CHARACTER_SELECT = "3";
+	
+	private boolean upKeyPressed, downKeyPressed, rightKeyPressed, leftKeyPressed;
 
 	
 	public MainFrame()
@@ -46,10 +57,12 @@ public class MainFrame extends JFrame implements KeyListener{
 		
 		MainMenu card1 = new MainMenu();
 		WorldPanel card2 = new WorldPanel();
-		PlayerSelect card3 = new PlayerSelect();
+		GameSelect card3 = new GameSelect();
+		CharacterSelect card4 = new CharacterSelect();
 		cards.add(card1, MAIN_MENU);
 		cards.add(card2, WORLD_PANEL);
 		cards.add(card3, PLAYER_SELECT);
+		cards.add(card4, CHARACTER_SELECT);
 		pane.add(cards);
 		cards.setFocusable(true);
 		cards.addKeyListener(this);
@@ -70,9 +83,10 @@ public class MainFrame extends JFrame implements KeyListener{
 	 */
 	public static void main(String[] args) {
 		MainFrame frame = new MainFrame();
-		
 		MainFrame.changeCard(MainFrame.MAIN_MENU);
 	}
+	
+	
 
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -80,42 +94,104 @@ public class MainFrame extends JFrame implements KeyListener{
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_UP)
+		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
 		{
 			GameSessionFactory.getGameSession().getPlayer().setYVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			upKeyPressed = true;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_LEFT)
+		if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
 		{
 			GameSessionFactory.getGameSession().getPlayer().setXVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			leftKeyPressed = true;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+		if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S)
 		{
 			GameSessionFactory.getGameSession().getPlayer().setYVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			downKeyPressed = true;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
 		{
 			GameSessionFactory.getGameSession().getPlayer().setXVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			rightKeyPressed = true;
 		}
 	}
 
 	public void keyReleased(KeyEvent e) {
 		
-		if(e.getKeyCode() == KeyEvent.VK_UP)
+		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
 		{
-			GameSessionFactory.getGameSession().getPlayer().setYVel(0);
+			if(!downKeyPressed)
+				GameSessionFactory.getGameSession().getPlayer().setYVel(0);
+			else
+				GameSessionFactory.getGameSession().getPlayer().setYVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			upKeyPressed = false;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_LEFT)
+		if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
 		{
-			GameSessionFactory.getGameSession().getPlayer().setXVel(0);
+			if(!rightKeyPressed)
+				GameSessionFactory.getGameSession().getPlayer().setXVel(0);
+			else
+				GameSessionFactory.getGameSession().getPlayer().setXVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			leftKeyPressed = false;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_DOWN)
+		if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S)
 		{
-			GameSessionFactory.getGameSession().getPlayer().setYVel(0);
+			if(!upKeyPressed)
+				GameSessionFactory.getGameSession().getPlayer().setYVel(0);
+			else
+				GameSessionFactory.getGameSession().getPlayer().setYVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			downKeyPressed = false;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D)
 		{
-			GameSessionFactory.getGameSession().getPlayer().setXVel(0);
+			if(!leftKeyPressed)
+				GameSessionFactory.getGameSession().getPlayer().setXVel(0);
+			else
+				GameSessionFactory.getGameSession().getPlayer().setXVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
+			rightKeyPressed = false;
 		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+		{
+			saveGame();
+			System.exit(0);
+		}
+
+	}
+	
+	private void saveGame()
+	{
+		Player player = GameSessionFactory.getGameSession().getPlayer();
+		FileOutputStream f_out = null;
+		ObjectOutputStream obj_out = null;
+		try {
+			f_out = new FileOutputStream("save1.data");
+			obj_out = new ObjectOutputStream(f_out);
+			
+			obj_out.writeObject(player);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		finally{
+			try {
+				f_out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				obj_out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
 	}
 
 }

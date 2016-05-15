@@ -19,7 +19,7 @@ public class Player extends Entity{
 	
 	public void paint(Graphics g)
 	{
-		g.setColor(Color.RED);
+		g.setColor(Color.YELLOW);
 		g.fillRect(xCoord, yCoord, width, height);
 	}
 

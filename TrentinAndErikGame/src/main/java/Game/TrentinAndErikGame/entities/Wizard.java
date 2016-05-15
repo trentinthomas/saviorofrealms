@@ -1,5 +1,8 @@
 package Game.TrentinAndErikGame.entities;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 import Game.TrentinAndErikGame.entities.Entity.EntityType;
 
 public class Wizard extends Player
@@ -12,5 +15,12 @@ public class Wizard extends Player
 	public Wizard()
 	{
 		super(10, 100, 10, 10, 0, 0, EntityType.PLAYER, 40, 40);
+	}
+	
+	@Override
+	public void paint(Graphics g)
+	{
+		g.setColor(Color.BLUE);
+		g.fillRect(xCoord, yCoord, width, height);
 	}
 }

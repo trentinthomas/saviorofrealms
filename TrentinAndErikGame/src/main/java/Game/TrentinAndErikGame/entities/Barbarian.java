@@ -1,5 +1,8 @@
 package Game.TrentinAndErikGame.entities;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class Barbarian extends Player
 {
 	
@@ -11,5 +14,13 @@ public class Barbarian extends Player
 	{
 		super(10, 100, 20, 10, 200, 200, EntityType.PLAYER, 40, 40);
 	}
+	
+	@Override
+	public void paint(Graphics g)
+	{
+		g.setColor(Color.RED);
+		g.fillRect(xCoord, yCoord, width, height);
+	}
+	
 
 }
