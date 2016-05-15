@@ -21,6 +21,7 @@ public class MainMenu extends JPanel implements GUICard{
 	 * Create the panel.
 	 */
 	public MainMenu() {
+		super();
 		initUI();
 	}
 

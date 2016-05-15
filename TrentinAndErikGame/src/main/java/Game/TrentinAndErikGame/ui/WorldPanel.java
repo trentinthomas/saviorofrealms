@@ -22,18 +22,16 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 {
 
 	public ArrayList<Entity> entities;
-	public static Player player;
+	public Player player;
 	private Timer gameTimer = new Timer(20, this);
 	public static boolean startTimer;
 	
 	public WorldPanel() {
 		super();
 		startTimer = false;
-		setBackground(Color.GREEN);
 		entities = new ArrayList<Entity>();
 		player = new Barbarian(); //TODO make into whatever player chooses.
 		entities.add(player);
-		
 		initUI();
 	}
 
@@ -44,72 +42,24 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 	
 	public void initUI()
 	{
-		if(GameSessionFactory.hasGameSession())
-		{
-			GameSessionFactory.getGameSession().setPlayer(player);
-		}
 		setLayout(null);
 		if(startTimer)
 		{
 			gameTimer.start();
 		}
 		this.setFocusable(true);
-		this.addKeyListener(new KeyAdapter() {
-					
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println(e.getKeyCode());
-				
-			}
-
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_UP)
-				{
-					player.setYVel(-player.getSpeed());
-				}
-				if(e.getKeyCode() == KeyEvent.VK_LEFT)
-				{
-					player.setXVel(-player.getSpeed());
-				}
-				if(e.getKeyCode() == KeyEvent.VK_DOWN)
-				{
-					player.setYVel(player.getSpeed());
-				}
-				if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-				{
-					player.setXVel(player.getSpeed());
-				}
-			}
-
-			public void keyReleased(KeyEvent e) {
-				
-				if(e.getKeyCode() == KeyEvent.VK_UP)
-				{
-					player.setYVel(0);
-				}
-				if(e.getKeyCode() == KeyEvent.VK_LEFT)
-				{
-					player.setXVel(0);
-				}
-				if(e.getKeyCode() == KeyEvent.VK_DOWN)
-				{
-					player.setYVel(0);
-				}
-				if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-				{
-					player.setXVel(0);
-				}
-			}
-		});
 	}
 
+	/**
+	 * Anything within this method is performed with every tick of the timer.
+	 */
 	public void actionPerformed(ActionEvent e) {
-		for(Entity entity : entities)
-		{
-			repaint();
-		}
+		repaint();
 	}
 	
+	/**
+	 * paintComponent just paints everything on the screen.
+	 */
 	@Override
 	public void paintComponent(Graphics g)
 	{

@@ -1,14 +1,20 @@
 package Game.TrentinAndErikGame.entities;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
 /**
  * Entity is a superclass that all Entities will extend to keep track of all entities on the screen
  * @author Trentin
  *
  */
-public abstract class Entity 
+public abstract class Entity implements Serializable
 {
+	
+	//TODO implement a way to serialize all the entities into a file and read them back into the game.
+	private static final long serialVersionUID = 1L;
+	
+	
 	protected int damage;
 	protected int hitpoints;
 	protected int defense;

@@ -18,10 +18,12 @@ public class MainFrame extends JFrame implements KeyListener{
 	
 	public static String MAIN_MENU = "0";
 	public static String WORLD_PANEL = "1";
+	public static String PLAYER_SELECT = "2";
 
 	
 	public MainFrame()
 	{
+		super();
 		initUI();
 	}
 	
@@ -44,8 +46,10 @@ public class MainFrame extends JFrame implements KeyListener{
 		
 		MainMenu card1 = new MainMenu();
 		WorldPanel card2 = new WorldPanel();
+		PlayerSelect card3 = new PlayerSelect();
 		cards.add(card1, MAIN_MENU);
 		cards.add(card2, WORLD_PANEL);
+		cards.add(card3, PLAYER_SELECT);
 		pane.add(cards);
 		cards.setFocusable(true);
 		cards.addKeyListener(this);
@@ -72,8 +76,7 @@ public class MainFrame extends JFrame implements KeyListener{
 
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println(e.getKeyCode());
-		
+		// Don't think we need to have anything in the KeyTyped event.
 	}
 
 	public void keyPressed(KeyEvent e) {
