@@ -48,6 +48,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 			gameTimer.start();
 		}
 		this.setFocusable(true);
+		setSize(1000, 700);
 	}
 
 	/**

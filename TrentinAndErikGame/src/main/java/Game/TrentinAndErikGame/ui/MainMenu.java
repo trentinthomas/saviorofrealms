@@ -43,10 +43,10 @@ public class MainMenu extends JPanel implements GUICard{
 			public void actionPerformed(ActionEvent e) {
 				WorldPanel.startTimer = true;
 				GameSessionFactory.createGameSession();
-				MainFrame.changeCard(MainFrame.WORLD_PANEL);
+				MainFrame.changeCard(MainFrame.PLAYER_SELECT);
 			}
 		});
-		
+		setSize(1000, 700);
 		btnPlayGame.setBounds(384, 197, 118, 23);
 		add(btnPlayGame);
 		

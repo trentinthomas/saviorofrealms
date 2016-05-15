@@ -19,7 +19,7 @@ public class PlayerSelect extends JPanel implements GUICard{
 	
 	private void initUI()
 	{
-		
+		setSize(1000, 700);
 	}
 
 }
