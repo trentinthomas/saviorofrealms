@@ -63,10 +63,7 @@ public class GameSelect extends JPanel implements GUICard{
 		JButton btnLoadGameOne = new JButton("Load Game One");
 		btnLoadGameOne.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameSessionFactory.createGameSession();
-				GameSessionFactory.getGameSession().setGameFile("save1.data");
-				WorldPanel.player = loadPlayer();
-				MainFrame.changeCard(MainFrame.WORLD_PANEL);
+				load(1);
 			}
 		});
 		btnLoadGameOne.setEnabled(file.exists());
@@ -76,10 +73,7 @@ public class GameSelect extends JPanel implements GUICard{
 		JButton btnLoadGameTwo = new JButton("Load Game Two");
 		btnLoadGameTwo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameSessionFactory.createGameSession();
-				GameSessionFactory.getGameSession().setGameFile("save2.data");
-				WorldPanel.player = loadPlayer();
-				MainFrame.changeCard(MainFrame.WORLD_PANEL);
+				load(2);
 			}
 		});
 		btnLoadGameTwo.setEnabled(file2.exists());
@@ -89,10 +83,7 @@ public class GameSelect extends JPanel implements GUICard{
 		JButton btnLoadGameThree = new JButton("Load Game Three");
 		btnLoadGameThree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GameSessionFactory.createGameSession();
-				GameSessionFactory.getGameSession().setGameFile("save3.data");
-				WorldPanel.player = loadPlayer();
-				MainFrame.changeCard(MainFrame.WORLD_PANEL);
+				load(3);
 			}
 		});
 		btnLoadGameThree.setEnabled(file3.exists());
@@ -102,10 +93,10 @@ public class GameSelect extends JPanel implements GUICard{
 		JButton btnNewButton = new JButton("Start New Game");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WorldPanel.startTimer = true;
-				GameSessionFactory.createGameSession();
+				GameSessionFactory.createGameSession(1);
 				GameSessionFactory.getGameSession().setGameFile("save1.data");
 				MainFrame.changeCard(MainFrame.CHARACTER_SELECT);
+				WorldPanel.startTimer = true;
 				
 			}
 		});
@@ -115,10 +106,11 @@ public class GameSelect extends JPanel implements GUICard{
 		JButton button = new JButton("Start New Game");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WorldPanel.startTimer = true;
-				GameSessionFactory.createGameSession();
+				
+				GameSessionFactory.createGameSession(2);
 				GameSessionFactory.getGameSession().setGameFile("save2.data");
 				MainFrame.changeCard(MainFrame.CHARACTER_SELECT);
+				WorldPanel.startTimer = true;
 			}
 		});
 		button.setBounds(385, 366, 125, 23);
@@ -128,7 +120,7 @@ public class GameSelect extends JPanel implements GUICard{
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WorldPanel.startTimer = true;
-				GameSessionFactory.createGameSession();
+				GameSessionFactory.createGameSession(3);
 				GameSessionFactory.getGameSession().setGameFile("save3.data");
 				MainFrame.changeCard(MainFrame.CHARACTER_SELECT);
 			}
@@ -148,6 +140,18 @@ public class GameSelect extends JPanel implements GUICard{
 		label_2.setBounds(717, 253, 60, 14);
 		add(label_2);  
 		setSize(1000, 700);
+	}
+	
+	private void load(int saveFileNumber)
+	{
+		String saveFileName = "save" + Integer.toString(saveFileNumber) + ".data";		
+		GameSessionFactory.createGameSession(saveFileNumber);
+		WorldPanel.startTimer = true;
+		GameSessionFactory.getGameSession().setGameFile(saveFileName);
+		//TODO: create new method that is called loadWorld() which contains loadPlayer.
+		WorldPanel.player = loadPlayer();
+		MainFrame.changeCard(MainFrame.WORLD_PANEL);
+		
 	}
 	
 	private Player loadPlayer()

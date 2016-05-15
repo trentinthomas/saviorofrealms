@@ -10,9 +10,9 @@ public class GameSessionFactory
 	private static GameSession gameSession;
 	private static boolean loaded = false;
 	
-	public static void createGameSession()
+	public static void createGameSession(int ID)
 	{
-		gameSession = new GameSession();
+		gameSession = new GameSession(ID);
 	}
 	
 	public static GameSession getGameSession()

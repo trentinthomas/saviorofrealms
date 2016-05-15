@@ -17,11 +17,13 @@ public class GameSession
 	
 	private Player player;
 	private String gameFile;
+	private int ID;
 	
-	public GameSession()
+	public GameSession(int IDNum)
 	{
 		entities = new ArrayList<Entity>();
 		player = null;
+		this.ID = IDNum;
 	}
 	
 	public void setEntities(ArrayList<Entity> entities)
