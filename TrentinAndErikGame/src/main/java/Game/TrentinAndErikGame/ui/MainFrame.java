@@ -29,7 +29,7 @@ public class MainFrame extends JFrame implements KeyListener{
 	public static String PLAYER_SELECT = "2";
 	public static String CHARACTER_SELECT = "3";
 	
-	private boolean upKeyPressed, downKeyPressed, rightKeyPressed, leftKeyPressed;
+	private boolean upKeyPressed, downKeyPressed, rightKeyPressed, leftKeyPressed; //Why?
 
 	
 	public MainFrame()
@@ -97,7 +97,7 @@ public class MainFrame extends JFrame implements KeyListener{
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
 		{
 			GameSessionFactory.getGameSession().getPlayer().setYVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
-			upKeyPressed = true;
+			upKeyPressed = true;//Why? What's purpose?
 		}
 		if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
 		{
@@ -116,15 +116,15 @@ public class MainFrame extends JFrame implements KeyListener{
 		}
 	}
 
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent e) {//I don't get the purpose of the else statements. Why would they push up and down at the same time?
 		
-		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
+		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)//if they release up
 		{
-			if(!downKeyPressed)
-				GameSessionFactory.getGameSession().getPlayer().setYVel(0);
-			else
-				GameSessionFactory.getGameSession().getPlayer().setYVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
-			upKeyPressed = false;
+			if(!downKeyPressed)//and didn't press down then
+				GameSessionFactory.getGameSession().getPlayer().setYVel(0); //Set Y to 0.
+			else//If they pressed up and down at the same time and still are pressing down...
+				GameSessionFactory.getGameSession().getPlayer().setYVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());//Keep going?
+			upKeyPressed = false;//Reset varible??
 		}
 		if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A)
 		{
