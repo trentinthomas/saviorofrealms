@@ -1,6 +1,7 @@
 package Game.TrentinAndErikGame.ui;
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import Game.TrentinAndErikGame.Util.GameSessionFactory;
 
@@ -34,9 +35,11 @@ public class MainMenu extends JPanel implements GUICard{
 	{
 		setLayout(null);
 			
-		JLabel lblNewLabel = new JLabel("Main Menu");
+		JLabel lblNewLabel = new JLabel("Main Menu");		
 		lblNewLabel.setBounds(398, 41, 92, 14);
+		
 		add(lblNewLabel);
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 		
 		JButton btnPlayGame = new JButton("Play Game");
 		btnPlayGame.addActionListener(new ActionListener() {

@@ -149,12 +149,12 @@ public class GameSelect extends JPanel implements GUICard{
 		WorldPanel.startTimer = true;
 		GameSessionFactory.getGameSession().setGameFile(saveFileName);
 		//TODO: create new method that is called loadWorld() which contains loadPlayer.
-		GameSessionFactory.getGameSession().setPlayer(loadPlayer());
+		GameSessionFactory.getGameSession().setPlayer(loadPlayer(saveFileName));
 		MainFrame.changeCard(MainFrame.WORLD_PANEL);
 		
 	}
 	
-	private Player loadPlayer()
+	private Player loadPlayer(String saveName)
 	{
 		Player player = null;
 		FileInputStream f_in = null;
@@ -163,7 +163,7 @@ public class GameSelect extends JPanel implements GUICard{
 		if(file.exists())
 		{
 			try{
-				f_in = new FileInputStream("save1.data");
+				f_in = new FileInputStream(saveName);
 				obj_in = new ObjectInputStream(f_in);
 				Object obj = obj_in.readObject();
 				
