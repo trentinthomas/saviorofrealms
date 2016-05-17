@@ -1,5 +1,6 @@
 package Game.TrentinAndErikGame.items;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @author Trentin
  *
  */
-public class Inventory {
+public class Inventory implements Serializable{
 	
 	private final int DEFAULT_CAPACITY = 20;
 	

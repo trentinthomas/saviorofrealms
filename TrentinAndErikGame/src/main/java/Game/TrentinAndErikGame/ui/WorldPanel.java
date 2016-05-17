@@ -67,6 +67,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 	public void actionPerformed(ActionEvent e) {
 		repaint();
 	}
+
 	
 	/**
 	 * paintComponent just paints everything on the screen.

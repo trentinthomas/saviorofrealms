@@ -15,6 +15,7 @@ import java.awt.Graphics;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 
 public class CharacterSelect extends JPanel implements GUICard {
@@ -37,11 +38,17 @@ public class CharacterSelect extends JPanel implements GUICard {
 	{
 		//removing this seems to be fine - assuming its because it just assumes the size of parent
 		//setSize(1000, 700);
+		//File file1 = new File("save1.data");
+		//File file2 = new File("save2.data");
+		//File file3 = new File("save3.data");
 		setLayout(null);
 		
 		JButton btnBarbarian = new JButton("Warrior");
 		btnBarbarian.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				GameSessionFactory.createGameSession(MainFrame.gameSessionID);
+				GameSessionFactory.getGameSession().setGameFile("save" + Integer.toString(MainFrame.gameSessionID) + ".data");
+				WorldPanel.startTimer = true;
 				Player player = new Barbarian();
 				GameSessionFactory.getGameSession().setPlayer(player);
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
@@ -54,6 +61,9 @@ public class CharacterSelect extends JPanel implements GUICard {
 		JButton btnRanger = new JButton("Ranger");
 		btnRanger.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				GameSessionFactory.createGameSession(MainFrame.gameSessionID);
+				GameSessionFactory.getGameSession().setGameFile("save" + Integer.toString(MainFrame.gameSessionID) + ".data");
+				WorldPanel.startTimer = true;
 				Player player = new Ranger();
 				GameSessionFactory.getGameSession().setPlayer(player);
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
@@ -66,6 +76,9 @@ public class CharacterSelect extends JPanel implements GUICard {
 		JButton btnWizard = new JButton("Wizard");
 		btnWizard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				GameSessionFactory.createGameSession(MainFrame.gameSessionID);
+				GameSessionFactory.getGameSession().setGameFile("save" + Integer.toString(MainFrame.gameSessionID) + ".data");
+				WorldPanel.startTimer = true;
 				Player player = new Wizard();
 				GameSessionFactory.getGameSession().setPlayer(player);
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);

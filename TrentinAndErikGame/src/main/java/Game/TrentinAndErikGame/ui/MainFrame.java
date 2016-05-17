@@ -33,6 +33,9 @@ public class MainFrame extends JFrame implements KeyListener{
 	public static String WORLD_PANEL = "1";
 	public static String PLAYER_SELECT = "2";
 	public static String CHARACTER_SELECT = "3";
+	public static String IN_GAME_MENU = "4";
+	
+	public static int gameSessionID = 0;
 	
 	//Used to remember the opposite direction of previous key to prevent unnecessary stopping.
 	private boolean upKeyPressed, downKeyPressed, rightKeyPressed, leftKeyPressed; //Why?
@@ -69,15 +72,19 @@ public class MainFrame extends JFrame implements KeyListener{
 	public void createCards(Container pane)
 	{
 		cards = new JPanel(new CardLayout());
-		
-		MainMenu card1 = new MainMenu();
-		WorldPanel card2 = new WorldPanel();
-		GameSelect card3 = new GameSelect();
+		 
+		MainMenu 		card1 = new MainMenu();
+		WorldPanel 		card2 = new WorldPanel();
+		GameSelect 		card3 = new GameSelect();
 		CharacterSelect card4 = new CharacterSelect();
+		InGameMenu 		card5 = new InGameMenu();
+		
 		cards.add(card1, MAIN_MENU);
 		cards.add(card2, WORLD_PANEL);
 		cards.add(card3, PLAYER_SELECT);
 		cards.add(card4, CHARACTER_SELECT);
+		cards.add(card5, IN_GAME_MENU);
+		
 		pane.add(cards);
 		cards.setFocusable(true);
 		cards.addKeyListener(this);
@@ -102,6 +109,8 @@ public class MainFrame extends JFrame implements KeyListener{
 	
 
 	public void keyTyped(KeyEvent e) {
+		if(!GameSessionFactory.hasGameSession())
+			return;
 		// TODO Auto-generated method stub
 		// Don't think we need to have anything in the KeyTyped event.
 	}
@@ -111,8 +120,11 @@ public class MainFrame extends JFrame implements KeyListener{
 	 * released, the player keeps moving in the direction intended.
 	 */
 	public void keyPressed(KeyEvent e) {
+		if(!GameSessionFactory.hasGameSession())
+			return;
+		
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
-		{
+		{			
 			GameSessionFactory.getGameSession().getPlayer().setYVel(-GameSessionFactory.getGameSession().getPlayer().getSpeed());
 			upKeyPressed = true;//Why? What's purpose?
 		}
@@ -138,6 +150,8 @@ public class MainFrame extends JFrame implements KeyListener{
 	 * if the user does press them and releases one, they keep moving in the direction intended.
 	 */
 	public void keyReleased(KeyEvent e) {//I don't get the purpose of the else statements. Why would they push up and down at the same time?
+		if(!GameSessionFactory.hasGameSession())
+			return;
 		
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)//if they release up
 		{
@@ -177,18 +191,22 @@ public class MainFrame extends JFrame implements KeyListener{
 		 */
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
-			saveGame();
-			System.exit(0);
+			if(GameSessionFactory.hasGameSession())
+			{
+				WorldPanel.startTimer = false;
+				changeCard(IN_GAME_MENU);
+			}
+			
 		}
 
 	}
 	
+	public static void saveGame()
 	/**
 	 * Saves the game by writing objects to a file, specified by which game they chose. Right now it just does Player,
 	 * but eventually it will write all Entities within the GameSession. This way we can save all the data the 
 	 * player has.
 	 */
-	private void saveGame()
 	{
 		Player player = GameSessionFactory.getGameSession().getPlayer();
 		FileOutputStream f_out = null;
