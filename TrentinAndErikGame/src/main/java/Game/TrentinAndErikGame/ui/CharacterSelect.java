@@ -47,8 +47,8 @@ public class CharacterSelect extends JPanel implements GUICard {
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
 			}
 		});
-		btnBarbarian.setBounds(92, 307, 89, 23);
-		btnBarbarian.setLocation(this.getWidth()/5 - btnBarbarian.getWidth()/2, 307);
+		btnBarbarian.setBounds(92, 175, 89, 23);
+		btnBarbarian.setLocation(this.getWidth()/5 - btnBarbarian.getWidth()/2, 250);
 		add(btnBarbarian);
 		
 		JButton btnRanger = new JButton("Ranger");
@@ -59,8 +59,8 @@ public class CharacterSelect extends JPanel implements GUICard {
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
 			}
 		});
-		btnRanger.setBounds(401, 307, 89, 23);
-		btnRanger.setLocation(this.getWidth()/2 - btnRanger.getWidth()/2, 307);
+		btnRanger.setBounds(401, 175, 89, 23);
+		btnRanger.setLocation(this.getWidth()/2 - btnRanger.getWidth()/2, 250);
 		add(btnRanger);
 		
 		JButton btnWizard = new JButton("Wizard");
@@ -71,8 +71,8 @@ public class CharacterSelect extends JPanel implements GUICard {
 				MainFrame.changeCard(MainFrame.WORLD_PANEL);
 			}
 		});
-		btnWizard.setBounds(688, 307, 89, 23);
-		btnWizard.setLocation(this.getWidth() * 5/6 - btnWizard.getWidth()/2, 307);
+		btnWizard.setBounds(688, 175, 89, 23);
+		btnWizard.setLocation(this.getWidth() * 5/6 - btnWizard.getWidth()/2, 250);
 		add(btnWizard);
 		
 		repaint();
@@ -83,11 +83,11 @@ public class CharacterSelect extends JPanel implements GUICard {
 	{
 		super.paintComponent(g);
 		g.setColor(Color.RED);
-		g.fillRect(this.getWidth()/5 - 89/2, 200, 89, 89);
+		g.fillRect(this.getWidth()/5 - 89/2, 150, 89, 89);
 		g.setColor(Color.GREEN);
-		g.fillRect(this.getWidth()/2 - 89/2, 200, 89, 89);
+		g.fillRect(this.getWidth()/2 - 89/2, 150, 89, 89);
 		g.setColor(Color.BLUE);
-		g.fillRect(this.getWidth() * 5/6 - 89/2, 200, 89, 89);
+		g.fillRect(this.getWidth() * 5/6 - 89/2, 150, 89, 89);
 	}
 
 }
