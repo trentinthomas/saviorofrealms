@@ -47,6 +47,7 @@ public class MainMenu extends JPanel implements GUICard{
 			}
 		});
 		
+		//removing this seems to be fine - assuming its because it just assumes the size of parent
 		//setSize(1, 1);
 		btnPlayGame.setBounds(384, 197, 118, 23);
 		btnPlayGame.setLocation(this.getWidth()/2 - btnPlayGame.getWidth()/2, this.getHeight()/3);

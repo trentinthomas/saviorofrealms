@@ -29,6 +29,7 @@ public class MainFrame extends JFrame implements KeyListener{
 	public static String PLAYER_SELECT = "2";
 	public static String CHARACTER_SELECT = "3";
 	
+	//Used to remember the opposite direction of previous key to prevent unnecessary stopping.
 	private boolean upKeyPressed, downKeyPressed, rightKeyPressed, leftKeyPressed; //Why?
 
 	

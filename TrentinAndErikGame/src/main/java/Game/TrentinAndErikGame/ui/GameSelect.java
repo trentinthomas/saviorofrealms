@@ -147,7 +147,9 @@ public class GameSelect extends JPanel implements GUICard{
 		JLabel label_2 = new JLabel("<Empty>");
 		label_2.setBounds(717, 253, label_2.getText().length()*8, 14);
 		label_2.setLocation(this.getWidth() * 5/6 - label_2.getWidth()/2, 253);
-		add(label_2);  
+		add(label_2);
+		
+		//removing this seems to be fine - assuming its because it just assumes the size of parent
 		//setSize(1000, 700);
 	}
 	

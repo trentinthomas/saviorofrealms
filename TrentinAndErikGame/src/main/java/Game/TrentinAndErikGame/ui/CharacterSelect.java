@@ -35,6 +35,7 @@ public class CharacterSelect extends JPanel implements GUICard {
 	
 	private void initUI()
 	{
+		//removing this seems to be fine - assuming its because it just assumes the size of parent
 		//setSize(1000, 700);
 		setLayout(null);
 		

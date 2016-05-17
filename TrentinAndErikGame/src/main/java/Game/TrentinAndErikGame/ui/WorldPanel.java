@@ -42,7 +42,8 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 			gameTimer.start();
 		}
 		this.setFocusable(true);
-		setSize(1000, 700);
+		//removing this seems to be fine - assuming its because it just assumes the size of parent
+		//setSize(1000, 700);
 	}
 
 	/**
