@@ -20,6 +20,11 @@ import javax.swing.JPanel;
 import Game.TrentinAndErikGame.Util.GameSessionFactory;
 import Game.TrentinAndErikGame.entities.Player;
 
+/**
+ * The MainFrame of the application. 
+ * @author Trentin
+ *
+ */
 public class MainFrame extends JFrame implements KeyListener{
 
 	private static JPanel cards;
@@ -32,13 +37,18 @@ public class MainFrame extends JFrame implements KeyListener{
 	//Used to remember the opposite direction of previous key to prevent unnecessary stopping.
 	private boolean upKeyPressed, downKeyPressed, rightKeyPressed, leftKeyPressed; //Why?
 
-	
+	/**
+	 * Default constructor
+	 */
 	public MainFrame()
 	{
 		super();
 		initUI();
 	}
 	
+	/**
+	 * Initializes's the GUI
+	 */
 	public void initUI()
 	{
 		JFrame frame;
@@ -51,7 +61,11 @@ public class MainFrame extends JFrame implements KeyListener{
 		frame.setVisible(true);
 	}
 	
-	
+	/**
+	 * Creates cards before the game launches and adds them to the content pane. This is so we can
+	 * switch between cards easily with the switchCards method.
+	 * @param pane
+	 */
 	public void createCards(Container pane)
 	{
 		cards = new JPanel(new CardLayout());
@@ -69,6 +83,10 @@ public class MainFrame extends JFrame implements KeyListener{
 		cards.addKeyListener(this);
 	}
 	
+	/**
+	 * Change the card the player sees
+	 * @param event is the static constant defined above for the card to show. ex. MAIN_MENU
+	 */
 	public static void changeCard(String event)
 	{
 		CardLayout cardlay = (CardLayout)(cards.getLayout());
@@ -79,13 +97,7 @@ public class MainFrame extends JFrame implements KeyListener{
 		cardlay.show(cards, event);
 	}
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		MainFrame frame = new MainFrame();
-		MainFrame.changeCard(MainFrame.MAIN_MENU);
-	}
+
 	
 	
 
@@ -94,6 +106,10 @@ public class MainFrame extends JFrame implements KeyListener{
 		// Don't think we need to have anything in the KeyTyped event.
 	}
 
+	/**
+	 * Tracks when a key is pressed. The boolean (direction)KeyPressed are used to keep track of what keys are pressed, so when opposite keys are
+	 * released, the player keeps moving in the direction intended.
+	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)
 		{
@@ -117,6 +133,10 @@ public class MainFrame extends JFrame implements KeyListener{
 		}
 	}
 
+	/**
+	 * This is used to keep track of when a key is released. The boolean statements are used to keep track of opposite directions being pushed. This way,
+	 * if the user does press them and releases one, they keep moving in the direction intended.
+	 */
 	public void keyReleased(KeyEvent e) {//I don't get the purpose of the else statements. Why would they push up and down at the same time?
 		
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W)//if they release up
@@ -152,6 +172,9 @@ public class MainFrame extends JFrame implements KeyListener{
 			rightKeyPressed = false;
 		}
 		
+		/**
+		 * Save the game and exit for now, probably make a menu for options and save game.
+		 */
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 		{
 			saveGame();
@@ -160,6 +183,11 @@ public class MainFrame extends JFrame implements KeyListener{
 
 	}
 	
+	/**
+	 * Saves the game by writing objects to a file, specified by which game they chose. Right now it just does Player,
+	 * but eventually it will write all Entities within the GameSession. This way we can save all the data the 
+	 * player has.
+	 */
 	private void saveGame()
 	{
 		Player player = GameSessionFactory.getGameSession().getPlayer();
@@ -193,6 +221,14 @@ public class MainFrame extends JFrame implements KeyListener{
 		
 		
 		
+	}
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		MainFrame frame = new MainFrame();
+		MainFrame.changeCard(MainFrame.MAIN_MENU);
 	}
 
 }

@@ -18,22 +18,37 @@ import Game.TrentinAndErikGame.entities.Player;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * This is where all the action occurs in the game. After the player chooses which player, this will be
+ * where everything occurs.
+ * @author Trentin
+ *
+ */
 public class WorldPanel extends JPanel implements GUICard, ActionListener
 {
 	private Timer gameTimer = new Timer(20, this);
 	public static boolean startTimer;
 	
+	/**
+	 * Default constructor
+	 */
 	public WorldPanel() {
 		super();
 		startTimer = false;
 		initUI();
 	}
 
+	/**
+	 * removes everything and re-initializes the GUI
+	 */
 	public void refreshUI() {
 		this.removeAll();
 		initUI();
 	}
 	
+	/**
+	 * Initializes the GUI
+	 */
 	public void initUI()
 	{
 		setLayout(null);

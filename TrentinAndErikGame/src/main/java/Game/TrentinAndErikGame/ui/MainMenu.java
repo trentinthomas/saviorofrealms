@@ -17,6 +17,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
+/**
+ * Main Menu of the game. The first menu the player sees when they enter the game.
+ * @author Trentin
+ *
+ */
 public class MainMenu extends JPanel implements GUICard{
 	/**
 	 * Create the panel.
@@ -26,11 +31,17 @@ public class MainMenu extends JPanel implements GUICard{
 		initUI();
 	}
 
+	/**
+	 * Removes everything from the panel and re-initializes it.
+	 */
 	public void refreshUI() {
 		this.removeAll();
 		initUI();
 	}
 	
+	/**
+	 * Initializes the panel.
+	 */
 	public void initUI()
 	{
 		setLayout(null);
@@ -56,6 +67,11 @@ public class MainMenu extends JPanel implements GUICard{
 		
 	}
 	
+	/**
+	 * Request an Image for the background. This is still TODO
+	 * 
+	 * @return The background image
+	 */
     public Image requestImage() {
         Image image = null;
         File file = new File("./TrentinAndErikGame/Resources/bkg_main.jpg");
@@ -71,6 +87,9 @@ public class MainMenu extends JPanel implements GUICard{
         return image;
     }
 	
+    /**
+     * paints the panel using the Graphics object. Overrides the superclass
+     */
 	@Override
 	public void paintComponent(Graphics g)
 	{		
