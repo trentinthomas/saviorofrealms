@@ -36,10 +36,9 @@ public class MainMenu extends JPanel implements GUICard{
 		setLayout(null);
 			
 		JLabel lblNewLabel = new JLabel("Main Menu");		
-		lblNewLabel.setBounds(398, 41, 92, 14);
-		
+		lblNewLabel.setBounds(100, 100, lblNewLabel.getText().length()*8, 10);
+		lblNewLabel.setLocation(this.getWidth()/2 - lblNewLabel.getWidth()/2, this.getHeight()/4);
 		add(lblNewLabel);
-		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 		
 		JButton btnPlayGame = new JButton("Play Game");
 		btnPlayGame.addActionListener(new ActionListener() {
@@ -48,8 +47,9 @@ public class MainMenu extends JPanel implements GUICard{
 			}
 		});
 		
-		setSize(1000, 700);
+		//setSize(1, 1);
 		btnPlayGame.setBounds(384, 197, 118, 23);
+		btnPlayGame.setLocation(this.getWidth()/2 - btnPlayGame.getWidth()/2, this.getHeight()/3);
 		add(btnPlayGame);
 		
 		

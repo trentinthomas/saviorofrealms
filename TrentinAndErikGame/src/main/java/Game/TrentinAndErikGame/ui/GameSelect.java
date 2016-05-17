@@ -42,35 +42,36 @@ public class GameSelect extends JPanel implements GUICard{
 	private void initUI()
 	{
 		setLayout(null);
-		File file = new File("save1.data");
+		File file1 = new File("save1.data");
 		File file2 = new File("save2.data");
 		File file3 = new File("save3.data");
-		JLabel lblGameOne = new JLabel("Game One:");
-		lblGameOne.setBounds(101, 126, 125, 14);
-		//lblGameOne.setLocation(this.getWidth()/5 - lblGameOne.getWidth()/2, 125);
+		JLabel lblGameOne = new JLabel("Game One");
+		lblGameOne.setBounds(101, 126, lblGameOne.getText().length()*8, 14);
+		lblGameOne.setLocation(this.getWidth()/5 - lblGameOne.getWidth()/2, 125);
 		add(lblGameOne);
 		
-		JLabel lblGametwo = new JLabel("Game Two:");
-		lblGametwo.setBounds(450, 126, 125, 14);
-		//lblGametwo.setLocation(this.getWidth()/3 - lblGametwo.getWidth()/2, 125);
-		add(lblGametwo);
+		JLabel lblGameTwo = new JLabel("Game Two");
+		lblGameTwo.setBounds(450, 126, lblGameTwo.getText().length()*8, 14);
+		lblGameTwo.setLocation(this.getWidth()/2 - lblGameTwo.getWidth()/2, 125);
+		add(lblGameTwo);
 		
-		JLabel lblGameThree = new JLabel("Game Three:");
-		lblGameThree.setBounds(750, 126, 125, 14);
-		//lblGameThree.setLocation(this.getWidth() - lblGameThree.getWidth()/2, 125);
+		JLabel lblGameThree = new JLabel("Game Three");
+		lblGameThree.setBounds(750, 126, lblGameThree.getText().length()*8, 14);
+		lblGameThree.setLocation(this.getWidth() * 5/6 - lblGameThree.getWidth()/2, 125);
 		add(lblGameThree);
 		
-		JButton btnLoadGameOne = new JButton("Load Game One");
+		JButton btnLoadGameOne = new JButton("Load");
 		btnLoadGameOne.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				load(1);
 			}
 		});
-		btnLoadGameOne.setEnabled(file.exists());
+		btnLoadGameOne.setEnabled(file1.exists());
 		btnLoadGameOne.setBounds(146, 315, 125, 23);
+		btnLoadGameOne.setLocation(this.getWidth()/5 - btnLoadGameOne.getWidth()/2, 315); 
 		add(btnLoadGameOne);
 		
-		JButton btnLoadGameTwo = new JButton("Load Game Two");
+		JButton btnLoadGameTwo = new JButton("Load");
 		btnLoadGameTwo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				load(2);
@@ -78,9 +79,10 @@ public class GameSelect extends JPanel implements GUICard{
 		});
 		btnLoadGameTwo.setEnabled(file2.exists());
 		btnLoadGameTwo.setBounds(385, 315, 125, 23);
+		btnLoadGameTwo.setLocation(this.getWidth()/2 - btnLoadGameTwo.getWidth()/2, 315);
 		add(btnLoadGameTwo);
 		
-		JButton btnLoadGameThree = new JButton("Load Game Three");
+		JButton btnLoadGameThree = new JButton("Load");
 		btnLoadGameThree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				load(3);
@@ -88,9 +90,10 @@ public class GameSelect extends JPanel implements GUICard{
 		});
 		btnLoadGameThree.setEnabled(file3.exists());
 		btnLoadGameThree.setBounds(681, 315, 125, 23);
+		btnLoadGameThree.setLocation(this.getWidth() * 5/6 - btnLoadGameThree.getWidth()/2, 315);
 		add(btnLoadGameThree);
 		
-		JButton btnNewButton = new JButton("Start New Game");
+		JButton btnNewButton = new JButton("New");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameSessionFactory.createGameSession(1);
@@ -101,9 +104,10 @@ public class GameSelect extends JPanel implements GUICard{
 			}
 		});
 		btnNewButton.setBounds(146, 366, 125, 23);
+		btnNewButton.setLocation(this.getWidth()/5 - btnNewButton.getWidth()/2, 366);
 		add(btnNewButton);
 		
-		JButton button = new JButton("Start New Game");
+		JButton button = new JButton("New");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -114,9 +118,10 @@ public class GameSelect extends JPanel implements GUICard{
 			}
 		});
 		button.setBounds(385, 366, 125, 23);
+		button.setLocation(this.getWidth()/2 - button.getWidth()/2, 366);
 		add(button);
 		
-		JButton button_1 = new JButton("Start New Game");
+		JButton button_1 = new JButton("New");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WorldPanel.startTimer = true;
@@ -126,20 +131,24 @@ public class GameSelect extends JPanel implements GUICard{
 			}
 		});
 		button_1.setBounds(681, 366, 125, 23);
+		button_1.setLocation(this.getWidth() * 5/6 - button_1.getWidth()/2, 366);
 		add(button_1);
 		
 		JLabel label = new JLabel("<Empty>");
-		label.setBounds(175, 253, 67, 14);
+		label.setBounds(175, 253, label.getText().length()*8, 14);
+		label.setLocation(this.getWidth()/5 - label.getWidth()/2, 253);
 		add(label);
 		
 		JLabel label_1 = new JLabel("<Empty>");
-		label_1.setBounds(423, 253, 87, 14);
+		label_1.setBounds(423, 253, label_1.getText().length()*8, 14);
+		label_1.setLocation(this.getWidth()/2 - label_1.getWidth()/2, 253);
 		add(label_1);
 		
 		JLabel label_2 = new JLabel("<Empty>");
-		label_2.setBounds(717, 253, 60, 14);
+		label_2.setBounds(717, 253, label_2.getText().length()*8, 14);
+		label_2.setLocation(this.getWidth() * 5/6 - label_2.getWidth()/2, 253);
 		add(label_2);  
-		setSize(1000, 700);
+		//setSize(1000, 700);
 	}
 	
 	private void load(int saveFileNumber)

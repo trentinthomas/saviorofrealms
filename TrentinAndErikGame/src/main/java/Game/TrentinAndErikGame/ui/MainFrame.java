@@ -46,7 +46,7 @@ public class MainFrame extends JFrame implements KeyListener{
 		frame.setResizable(false);
 		createCards(frame.getContentPane());
 		changeCard(MAIN_MENU);
-		frame.setSize(1000, 700);
+		frame.setSize(1280, 760);
 		frame.setVisible(true);
 	}
 	
