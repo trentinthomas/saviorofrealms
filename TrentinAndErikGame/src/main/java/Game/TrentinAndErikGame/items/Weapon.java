@@ -7,11 +7,12 @@ public abstract class Weapon extends Item {
 	public double critPercent;
 	
 	public Weapon(int itemId, int minDamage, int maxDamage) {
-		super( itemId, Item.NOT_STACKABLE );
+		super( itemId );
 		this.minDamage = minDamage;
 		this.maxDamage = maxDamage;
 	}
 	
+	@Override
 	public ItemType getItemType()
 	{
 		return ItemType.WEAPON;

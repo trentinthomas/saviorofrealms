@@ -3,22 +3,20 @@ package Game.TrentinAndErikGame.items;
 import java.awt.Image;
 import java.io.Serializable;
 
-public abstract class Item implements Serializable{
-	
-	public static boolean STACKABLE = true;
-	public static boolean NOT_STACKABLE = false;
+public abstract class Item implements Serializable, Stackable{
 	
 	private static final long serialVersionUID = 1L;
+	
+	public static final int NOT_STACKABLE = 1;
+	
 	private int itemId;
 	private int sellAmount;
-	private boolean stackable;
 	
 	public enum ItemType { ARMOUR, WEAPON, CONSUMABLE, ITEM };
 	
-	public Item(int itemId, boolean stackable)
+	public Item(int itemId)
 	{
 		this.itemId = itemId;
-		this.stackable = stackable;
 	}
 	
 	public int getItemId()
@@ -31,9 +29,15 @@ public abstract class Item implements Serializable{
 		return sellAmount;
 	}
 	
-	public abstract ItemType getItemType();
+	public ItemType getItemType()
+	{
+		return ItemType.ITEM;
+	}
 	
 	protected abstract Image getItemImage();
+	
+	
+	//Add all Item ID's inside this as static int. Every item ID is unique, so do not have duplicates
 	
 	
 

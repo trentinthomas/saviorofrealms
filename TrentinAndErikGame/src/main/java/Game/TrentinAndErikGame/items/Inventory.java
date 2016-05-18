@@ -17,7 +17,7 @@ public class Inventory implements Serializable{
 	
 	private int capacity; //how big the inventory is
 	private int numItems;
-	private Item[] items;
+	private List<InventorySlot> items;
 	
 	/**
 	 * Creates a default Inventory with capacity of 20. Most players will
@@ -27,7 +27,7 @@ public class Inventory implements Serializable{
 	{
 		capacity = DEFAULT_CAPACITY;
 		numItems = 0;
-		items = new Item[capacity];
+		items = new ArrayList<InventorySlot>(capacity);
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class Inventory implements Serializable{
 	{
 		capacity = size;
 		numItems = 0;
-		items = new Item[capacity];
+		items = new ArrayList<InventorySlot>(capacity);
 	}
 	
 	/**
@@ -48,7 +48,6 @@ public class Inventory implements Serializable{
 	 */
 	public void increaseCapacity(int newCapacity)
 	{
-		//Will need to grow the array, or make it an ArrayList of items
 		this.capacity = newCapacity; 
 	}
 	
@@ -59,22 +58,54 @@ public class Inventory implements Serializable{
 	 */
 	public boolean addItem(Item item)
 	{
-		if(numItems == capacity)
+		for(InventorySlot slot : items)
 		{
-			return false;
-		}
-		else
-		{
-			for(int i = 0; i < numItems; i++)
+			//If there is an item already in here, that isnt at max stacksize, add it to this slot.
+			if( slot.getItem().getItemId() == item.getItemId() && slot.getNumItems() < item.getStackSize())
 			{
-				if(items[i] == null)
-				{
-					items[numItems] = item;
-					numItems++;
-					return true;
-				}
+				slot.addItem();
+				return true;
 			}
 		}
+		//If it gets here, there is no InventorySlot that has less than stacksize. check if there is any empty spots to add the item.
+		//TODO could throw a custom Exception such as InventoryFullException.
+		if( numItems == capacity )
+			return false;
+		
+		//We are good, add it to next available slot.
+		else
+		{
+			for( InventorySlot slot : items)
+			{
+				if( slot == null )
+				{
+					slot = new InventorySlot();
+					slot.setItem( item );
+					slot.setNumItems( 1 );
+				}
+			}
+			numItems++;
+			return true;
+		}
+	}
+	
+	public boolean removeItem( Item item )
+	{
+		for(InventorySlot slot : items)
+		{
+			if( slot.getItem().getItemId() == item.getItemId() )
+			{
+				if(slot.getNumItems() > 1)
+					slot.removeItem();
+				else
+					slot = null;
+				return true;
+			}
+		}
+		
+		//Couldn't find the item, return false. This probably shouldn't happen. We could
+		//make a new exception called ItemNotFoundException
+		//TODO review this and decide if worth to throw exception.
 		return false;
 	}
 
