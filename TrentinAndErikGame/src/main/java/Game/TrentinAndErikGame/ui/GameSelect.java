@@ -43,7 +43,9 @@ public class GameSelect extends JPanel implements GUICard{
 	{
 		setLayout(null);
 
-		
+		File file1 = new File("save1.data");
+		File file2 = new File("save2.data");
+		File file3 = new File("save3.data");
 		
 		JLabel lblGameOne = new JLabel("Game One");
 		lblGameOne.setBounds(101, 126, lblGameOne.getText().length()*8, 14);
@@ -66,7 +68,7 @@ public class GameSelect extends JPanel implements GUICard{
 				load(1);
 			}
 		});
-		//btnLoadGameOne.setEnabled(file1.exists());
+		btnLoadGameOne.setEnabled(file1.exists());
 		btnLoadGameOne.setBounds(146, 315, 125, 23);
 		btnLoadGameOne.setLocation(this.getWidth()/5 - btnLoadGameOne.getWidth()/2, 315); 
 		add(btnLoadGameOne);
@@ -77,7 +79,7 @@ public class GameSelect extends JPanel implements GUICard{
 				load(2);
 			}
 		});
-		//btnLoadGameTwo.setEnabled(file2.exists());
+		btnLoadGameTwo.setEnabled(file2.exists());
 		btnLoadGameTwo.setBounds(385, 315, 125, 23);
 		btnLoadGameTwo.setLocation(this.getWidth()/2 - btnLoadGameTwo.getWidth()/2, 315);
 		add(btnLoadGameTwo);
@@ -88,7 +90,7 @@ public class GameSelect extends JPanel implements GUICard{
 				load(3);
 			}
 		});
-		//btnLoadGameThree.setEnabled(file3.exists());
+		btnLoadGameThree.setEnabled(file3.exists());
 		btnLoadGameThree.setBounds(681, 315, 125, 23);
 		btnLoadGameThree.setLocation(this.getWidth() * 5/6 - btnLoadGameThree.getWidth()/2, 315);
 		add(btnLoadGameThree);
