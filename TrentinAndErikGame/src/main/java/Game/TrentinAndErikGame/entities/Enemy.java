@@ -2,6 +2,11 @@ package Game.TrentinAndErikGame.entities;
 
 import java.awt.Graphics;
 
+/**
+ * 
+ * @author Trentin
+ *
+ */
 public class Enemy extends Entity
 {
 	

@@ -10,6 +10,7 @@ public class Player extends Entity{
 	public enum PlayerType { BARBARIAN, RANGER, WIZARD };
 	protected PlayerType playerType;
 	private Inventory inventory;
+	private int currency;
 	
 	public Player(int damage, int hitpoints, int defence, int speed, int xCoord, int yCoord, EntityType entityType, int width, int height, PlayerType playerType) {
 		super(damage, hitpoints, defence, speed, xCoord, yCoord, EntityType.PLAYER, width, height);
@@ -38,6 +39,11 @@ public class Player extends Entity{
 	public Inventory getInventory()
 	{
 		return inventory;
+	}
+	
+	public void addCurrency(int amountToAdd)
+	{
+		 
 	}
 
 }

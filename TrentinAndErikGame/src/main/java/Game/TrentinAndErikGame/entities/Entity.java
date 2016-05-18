@@ -15,9 +15,9 @@ public abstract class Entity implements Serializable
 	private static final long serialVersionUID = 1L;
 	
 	
-	protected int damage;
-	protected int hitpoints;
-	protected int defense;
+	protected int damage; //how much damage the entity does
+	protected int hitpoints; //how many hitpoints the entity does
+	protected int defense; //
 	protected int speed;
 	protected int xCoord;
 	protected int yCoord;
