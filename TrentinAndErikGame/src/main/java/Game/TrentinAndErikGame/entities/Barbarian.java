@@ -46,6 +46,12 @@ public class Barbarian extends Player
 		g.setColor(Color.RED);
 		g.fillRect(xCoord, yCoord, width, height);
 	}
+
+	@Override
+	public void attack(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

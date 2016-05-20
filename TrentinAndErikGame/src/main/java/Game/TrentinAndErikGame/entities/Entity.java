@@ -1,6 +1,7 @@
 package Game.TrentinAndErikGame.entities;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.io.Serializable;
 
 /**
@@ -21,6 +22,7 @@ public abstract class Entity implements Serializable
 	protected int speed;
 	protected int xCoord;
 	protected int yCoord;
+	protected int centerOfEntity;
 	
 	protected int xVel;
 	protected int yVel;
@@ -183,7 +185,21 @@ public abstract class Entity implements Serializable
 	{
 		return height;
 	}
-
+	
+	public Point getCenterOfEntity()
+	{
+		return calculateCenterOfEntity();
+	}
+	
+	/**
+	 * Gets the center coordinate of the entity. Useful for calculating which way you want attacks to go.
+	 * @return
+	 */
+	public Point calculateCenterOfEntity()
+	{
+		Point point = new Point(xCoord + width/2, yCoord + height/2);
+		return point;
+	}
 	/**
 	 * abstract move method to allow entities
 	 * to move uniquely

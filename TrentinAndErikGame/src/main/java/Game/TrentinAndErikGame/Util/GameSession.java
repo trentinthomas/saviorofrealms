@@ -1,6 +1,7 @@
 package Game.TrentinAndErikGame.Util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Game.TrentinAndErikGame.entities.Entity;
 import Game.TrentinAndErikGame.entities.Player;
@@ -13,7 +14,7 @@ import Game.TrentinAndErikGame.entities.Player;
 public class GameSession 
 {
 	
-	private ArrayList<Entity> entities;
+	private List<Entity> entities;
 	
 	private Player player;
 	private String gameFile;
@@ -36,7 +37,7 @@ public class GameSession
 		entities.add(entity);
 	}
 	
-	public ArrayList<Entity> getEntities()
+	public List<Entity> getEntities()
 	{
 		return entities;
 	}

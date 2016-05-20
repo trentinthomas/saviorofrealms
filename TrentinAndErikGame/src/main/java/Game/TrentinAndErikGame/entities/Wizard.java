@@ -23,4 +23,10 @@ public class Wizard extends Player
 		g.setColor(Color.BLUE);
 		g.fillRect(xCoord, yCoord, width, height);
 	}
+
+	@Override
+	public void attack(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 }

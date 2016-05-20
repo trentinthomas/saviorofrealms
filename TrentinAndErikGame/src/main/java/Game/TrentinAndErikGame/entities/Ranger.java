@@ -3,6 +3,8 @@ package Game.TrentinAndErikGame.entities;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import java.awt.Point;
+
 public class Ranger extends Player
 {
 	
@@ -21,4 +23,51 @@ public class Ranger extends Player
 		g.setColor(Color.GREEN);
 		g.fillRect(xCoord, yCoord, width, height);
 	}
+
+	@Override
+	public void attack(int x, int y) {
+		// TODO Auto-generated method stub
+		fireArrow(getCenterOfEntity(), x, y);
+	}
+	
+	private void fireArrow(Point center, int x, int y)
+	{
+		Point point = new Point(x, y);
+		Arrow arrow = new Arrow(center);
+		
+		if(point.getX() < center.getY())
+		{
+			
+		}
+		if(point.getY() < center.getY())
+		{
+			
+		}
+		if(point.getX() > center.getX())
+		{
+			
+		}
+		if(point.getY() > center.getY())
+		{
+			
+		}
+		
+	}
+	
+	private class Arrow
+	{
+		int x;
+		int y;
+		int velX;
+		int velY;
+		
+		public Arrow(Point p)
+		{
+			this.x = (int) p.getX();
+			this.y = (int) p.getY();
+		}
+		
+		
+	}
+	
 }

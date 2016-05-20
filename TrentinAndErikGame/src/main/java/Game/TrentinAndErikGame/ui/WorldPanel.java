@@ -2,20 +2,17 @@ package Game.TrentinAndErikGame.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
+
 import javax.swing.Timer;
 
 import javax.swing.JPanel;
 
 import Game.TrentinAndErikGame.Util.GameSessionFactory;
-import Game.TrentinAndErikGame.entities.Barbarian;
 import Game.TrentinAndErikGame.entities.Entity;
-import Game.TrentinAndErikGame.entities.Player;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -24,9 +21,9 @@ import java.awt.Graphics;
  * @author Trentin
  *
  */
-public class WorldPanel extends JPanel implements GUICard, ActionListener
+public class WorldPanel extends JPanel implements GUICard, ActionListener, MouseListener
 {
-	private Timer gameTimer = new Timer(20, this);
+	private Timer gameTimer = new Timer(33, this);
 	public static boolean startTimer;
 	
 	/**
@@ -57,6 +54,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 			gameTimer.start();
 		}
 		this.setFocusable(true);
+		this.addMouseListener(this);
 		//removing this seems to be fine - assuming its because it just assumes the size of parent
 		//setSize(1000, 700);
 	}
@@ -76,12 +74,37 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		ArrayList<Entity> entities = GameSessionFactory.getGameSession().getEntities();
+		List<Entity> entities = GameSessionFactory.getGameSession().getEntities();
 		for( Entity entity : entities )
 		{
 			entity.move();
 			entity.paint(g);
 		}
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		GameSessionFactory.getGameSession().getPlayer().attack(e.getX(),e.getY());
+	}
+
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

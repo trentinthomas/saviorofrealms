@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import Game.TrentinAndErikGame.items.Inventory;
 
-public class Player extends Entity{
+public abstract class Player extends Entity{
 
 	public enum PlayerType { BARBARIAN, RANGER, WIZARD };
 	protected PlayerType playerType;
@@ -25,11 +25,9 @@ public class Player extends Entity{
 		yCoord += yVel;
 	}
 	
-	public void paint(Graphics g)
-	{
-		g.setColor(Color.YELLOW);
-		g.fillRect(xCoord, yCoord, width, height);
-	}
+	public abstract void paint(Graphics g);
+	
+	public abstract void attack(int x, int y);
 	
 	public PlayerType getPlayerType()
 	{

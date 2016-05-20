@@ -17,7 +17,9 @@ import java.io.ObjectOutputStream;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Game.TrentinAndErikGame.Util.EnemyFactory;
 import Game.TrentinAndErikGame.Util.GameSessionFactory;
+import Game.TrentinAndErikGame.entities.Enemy.EnemyType;
 import Game.TrentinAndErikGame.entities.Player;
 
 /**
@@ -142,6 +144,10 @@ public class MainFrame extends JFrame implements KeyListener{
 		{
 			GameSessionFactory.getGameSession().getPlayer().setXVel(GameSessionFactory.getGameSession().getPlayer().getSpeed());
 			rightKeyPressed = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_N)
+		{
+			EnemyFactory.spawnEnemy(EnemyType.GOBLIN, GameSessionFactory.getGameSession().getPlayer().getxCoord() + 30, GameSessionFactory.getGameSession().getPlayer().getyCoord() + 30);
 		}
 	}
 
