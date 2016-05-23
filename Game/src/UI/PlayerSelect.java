@@ -106,20 +106,12 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 			sbg.enterState(Engine.menu);
 		}
 		
-
-		if(!(        ((mouseX > gc.getWidth()/2 - buttonWidth*2 && mouseX < gc.getWidth()/2 - buttonWidth) && 
-				      (mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2)) 
-				||   ((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
-				      (mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
-				||   ((mouseX > gc.getWidth()/2 + buttonWidth && mouseX < gc.getWidth()/2 + buttonWidth*2) && 
-					  (mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))))				
-			allowedToClick = true;
 		
 		if((mouseX > gc.getWidth()/2 - buttonWidth*2 && mouseX < gc.getWidth()/2 - buttonWidth) && 
-				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2) && allowedToClick)
+				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
 		{
 			hoverBarbarian = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				//createworld
 				allowedToClick = false;
@@ -130,10 +122,10 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 			hoverBarbarian = false;		
 		
 		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
-				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2) && allowedToClick)
+				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
 		{
 			hoverArcher = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				//createworld
 				allowedToClick = false;
@@ -144,10 +136,10 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 			hoverArcher = false;
 		
 		if((mouseX > gc.getWidth()/2 + buttonWidth && mouseX < gc.getWidth()/2 + buttonWidth*2) && 
-				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2) && allowedToClick)
+				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
 		{
 			hoverWizard = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				//createworld
 				allowedToClick = false;

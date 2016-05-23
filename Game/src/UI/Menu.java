@@ -111,7 +111,7 @@ public class Menu extends BasicGameState {
 				(mouseY > gc.getHeight()/2 + buttonHeight && mouseY < gc.getHeight()/2 + buttonHeight*2))
 		{
 			hoverSingleplayer = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				sbg.enterState(Engine.gameSelect);
 			}
@@ -123,7 +123,7 @@ public class Menu extends BasicGameState {
 				(mouseY > gc.getHeight()/2 && mouseY < gc.getHeight()/2 + buttonHeight))
 		{
 			hoverMultiplayer = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				//sbg.enterState(Engine.multiplayerOptions);
 			}
@@ -135,7 +135,7 @@ public class Menu extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
 		{
 			hoverOptions = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				//sbg.enterState(Engine.options);
 			}
@@ -147,7 +147,7 @@ public class Menu extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight*2 && mouseY < gc.getHeight()/2 - buttonHeight))
 		{
 			hoverExit = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				System.exit(0);
 			}

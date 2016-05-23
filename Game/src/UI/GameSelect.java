@@ -121,7 +121,7 @@ public class GameSelect extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
 		{
 			hoverNew1 = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				sbg.enterState(Engine.playerSelect);
 			}
@@ -133,7 +133,7 @@ public class GameSelect extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
 		{
 			hoverNew2 = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				sbg.enterState(Engine.playerSelect);
 			}
@@ -145,7 +145,7 @@ public class GameSelect extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
 		{
 			hoverNew3 = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				sbg.enterState(Engine.playerSelect);
 			}
@@ -160,7 +160,7 @@ public class GameSelect extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight*2 && mouseY < gc.getHeight()/2 - buttonHeight))
 		{
 			hoverLoad1 = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				sbg.enterState(Engine.play);
 			}
@@ -172,7 +172,7 @@ public class GameSelect extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight*2 && mouseY < gc.getHeight()/2 - buttonHeight))
 		{
 			hoverLoad2 = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				sbg.enterState(Engine.play);
 			}
@@ -184,7 +184,7 @@ public class GameSelect extends BasicGameState {
 				(mouseY > gc.getHeight()/2 - buttonHeight*2 && mouseY < gc.getHeight()/2 - buttonHeight))
 		{
 			hoverLoad3 = true;
-			if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
 				sbg.enterState(Engine.play);
 			}
