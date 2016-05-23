@@ -26,8 +26,8 @@ public class Play extends BasicGameState {
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
-		g.drawString("In the play state", 200, 100);
 		g.drawImage(player, playerx, playery);
+		g.drawString("x: " + playerx + " y: " + playery, 30, 30);
 	}
 
 	@Override
@@ -39,13 +39,17 @@ public class Play extends BasicGameState {
 			sbg.enterState(Engine.menu);
 		
 		if(input.isKeyDown(Input.KEY_W)) //up
-			playery -= 1;
-		if(input.isKeyDown(Input.KEY_A)) //down
-			playerx -= 1;
-		if(input.isKeyDown(Input.KEY_S)) //left
-			playery += 1;
+			if(playery > 0)
+				playery -= 10;
+		if(input.isKeyDown(Input.KEY_A)) //left
+			if(playerx > 0)
+				playerx -= 10;
+		if(input.isKeyDown(Input.KEY_S)) //down
+			if(playery < gc.getHeight() - player.getHeight())
+				playery += 10;
 		if(input.isKeyDown(Input.KEY_D)) //right
-			playerx += 1;
+			if(playerx < gc.getWidth() - player.getWidth())
+				playerx += 10;
 	}
 
 	@Override

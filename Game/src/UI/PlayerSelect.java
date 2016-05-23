@@ -1,10 +1,11 @@
 package UI;
 
+import java.awt.event.MouseEvent;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
-public class PlayerSelect extends BasicGameState {
+public class PlayerSelect extends BasicGameState  implements InputListener{
 
 	Image up_barbarian;
 	Image up_archer;
@@ -23,12 +24,12 @@ public class PlayerSelect extends BasicGameState {
 	boolean hoverWizard    = false;
 	
 	boolean allowedToClick = false;
+	boolean test = false;
 	
 	public String mouse = "No input yet!";
 	
 	public PlayerSelect(int state)
 	{
-		
 	}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
@@ -40,12 +41,15 @@ public class PlayerSelect extends BasicGameState {
 		down_barbarian = new Image("/res/buttons/down_barbarian.png");
 		down_archer    = new Image("/res/buttons/down_archer.png");
 		down_wizard    = new Image("/res/buttons/down_wizard.png");
+		
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
 		g.drawString(mouse, 10, 30);
 		
+		if(test == true)
+			g.setBackground(Color.red);
 		//horizontal lines
 /*		
 		g.drawLine(0, gc.getHeight()/2 - buttonHeight*2, gc.getWidth(), gc.getHeight()/2 - buttonHeight*2);
@@ -88,11 +92,12 @@ public class PlayerSelect extends BasicGameState {
 		else
 			g.drawImage(down_wizard, gc.getWidth()/2 + buttonWidth , gc.getHeight()/2);
 	}
-
+	
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException 
 	{
 		Input input = gc.getInput();
+
 		int mouseX = Mouse.getX();
 		int mouseY = Mouse.getY();
 		mouse = "Mouse Position: x(" + mouseX + ") y(" + mouseY + ")";
