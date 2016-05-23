@@ -1,7 +1,17 @@
 package UI;
 
-import org.newdawn.slick.*;
-import org.newdawn.slick.state.*;
+import java.io.File;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
+
+import Util.Resources;
+import Util.Window;
 
 public class Engine extends StateBasedGame{
 	
@@ -13,7 +23,7 @@ public class Engine extends StateBasedGame{
 	public static final int paused = 4;
 	
 	
-	public Engine(String gameName)
+	public Engine()
 	{
 		super(gameName);
 		this.addState(new Menu(menu));
@@ -21,11 +31,18 @@ public class Engine extends StateBasedGame{
 		this.addState(new PlayerSelect(playerSelect));
 		this.addState(new Play(play));
 		this.addState(new Paused(paused));
+		new Resources();
 	}
 
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException
 	{
+		gc.setMaximumLogicUpdateInterval(60);
+		gc.setTargetFrameRate(60);
+		gc.setAlwaysRender(true);
+		gc.setShowFPS(true);
+		gc.setVSync(true);
+		
 		this.getState(menu).init(gc, this);
 		this.getState(gameSelect).init(gc, this);
 		this.getState(playerSelect).init(gc, this);
@@ -38,10 +55,16 @@ public class Engine extends StateBasedGame{
 	public static void main(String[] args) 
 	{
 		AppGameContainer appgc;
+		try {
+			Display.setDisplayMode(new DisplayMode(Window.WIDTH, Window.HEIGHT));
+			Display.create();
+		} catch (LWJGLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try	
 		{
-			appgc = new AppGameContainer(new Engine(gameName));
-			appgc.setDisplayMode(808, 500, false);
+			appgc = new AppGameContainer(new Engine());
 			appgc.start();
 		}
 		catch (SlickException e) { e.printStackTrace(); }

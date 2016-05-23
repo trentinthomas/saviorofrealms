@@ -36,6 +36,11 @@ public class Menu extends BasicGameState {
 	{
 		Input input = gc.getInput();
 		
+		if(input.isKeyPressed(Input.KEY_ENTER))
+		{
+			sbg.enterState(Engine.play);
+		}
+		
 		int xpos = Mouse.getX();
 		int ypos = Mouse.getY();
 		
