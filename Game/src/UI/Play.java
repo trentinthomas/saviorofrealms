@@ -3,7 +3,7 @@ package UI;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
-import Util.Resources;
+/*import Util.Resources;*/
 
 public class Play extends BasicGameState {
 
@@ -19,10 +19,9 @@ public class Play extends BasicGameState {
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{
-		//player = new Image("/res/character.png");
-		player = Resources.getSpriteImage("wizard", 1, 1);
-/*		gc.setTargetFrameRate(120);
-		gc.setMaximumLogicUpdateInterval(120);*/
+		player = new Image("/res/character.png");
+		//player = Resources.getSpriteImage("wizard", 1, 1);
+
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
