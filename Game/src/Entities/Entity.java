@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.io.Serializable;
 
+import org.newdawn.slick.Image;
+
 /**
  * Entity is a superclass that all Entities will extend to keep track of all entities on the screen
  * @author Trentin
@@ -206,5 +208,6 @@ public abstract class Entity implements Serializable
 	 */
 	public abstract void move();
 	public abstract void paint(Graphics g);
+	public abstract Image getImage();
 	
 }

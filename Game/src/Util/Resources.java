@@ -1,4 +1,4 @@
-/*package Util;
+package Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,9 @@ public class Resources {
 		sounds = new HashMap<String, Sound>();
 		
 		try {
-			sprites.put("wizard", loadSprite("res/mage.png", 64, 64));
+			sprites.put("wizard", loadSprite("res/spritesheets/wizard.png", 64, 64));
+			sprites.put("barbarian", loadSprite("res/spritesheets/barbarian_dagger.png", 64, 64));
+			sprites.put("archer", loadSprite("res/spritesheets/archer.png", 64, 64));
 		} catch(SlickException e) {
 			e.printStackTrace();
 		}
@@ -52,4 +54,3 @@ public class Resources {
 	
 
 }
-*/

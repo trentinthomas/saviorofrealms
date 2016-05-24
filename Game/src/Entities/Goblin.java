@@ -3,6 +3,8 @@ package Entities;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import org.newdawn.slick.Image;
+
 public class Goblin extends Enemy
 {
 	
@@ -25,5 +27,11 @@ public class Goblin extends Enemy
 	{
 		g.setColor(Color.RED);
 		g.fillRect(xCoord, yCoord, width, height);
+	}
+	
+	public Image getImage()
+	{
+		//TODO
+		return null;
 	}
 }

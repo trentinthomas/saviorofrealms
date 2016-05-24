@@ -3,6 +3,10 @@ package Entities;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import org.newdawn.slick.Image;
+
+import Util.Resources;
+
 /**
  * Barbarian is a class the Player can control. Barbarians have more hitpoints and defence than normal, and
  * will be melee based.
@@ -51,6 +55,11 @@ public class Barbarian extends Player
 	public void attack(int x, int y) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Image getImage()
+	{
+		return Resources.getSpriteImage("barbarian", 1, 1);
 	}
 	
 

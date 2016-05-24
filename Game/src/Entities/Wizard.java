@@ -2,7 +2,11 @@ package Entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import org.newdawn.slick.Image;
+
 import Entities.Entity.EntityType;
+import Util.Resources;
 
 public class Wizard extends Player
 {	
@@ -27,5 +31,10 @@ public class Wizard extends Player
 	public void attack(int x, int y) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Image getImage()
+	{
+		return Resources.getSpriteImage("wizard", 1, 1);
 	}
 }

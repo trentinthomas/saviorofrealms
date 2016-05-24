@@ -5,6 +5,12 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
+import Entities.Archer;
+import Entities.Barbarian;
+import Entities.Player;
+import Entities.Wizard;
+import Util.GameSessionFactory;
+
 public class PlayerSelect extends BasicGameState  implements InputListener{
 
 	Image up_barbarian;
@@ -115,6 +121,8 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 			{
 				//createworld
 				allowedToClick = false;
+				GameSessionFactory.createGameSession(1);
+				GameSessionFactory.getGameSession().setPlayer(new Barbarian());
 				sbg.enterState(Engine.play);
 			}
 		}
@@ -129,6 +137,8 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 			{
 				//createworld
 				allowedToClick = false;
+				GameSessionFactory.createGameSession(1);
+				GameSessionFactory.getGameSession().setPlayer(new Archer());
 				sbg.enterState(Engine.play);
 			}
 		}
@@ -143,6 +153,8 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 			{
 				//createworld
 				allowedToClick = false;
+				GameSessionFactory.createGameSession(1);
+				GameSessionFactory.getGameSession().setPlayer(new Wizard());
 				sbg.enterState(Engine.play);
 			}
 		}
