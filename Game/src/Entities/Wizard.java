@@ -17,7 +17,7 @@ public class Wizard extends Player
 	
 	public Wizard()
 	{
-		super(10, 100, 10, 10, 0, 0, EntityType.PLAYER, 40, 40, PlayerType.WIZARD);
+		super(10, 100, 10, 2, 0, 0, EntityType.PLAYER, 40, 40, PlayerType.WIZARD);
 	}
 	
 	@Override

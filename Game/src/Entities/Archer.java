@@ -18,7 +18,7 @@ public class Archer extends Player
 	
 	public Archer()
 	{
-		super(10, 100, 10, 10, 0, 0, EntityType.PLAYER, 40, 40, PlayerType.RANGER);
+		super(10, 100, 10, 2, 0, 0, EntityType.PLAYER, 40, 40, PlayerType.RANGER);
 	}
 	
 	@Override

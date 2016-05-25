@@ -62,6 +62,7 @@ public class Engine extends StateBasedGame{
 		try	
 		{
 			appgc = new AppGameContainer(new Engine());
+			appgc.setDisplayMode(Window.WIDTH, Window.HEIGHT, false);
 			appgc.start();
 		}
 		catch (SlickException e) { e.printStackTrace(); }

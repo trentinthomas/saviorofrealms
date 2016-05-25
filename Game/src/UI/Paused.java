@@ -7,19 +7,22 @@ import org.newdawn.slick.state.*;
 public class Paused extends BasicGameState {
 
 	Image up_resume;
+	Image up_options;
 	Image up_save;
 	Image up_exit;
 	
 	Image down_resume;
+	Image down_options;
 	Image down_save;
 	Image down_exit;
 	
-	boolean hoverResume;
-	boolean hoverSave;
-	boolean hoverExit;
-	
 	int buttonWidth  = 117;
 	int buttonHeight = 43;
+	
+	boolean hoverResume;
+	boolean hoverOptions;
+	boolean hoverSave;
+	boolean hoverExit;
 	
 	String mouse = "No input yet!";
 	
@@ -31,10 +34,12 @@ public class Paused extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{
 		up_resume = new Image("/res/buttons/up_resume.png");
+		up_options = new Image("/res/buttons/up_options.png");
 		up_save = new Image("/res/buttons/up_save.png");
 		up_exit = new Image("/res/buttons/up_exit.png");
 		
 		down_resume = new Image("/res/buttons/down_resume.png");
+		down_options = new Image("/res/buttons/down_options.png");
 		down_save = new Image("/res/buttons/down_save.png");
 		down_exit = new Image("/res/buttons/down_exit.png");
 	}
@@ -42,9 +47,14 @@ public class Paused extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
 		if(!hoverResume)
-			g.drawImage(up_resume, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight);
+			g.drawImage(up_resume, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight*2);
 		else
-			g.drawImage(down_resume, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight);
+			g.drawImage(down_resume, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight*2);
+		
+		if(!hoverOptions)
+			g.drawImage(up_options, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight);
+		else
+			g.drawImage(down_options, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight);
 		
 		if(!hoverSave)
 			g.drawImage(up_save, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2);
@@ -66,17 +76,29 @@ public class Paused extends BasicGameState {
 		mouse = "Mouse Position: x(" + mouseX + ") y(" + mouseY + ")";
 		
 		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
-				(mouseY > gc.getHeight()/2 && mouseY < gc.getHeight()/2 + buttonHeight))
+				(mouseY > gc.getHeight()/2 + buttonHeight && mouseY < gc.getHeight()/2 + buttonHeight*2))
 		{
-			//
 			hoverResume = true;
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
-				//sbg.enterState(Engine.multiplayerOptions);
+				sbg.enterState(Engine.play);
 			}
 		}
 		else
-			hoverResume = false;	
+			hoverResume = false;		
+		
+		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
+				(mouseY > gc.getHeight()/2 && mouseY < gc.getHeight()/2 + buttonHeight))
+		{
+			//
+			hoverOptions = true;
+			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+			{
+				//sbg.enterState(Engine.play);
+			}
+		}
+		else
+			hoverOptions = false;	
 		
 		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
 				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))

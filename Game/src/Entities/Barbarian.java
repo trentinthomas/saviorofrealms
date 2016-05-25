@@ -37,7 +37,7 @@ public class Barbarian extends Player
 	 */
 	public Barbarian()
 	{
-		super(10, 100, 20, 10, 200, 200, EntityType.PLAYER, 40, 40, PlayerType.BARBARIAN);
+		super(10, 100, 20, 2, 200, 200, EntityType.PLAYER, 40, 40, PlayerType.BARBARIAN);
 	}
 	
 	/**

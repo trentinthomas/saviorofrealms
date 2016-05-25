@@ -1,7 +1,5 @@
 package UI;
 
-import java.util.ArrayList;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.*;
