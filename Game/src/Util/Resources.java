@@ -21,6 +21,10 @@ public class Resources {
 		sounds = new HashMap<String, Sound>();
 		
 		try {
+			images.put("barbarian", loadImage("/res/spritesheets/wizard.png"));
+			images.put("archer", loadImage("/res/spritesheets/wizard.png"));
+			images.put("wizard", loadImage("/res/spritesheets/wizard.png"));
+			
 			sprites.put("wizard", loadSprite("res/spritesheets/wizard.png", 64, 64));
 			sprites.put("barbarian", loadSprite("res/spritesheets/barbarian_dagger.png", 64, 64));
 			sprites.put("archer", loadSprite("res/spritesheets/archer.png", 64, 64));

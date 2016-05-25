@@ -7,7 +7,7 @@ import Items.Inventory;
 
 public abstract class Player extends Entity{
 
-	public enum PlayerType { BARBARIAN, RANGER, WIZARD };
+	public enum PlayerType { BARBARIAN, ARCHER, WIZARD };
 	protected PlayerType playerType;
 	private Inventory inventory;
 	private int currency;

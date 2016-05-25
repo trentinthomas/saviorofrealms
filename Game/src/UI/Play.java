@@ -4,6 +4,7 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
+import Entities.Player.PlayerType;
 import Util.GameSessionFactory;
 import Util.Resources;
 import Util.Window;
@@ -47,13 +48,16 @@ public class Play extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{	
 		//TODO: Depending on the character selected or being used, use the proper sprite sheet
-		//if(characterChosen == barbarianDagger)
+/*		if(GameSessionFactory.getGameSession().getPlayer().getPlayerType() == PlayerType.BARBARIAN)
 			ss = new SpriteSheet(new Image("/res/spritesheets/barbarian_dagger.png"), 64, 64);
-/*		if(characterChosen == archer)
+		if(GameSessionFactory.getGameSession().getPlayer().getPlayerType() == PlayerType.ARCHER)
 			ss = new SpriteSheet(new Image("/res/spritesheets/archer.png"), 64, 64);
-		if(characterChosen == wizard)
+		if(GameSessionFactory.getGameSession().getPlayer().getPlayerType() == PlayerType.WIZARD)
 			ss = new SpriteSheet(new Image("/res/spritesheets/wizard.png"), 64, 64);*/
 			
+		//this should fix the todo from above? maybe i hope? but it has an error.
+		ss = new SpriteSheet(GameSessionFactory.getGameSession().getPlayer().getImage(), 64, 64);
+		
 		walking = new Animation[4];
 		walking[up]    = new Animation(ss, 1, 8,  8, 8,  true, animSpeed, false);
 		walking[left]  = new Animation(ss, 0, 9,  8, 9,  true, animSpeed, false);
@@ -64,7 +68,7 @@ public class Play extends BasicGameState {
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
-		//player = GameSessionFactory.getGameSession().getPlayer().getImage();
+		ss = new SpriteSheet(GameSessionFactory.getGameSession().getPlayer().getImage(), 64, 64);
 		//g.drawImage(player, playerx, playery);
 		g.drawString(mouse, 10, 30);
 		g.drawString("x: " + playerx + " y: " + playery, 30, 50);

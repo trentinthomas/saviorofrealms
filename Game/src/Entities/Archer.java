@@ -13,12 +13,12 @@ public class Archer extends Player
 {
 	
 	private Archer(int damage, int hitpoints, int defence, int speed, int xCoord, int yCoord, EntityType entityType, int width, int height) {
-		super(damage, hitpoints, defence, speed, xCoord, yCoord, entityType, width, height, PlayerType.RANGER);
+		super(damage, hitpoints, defence, speed, xCoord, yCoord, entityType, width, height, PlayerType.ARCHER);
 	}
 	
 	public Archer()
 	{
-		super(10, 100, 10, 2, 0, 0, EntityType.PLAYER, 40, 40, PlayerType.RANGER);
+		super(10, 100, 10, 2, 0, 0, EntityType.PLAYER, 40, 40, PlayerType.ARCHER);
 	}
 	
 	@Override
@@ -76,7 +76,7 @@ public class Archer extends Player
 	
 	public Image getImage()
 	{
-		return Resources.getSpriteImage("archer", 1, 1);
+		return Resources.getImage("archer");
 	}
 	
 }

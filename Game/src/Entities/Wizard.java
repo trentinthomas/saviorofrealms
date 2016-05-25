@@ -35,6 +35,6 @@ public class Wizard extends Player
 	
 	public Image getImage()
 	{
-		return Resources.getSpriteImage("wizard", 1, 1);
+		return Resources.getImage("wizard");
 	}
 }

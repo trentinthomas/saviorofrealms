@@ -59,7 +59,7 @@ public class Barbarian extends Player
 	
 	public Image getImage()
 	{
-		return Resources.getSpriteImage("barbarian", 1, 1);
+		return Resources.getImage("barbarian");
 	}
 	
 
