@@ -11,9 +11,13 @@ import Util.Window;
 /*import Util.Resources;*/
 
 public class Play extends BasicGameState {
-
+	Animation walking_up;
 	
 	Image player;
+	Image playerSS;
+	SpriteSheet ss;
+	
+	Image [] walkingFrames;
 	
 	int playerx = Window.WIDTH/2 - 64/2;
 	int playery = Window.HEIGHT/2 - 64/2;
@@ -27,12 +31,13 @@ public class Play extends BasicGameState {
 	String mouse = "No input yet!";
 	public Play(int state)
 	{
-		
 	}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
-	{
-		
+	{	
+		playerSS = new Image("/res/spritesheets/barbarian_dagger.png");
+		ss = new SpriteSheet(playerSS, 64, 64);
+		walking_up = new Animation(ss, 0, 10, 9, 11, true, 100, false);
 
 	}
 	
@@ -43,6 +48,7 @@ public class Play extends BasicGameState {
 		g.drawString(mouse, 10, 30);
 		g.drawString("x: " + playerx + " y: " + playery, 30, 50);
 		
+		walking_up.draw(playerx, playery);
 		//inventory outline or something? could probably make this a picture of sorts
 		g.drawRect(gc.getWidth() - (inventoryWidth + guiPadding), 
 				   gc.getHeight() -(inventoryHeight + guiPadding), 
@@ -75,8 +81,10 @@ public class Play extends BasicGameState {
 			if(playerx > 0)
 				playerx -= GameSessionFactory.getGameSession().getPlayer().getSpeed();
 		if(input.isKeyDown(Input.KEY_S)) //down
-			if(playery < gc.getHeight() - player.getHeight())
+			if(playery < gc.getHeight() - player.getHeight()) {
 				playery += GameSessionFactory.getGameSession().getPlayer().getSpeed();
+				walking_up.update(delta);
+			}
 		if(input.isKeyDown(Input.KEY_D)) //right
 			if(playerx < gc.getWidth() - player.getWidth())
 				playerx += GameSessionFactory.getGameSession().getPlayer().getSpeed();

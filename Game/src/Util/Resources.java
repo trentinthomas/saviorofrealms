@@ -3,6 +3,7 @@ package Util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -13,7 +14,7 @@ public class Resources {
 	private static Map<String, Image> images;
 	private static Map<String, SpriteSheet> sprites;
 	private static Map<String, Sound> sounds;
-	
+
 	public Resources() {
 		images = new HashMap<String, Image>();
 		sprites = new HashMap<String, SpriteSheet>();
