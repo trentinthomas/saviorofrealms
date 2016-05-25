@@ -64,7 +64,6 @@ public class Menu extends BasicGameState {
 		g.drawString(mouse, 10, 30);
 		//g.drawLine(0, gc.getHeight()/2, gc.getWidth(), gc.getHeight()/2);
 		
-		
 /*		g.drawLine(0, gc.getHeight()/2, gc.getWidth(), gc.getHeight()/2);
 		g.drawLine(0, gc.getHeight()/2 - buttonHeight*2, gc.getWidth(), gc.getHeight()/2 - buttonHeight*2);
 		g.drawLine(0, gc.getHeight()/2 - buttonHeight, gc.getWidth(), gc.getHeight()/2 - buttonHeight); // this is the middle 

@@ -50,6 +50,7 @@ public class Engine extends StateBasedGame{
 		this.getState(playerSelect).init(gc, this);
 		this.getState(play).init(gc, this);
 		this.getState(paused).init(gc, this);
+		
 		this.enterState(menu);
 		
 	}

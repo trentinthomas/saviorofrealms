@@ -38,8 +38,8 @@ public class Play extends BasicGameState {
 	{
 		
 		Input input = gc.getInput();
-		if(input.isMouseButtonDown(input.MOUSE_RIGHT_BUTTON))
-			sbg.enterState(Engine.menu);
+		if(input.isKeyDown(Input.KEY_ESCAPE))
+			sbg.enterState(Engine.paused);
 		
 		if(input.isKeyDown(Input.KEY_W)) //up
 			if(playery > 0)

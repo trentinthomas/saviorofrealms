@@ -162,7 +162,7 @@ public class GameSelect extends BasicGameState {
 			hoverLoad1 = true;
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
-				sbg.enterState(Engine.play);
+				//sbg.enterState(Engine.play);
 			}
 		}
 		else
@@ -174,7 +174,7 @@ public class GameSelect extends BasicGameState {
 			hoverLoad2 = true;
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
-				sbg.enterState(Engine.play);
+				//sbg.enterState(Engine.play);
 			}
 		}
 		else
@@ -186,7 +186,7 @@ public class GameSelect extends BasicGameState {
 			hoverLoad3 = true;
 			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 			{
-				sbg.enterState(Engine.play);
+				//sbg.enterState(Engine.play);
 			}
 		}
 		else
