@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import Items.Inventory;
+import saviorOfRealms.errorHandling.InsufficientFundsException;
 
 public abstract class Player extends Entity{
 
@@ -41,7 +42,15 @@ public abstract class Player extends Entity{
 	
 	public void addCurrency(int amountToAdd)
 	{
-		 
+		currency += amountToAdd;
+	}
+	
+	public void subtractCurrency(int amountToSubtract) throws InsufficientFundsException
+	{
+		if(currency - amountToSubtract < 0) {
+			throw new InsufficientFundsException();
+		}
+		currency -= amountToSubtract;
 	}
 
 }

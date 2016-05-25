@@ -31,7 +31,6 @@ public class Archer extends Player
 	@Override
 	public void attack(int x, int y) {
 		// TODO Auto-generated method stub
-		fireArrow(getCenterOfEntity(), x, y);
 	}
 	
 	private void fireArrow(Point center, int x, int y)

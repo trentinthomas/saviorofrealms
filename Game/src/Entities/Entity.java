@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 import org.newdawn.slick.Image;
 
+import saviorOfRealms.errorHandling.EntityDeadException;
+
 /**
  * Entity is a superclass that all Entities will extend to keep track of all entities on the screen
  * @author Trentin
@@ -25,6 +27,7 @@ public abstract class Entity implements Serializable
 	protected int xCoord;
 	protected int yCoord;
 	protected int centerOfEntity;
+	protected int currentHitPoints;
 	
 	protected int xVel;
 	protected int yVel;
@@ -188,26 +191,67 @@ public abstract class Entity implements Serializable
 		return height;
 	}
 	
-	public Point getCenterOfEntity()
+	public int getEndX()
 	{
-		return calculateCenterOfEntity();
+		return xCoord + width;
 	}
 	
-	/**
-	 * Gets the center coordinate of the entity. Useful for calculating which way you want attacks to go.
-	 * @return
-	 */
-	public Point calculateCenterOfEntity()
+	public int getEndY()
 	{
-		Point point = new Point(xCoord + width/2, yCoord + height/2);
-		return point;
+		return yCoord + height;
 	}
+	
+	public int getHalfWidth() {
+		return width/2;
+	}
+	
+	public int getHalfHeight() {
+		return height/2;
+	}
+	
+	public int getCenterX()
+	{
+		return xCoord + getHalfWidth();
+	}
+	
+	public int getCenterY()
+	{
+		return yCoord + getHalfHeight();
+	}
+	
+	public boolean testCollision(Entity e)
+	{
+		return (e.getEndX() >= xCoord && e.getEndY() >= yCoord && getEndX() >= e.getxCoord() && getEndY() >= e.getyCoord());
+	}
+	
+	public void subtractHitpoints(int hitpoints) throws EntityDeadException
+	{
+		currentHitPoints -= hitpoints;
+		if(currentHitPoints <= 0)
+			throw new EntityDeadException();
+	}
+	
+	public boolean isMoving()
+	{
+		return (xVel > 0 && yVel > 0);
+	}
+	
+	public void addHitpoints(int hitpoints)
+	{
+		if(currentHitPoints + hitpoints > this.hitpoints)
+		{
+			currentHitPoints = this.hitpoints;
+		}
+		else
+		{
+			currentHitPoints += hitpoints;
+		}
+	}
+	
 	/**
 	 * abstract move method to allow entities
 	 * to move uniquely
 	 */
 	public abstract void move();
-	public abstract void paint(Graphics g);
 	public abstract Image getImage();
-	
 }
