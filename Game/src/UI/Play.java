@@ -56,13 +56,16 @@ public class Play extends BasicGameState {
 			ss = new SpriteSheet(new Image("/res/spritesheets/wizard.png"), 64, 64);*/
 			
 		//this should fix the todo from above? maybe i hope? but it has an error.
-		ss = new SpriteSheet(GameSessionFactory.getGameSession().getPlayer().getImage(), 64, 64);
-		
-		walking = new Animation[4];
-		walking[up]    = new Animation(ss, 1, 8,  8, 8,  true, animSpeed, false);
-		walking[left]  = new Animation(ss, 0, 9,  8, 9,  true, animSpeed, false);
-		walking[down]  = new Animation(ss, 1, 10, 8, 10, true, animSpeed, false);
-		walking[right] = new Animation(ss, 0, 11, 8, 11, true, animSpeed, false);
+		if(GameSessionFactory.hasGameSession())
+		{
+			ss = new SpriteSheet(GameSessionFactory.getGameSession().getPlayer().getImage(), 64, 64);
+			
+			walking = new Animation[4];
+			walking[up]    = new Animation(ss, 1, 8,  8, 8,  true, animSpeed, false);
+			walking[left]  = new Animation(ss, 0, 9,  8, 9,  true, animSpeed, false);
+			walking[down]  = new Animation(ss, 1, 10, 8, 10, true, animSpeed, false);
+			walking[right] = new Animation(ss, 0, 11, 8, 11, true, animSpeed, false);
+		}
 
 	}
 	

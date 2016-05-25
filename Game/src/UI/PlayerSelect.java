@@ -11,7 +11,7 @@ import Entities.Player;
 import Entities.Wizard;
 import Util.GameSessionFactory;
 
-public class PlayerSelect extends BasicGameState  implements InputListener{
+public class PlayerSelect extends BasicGameState implements InputListener{
 
 	Image up_barbarian;
 	Image up_archer;
@@ -124,6 +124,8 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 				GameSessionFactory.createGameSession(1);
 				GameSessionFactory.getGameSession().setPlayer(new Barbarian());
 				sbg.enterState(Engine.play);
+				sbg.getState(Engine.play).init(gc, sbg);
+				sbg.enterState(Engine.play);
 			}
 		}
 		else
@@ -139,6 +141,8 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 				allowedToClick = false;
 				GameSessionFactory.createGameSession(1);
 				GameSessionFactory.getGameSession().setPlayer(new Archer());
+				//this.getState(play).init(gc, this);w
+				sbg.getState(Engine.play).init(gc, sbg);
 				sbg.enterState(Engine.play);
 			}
 		}
@@ -155,6 +159,8 @@ public class PlayerSelect extends BasicGameState  implements InputListener{
 				allowedToClick = false;
 				GameSessionFactory.createGameSession(1);
 				GameSessionFactory.getGameSession().setPlayer(new Wizard());
+				sbg.enterState(Engine.play);
+				sbg.getState(Engine.play).init(gc, sbg);
 				sbg.enterState(Engine.play);
 			}
 		}
