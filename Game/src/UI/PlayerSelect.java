@@ -1,13 +1,18 @@
 package UI;
 
-import java.awt.event.MouseEvent;
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.*;
-import org.newdawn.slick.state.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.InputListener;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import Entities.Archer;
 import Entities.Barbarian;
-import Entities.Player;
 import Entities.Wizard;
 import Util.GameSessionFactory;
 

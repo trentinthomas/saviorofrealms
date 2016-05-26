@@ -12,6 +12,12 @@ import java.util.List;
  */
 public class Inventory implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7526329381196867830L;
+
+
 	private final int DEFAULT_CAPACITY = 20;
 	
 	

@@ -3,10 +3,10 @@ package Items;
 import java.awt.Image;
 import java.io.Serializable;
 
-public abstract class Item implements Serializable, Stackable{
+public abstract class Item implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 3556887492644208293L;
+
 	public static final int NOT_STACKABLE = 1;
 	
 	private int itemId;
@@ -14,9 +14,7 @@ public abstract class Item implements Serializable, Stackable{
 	
 	public enum ItemType { ARMOUR, WEAPON, CONSUMABLE, ITEM };
 	
-	public Item(int itemId)
-	{
-		this.itemId = itemId;
+	public Item(){
 	}
 	
 	public int getItemId()
@@ -34,11 +32,11 @@ public abstract class Item implements Serializable, Stackable{
 		return ItemType.ITEM;
 	}
 	
-	protected abstract Image getItemImage();
-	
-	
+	public abstract Image getItemImage();
+	public abstract int getStackSize();
 	//Add all Item ID's inside this as static int. Every item ID is unique, so do not have duplicates
 	
 	
 
+	public static int BRONZE_SWORD_ID = 1;
 }

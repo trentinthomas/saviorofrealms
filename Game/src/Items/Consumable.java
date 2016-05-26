@@ -1,11 +1,15 @@
 package Items;
 
-import java.awt.Image;
 
-public abstract class Consumable extends Item implements Stackable {
+public abstract class Consumable extends Item {
 
-	public Consumable(int itemId) {
-		super(itemId);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5603686597998427386L;
+
+	public Consumable() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

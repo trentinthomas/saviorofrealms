@@ -7,8 +7,18 @@ import Items.Weapon;
 
 public class BronzeSword extends Weapon {
 
-	public BronzeSword(int itemId, int minDamage, int maxDamage) {
-		super(itemId, minDamage, maxDamage);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5966874472058830712L;
+
+	public BronzeSword()
+	{
+		super();
+	}
+	
+	public BronzeSword( int minDamage, int maxDamage ) {
+		super( minDamage, maxDamage);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -19,7 +29,7 @@ public class BronzeSword extends Weapon {
 	}
 
 	@Override
-	protected Image getItemImage() {
+	public Image getItemImage() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -27,5 +37,6 @@ public class BronzeSword extends Weapon {
 	public int getStackSize() {
 		return Item.NOT_STACKABLE;
 	}
+
 
 }
