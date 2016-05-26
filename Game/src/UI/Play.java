@@ -115,14 +115,14 @@ public class Play extends BasicGameState {
 			      walking[right].draw(player.getxCoord(), player.getyCoord());
 			}
 
-			else if(player.getXVel() > 0 && player.getYVel() > 0)  {     					//down to left
+			else if(player.getXVel() < 0 && player.getYVel() > 0)  {     					//down to left
 			   if(lastKeyPressed == down)
 			      walking[down].draw(player.getxCoord(), player.getyCoord());
 			   if(lastKeyPressed == left)
 			      walking[left].draw(player.getxCoord(), player.getyCoord());
 			}
 
-			else if(player.getXVel() < 0 && player.getYVel() > 0)  {     					//down to right
+			else if(player.getXVel() > 0 && player.getYVel() > 0)  {     					//down to right
 			   if(lastKeyPressed == down)
 			      walking[down].draw(player.getxCoord(), player.getyCoord());
 			   if(lastKeyPressed == right)
@@ -131,8 +131,8 @@ public class Play extends BasicGameState {
 			
 			else 
 			{
-				walking[lastKeyPressed].setCurrentFrame(0);
-				walking[lastKeyPressed].draw(player.getxCoord(), player.getyCoord());
+				walking[lastKeyReleased].setCurrentFrame(0);
+				walking[lastKeyReleased].draw(player.getxCoord(), player.getyCoord());
 			}
 		//}
 	}
@@ -168,13 +168,13 @@ public class Play extends BasicGameState {
 		/**
 		 * Test keyboard input for the last key pressed
 		 */
-		if(input.isKeyPressed(Input.KEY_W))
+		if(input.isKeyPressed(Input.KEY_W) || input.isKeyPressed(Input.KEY_UP))
 			lastKeyPressed = up;
-		if(input.isKeyPressed(Input.KEY_A))
+		if(input.isKeyPressed(Input.KEY_A) || input.isKeyPressed(Input.KEY_LEFT))
 			lastKeyPressed = left;
-		if(input.isKeyPressed(Input.KEY_S))
+		if(input.isKeyPressed(Input.KEY_S) || input.isKeyPressed(Input.KEY_DOWN))
 			lastKeyPressed = down;
-		if(input.isKeyPressed(Input.KEY_D))
+		if(input.isKeyPressed(Input.KEY_D) || input.isKeyPressed(Input.KEY_RIGHT))
 			lastKeyPressed = right;
 		
 		
@@ -187,6 +187,7 @@ public class Play extends BasicGameState {
 			upKeyPressed = true;
 			player.setYVel(-player.getSpeed());
 			walking[up].update(delta);
+			lastKeyReleased = up;
 		}
 		else { // key not down			
 			if(!downKeyPressed)
@@ -200,6 +201,7 @@ public class Play extends BasicGameState {
 			leftKeyPressed = true;
 			player.setXVel(-player.getSpeed());
 			walking[left].update(delta);
+			lastKeyReleased = left;
 		}
 		else {
 			if(!rightKeyPressed)
@@ -213,6 +215,7 @@ public class Play extends BasicGameState {
 			downKeyPressed = true;
 			player.setYVel(player.getSpeed());
 			walking[down].update(delta);
+			lastKeyReleased = down;
 		}
 		else { // key not down
 			
@@ -227,6 +230,7 @@ public class Play extends BasicGameState {
 			rightKeyPressed = true;
 			player.setXVel(player.getSpeed());
 			walking[right].update(delta);
+			lastKeyReleased = right;
 		}
 		else {
 			if(!leftKeyPressed)
@@ -234,8 +238,6 @@ public class Play extends BasicGameState {
 
 			rightKeyPressed = false;
 		}
-
-
 
 
 		/**
