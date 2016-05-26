@@ -29,11 +29,13 @@ public class Play extends BasicGameState {
 	private final int left = 1;
 	private final int down = 2;
 	private final int right = 3;
-	boolean walkingUp = false;
-	boolean walkingLeft = false;
-	boolean walkingDown = false;
-	boolean walkingRight = false;
+	boolean upKeyPressed    = false;
+	boolean leftKeyPressed  = false;
+	boolean downKeyPressed  = false;
+	boolean rightKeyPressed = false;
+	
 	private int lastKeyPressed = 2;
+	private int lastKeyReleased = 2;
 	
 	String mouse = "No input yet!";
 	private Player player;
@@ -67,6 +69,7 @@ public class Play extends BasicGameState {
 		//g.drawImage(player, playerx, playery);
 		g.drawString(mouse, 10, 30);
 		g.drawString("x: " + player.getxCoord() + " y: " + player.getyCoord(), 30, 50);
+		g.drawString("velx: " + player.getXVel() + " vely: " + player.getYVel(), 30, 70);
 		
 		//inventory outline or something? could probably make this a picture of sorts
 		g.drawRect(gc.getWidth() - (inventoryWidth + guiPadding), 
@@ -79,27 +82,59 @@ public class Play extends BasicGameState {
 				   gc.getHeight() - (itemSlotHeight + guiPadding), 
 				   itemSlotWidth, 
 				   itemSlotHeight);
-		
-		if(!player.isMoving())
-		{
-			walking[lastKeyPressed].draw(player.getxCoord(), player.getyCoord());
-			walking[lastKeyPressed].setCurrentFrame(0);
-		}
-		else
-		{
-			//TODO: This currently draws all of them if pushing all buttons,
-			//		need to update this so that its only drawing the most recently
-			//		pressed button + if no button pressed, use first animadtion of
-			//		the spritesheet as a resting animation.
-			if(walkingUp)
-				walking[up].draw(player.getxCoord(), player.getyCoord());
-			else if(walkingLeft)
-				walking[left].draw(player.getxCoord(), player.getyCoord());
-			else if(walkingDown)
+
+		/**
+		 * Do animations
+		 */
+		//----------------------------------------------------------------------------------------------------------normals
+			if(player.getXVel() == 0 && player.getYVel() >  0)      			//move down
 				walking[down].draw(player.getxCoord(), player.getyCoord());
-			else if(walkingRight)
+			
+			else if(player.getXVel() == 0 && player.getYVel() <  0)       		//move up
+				walking[up].draw(player.getxCoord(), player.getyCoord());
+			
+			else if(player.getXVel() > 0 && player.getYVel() ==  0)       		//move right
 				walking[right].draw(player.getxCoord(), player.getyCoord());
-		}
+			
+			else if(player.getXVel() < 0 && player.getYVel() ==  0)       		//move left
+				walking[left].draw(player.getxCoord(), player.getyCoord());
+
+			//-----------------------------------------------------------------------------------------------------diagonals
+
+			else if(player.getXVel() < 0 && player.getYVel() < 0) { 						//up to left
+				   if(lastKeyPressed == up)
+				      walking[up].draw(player.getxCoord(), player.getyCoord());
+				   if(lastKeyPressed == left)
+				      walking[left].draw(player.getxCoord(), player.getyCoord());
+				}
+
+			else if(player.getXVel() > 0 && player.getYVel() < 0)  {    					 //up to right
+			   if(lastKeyPressed == up)
+			      walking[up].draw(player.getxCoord(), player.getyCoord());
+			   if(lastKeyPressed == right)
+			      walking[right].draw(player.getxCoord(), player.getyCoord());
+			}
+
+			else if(player.getXVel() > 0 && player.getYVel() > 0)  {     					//down to left
+			   if(lastKeyPressed == down)
+			      walking[down].draw(player.getxCoord(), player.getyCoord());
+			   if(lastKeyPressed == left)
+			      walking[left].draw(player.getxCoord(), player.getyCoord());
+			}
+
+			else if(player.getXVel() < 0 && player.getYVel() > 0)  {     					//down to right
+			   if(lastKeyPressed == down)
+			      walking[down].draw(player.getxCoord(), player.getyCoord());
+			   if(lastKeyPressed == right)
+			      walking[right].draw(player.getxCoord(), player.getyCoord());
+			}
+			
+			else 
+			{
+				walking[lastKeyPressed].setCurrentFrame(0);
+				walking[lastKeyPressed].draw(player.getxCoord(), player.getyCoord());
+			}
+		//}
 	}
 
 	@Override
@@ -107,104 +142,122 @@ public class Play extends BasicGameState {
 	{
 		
 		Input input = gc.getInput();
-		if(input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_D) || 
-		   input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_S))
-		{
-			if(input.isKeyDown(Input.KEY_W))
-				lastKeyPressed = up;
-			else if(input.isKeyDown(Input.KEY_A))
-				lastKeyPressed = left;
-			else if(input.isKeyDown(Input.KEY_S))
-				lastKeyPressed = down;
-			else if(input.isKeyDown(Input.KEY_D))
-				lastKeyPressed = right;
-
-		}
+		
+		/**
+		 * Used for debug purposes
+		 */
 		int mouseX = Mouse.getX();
 		int mouseY = Mouse.getY();
 		mouse = "Mouse Position: x(" + mouseX + ") y(" + mouseY + ")";
-
-
+		
+		/**
+		 * Go to pause menu
+		 */
 		if(input.isKeyDown(Input.KEY_ESCAPE))
 			sbg.enterState(Engine.paused);
 		
+		/**
+		 * Make the player run
+		 */
 		//TODO: 1) Change this so that it move the camara rather than the player
 		//		byproduct of this is that the character stays in the middle of the screen
-		if(input.isKeyPressed(Input.KEY_LCONTROL)){
-			player.setSpeed(10);
+		if(input.isKeyDown(Input.KEY_LCONTROL))  { player.setSpeed(10); }
+		else { player.setSpeed(2); }
+		
+		
+		/**
+		 * Test keyboard input for the last key pressed
+		 */
+		if(input.isKeyPressed(Input.KEY_W))
+			lastKeyPressed = up;
+		if(input.isKeyPressed(Input.KEY_A))
+			lastKeyPressed = left;
+		if(input.isKeyPressed(Input.KEY_S))
+			lastKeyPressed = down;
+		if(input.isKeyPressed(Input.KEY_D))
+			lastKeyPressed = right;
+		
+		
+		
+		/**
+		 * Test keyboard input and set player velocity accordingly
+		 */
+		//------------------------------------------------------------------------- w pressed, move up
+		if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && !downKeyPressed) {
+			upKeyPressed = true;
+			player.setYVel(-player.getSpeed());
+			walking[up].update(delta);
+		}
+		else { // key not down			
+			if(!downKeyPressed)
+				player.setYVel(0);
+			
+			upKeyPressed = false;
+		}
+		
+		//------------------------------------------------------------------------- a pressed, move left
+		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && !rightKeyPressed) {
+			leftKeyPressed = true;
+			player.setXVel(-player.getSpeed());
+			walking[left].update(delta);
 		}
 		else {
-			player.setSpeed(2);
+			if(!rightKeyPressed)
+				player.setXVel(0);
 
-		}		
-		
-		//----------------------------------------------------------------------------
-		
-		if(input.isKeyDown(Input.KEY_W)) { //up
-			if(player.getyCoord() > 0) {
-				player.setYVel(-player.getSpeed());
-				walkingUp = true;
-				walking[up].update(delta);
-			}
-		}
-		else
-		{
-			if(!walkingDown)//and didn't press down then
-				player.setYVel(0); //Set Y to 0.
-			walkingUp = false;//Reset varible??
-		}				
-		
-		//----------------------------------------------------------------------------
-		
-		if(input.isKeyDown(Input.KEY_A)) {//left
-			if(player.getxCoord() > 0) {
-				player.setXVel(-player.getSpeed());
-				walkingLeft = true;
-				walking[left].update(delta);
-			}
-		}
-		else
-		{
-			if(!walkingRight)
-				player.setXVel(0);
-			walkingLeft = false;
+			leftKeyPressed = false;
 		}
 		
-		//----------------------------------------------------------------------------
-		
-		if(input.isKeyDown(Input.KEY_S)) {//down
-			if(player.getyCoord() < gc.getHeight() - player.getHeight()) {
-				player.setYVel(player.getSpeed());
-				walkingDown = true;
-				walking[down].update(delta);
-			}
+		//------------------------------------------------------------------------- s pressed, move down
+		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) && !upKeyPressed) {
+			downKeyPressed = true;
+			player.setYVel(player.getSpeed());
+			walking[down].update(delta);
 		}
-		else
-		{
-			if(!walkingUp)
+		else { // key not down
+			
+			if(!upKeyPressed)
 				player.setYVel(0);
-			walkingDown = false;
+			
+			downKeyPressed = false;
 		}
 		
-		//----------------------------------------------------------------------------
-		
-		if(input.isKeyDown(Input.KEY_D)) { //right
-			if(player.getxCoord() < gc.getWidth() - player.getWidth()) {
-				player.setXVel(player.getSpeed());
-				walkingRight = true;
-				walking[right].update(delta);
-			}
+		//------------------------------------------------------------------------- d pressed, move right
+		if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && !leftKeyPressed) {
+			rightKeyPressed = true;
+			player.setXVel(player.getSpeed());
+			walking[right].update(delta);
 		}
-		else
-		{
-			if(!walkingLeft)
+		else {
+			if(!leftKeyPressed)
 				player.setXVel(0);
-			walkingRight = false;
+
+			rightKeyPressed = false;
 		}
+
+
+
+
+		/**
+		 * Test keyboard input for the last key pressed
+		 */
+		if(input.isKeyPressed(Input.KEY_W))
+			lastKeyPressed = up;
+		if(input.isKeyPressed(Input.KEY_A))
+			lastKeyPressed = left;
+		if(input.isKeyPressed(Input.KEY_S))
+			lastKeyPressed = down;
+		if(input.isKeyPressed(Input.KEY_D))
+			lastKeyPressed = right;
+		
+			
+		
+		
 		
 		//----------------------------------------------------------------------------
 		
 		player.move();
+
 	}
 
 	@Override
@@ -213,4 +266,5 @@ public class Play extends BasicGameState {
 		return 3;
 	}
 
+	
 }

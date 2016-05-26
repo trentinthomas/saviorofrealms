@@ -166,9 +166,17 @@ public abstract class Entity implements Serializable
 		this.xVel = xVel;
 	}
 	
+	public int getXVel() {
+		return this.xVel;
+	}
+	
 	public void setYVel(int yVel)
 	{
 		this.yVel = yVel;
+	}
+	
+	public int getYVel() {
+		return this.yVel;
 	}
 	
 	public void setWidth(int width)
