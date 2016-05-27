@@ -19,7 +19,8 @@ import Util.GameSessionFactory;
 /*import Util.Resources;*/
 
 public class Play extends BasicGameState {
-	Animation [] walking;	
+	Animation [] walking;
+	Animation [] attacking;
 	SpriteSheet ss;
 	
 	private final int inventoryWidth = 125;
@@ -36,7 +37,7 @@ public class Play extends BasicGameState {
 	boolean leftKeyPressed  = false;
 	boolean downKeyPressed  = false;
 	boolean rightKeyPressed = false;
-
+	boolean isAttacking = false;
 
 	private int lastKeyPressed = 2;
 	private int lastKeyReleased = 2;	
@@ -67,6 +68,12 @@ public class Play extends BasicGameState {
 			walking[down]  = new Animation(ss, 1, 10, 8, 10, true, animSpeed, false);
 			walking[right] = new Animation(ss, 0, 11, 8, 11, true, animSpeed, false);
 			
+			attacking = new Animation[4];
+			attacking[up]    = new Animation(ss, 1, 12, 5, 12,  true, animSpeed, false);
+			attacking[left]  = new Animation(ss, 1, 13, 5, 13,  true, animSpeed, false);
+			attacking[down]  = new Animation(ss, 1, 14, 5, 14,  true, animSpeed, false);
+			attacking[right] = new Animation(ss, 1, 15, 5, 15,  true, animSpeed, false);
+			
 			keysPressed = new Vector<Integer>();
 			for(int i = 0; i < 3; i++)
 				keysPressed.add(i);
@@ -84,7 +91,10 @@ public class Play extends BasicGameState {
 		
 		drawDebug(g);
 		drawHUD(gc, g);
-		drawWalkingAnimation();
+		if(!isAttacking)
+			drawWalkingAnimation();
+		if(isAttacking)
+		drawAttackingAnimation();
 			
 
 	}
@@ -112,7 +122,15 @@ public class Play extends BasicGameState {
 		/**
 		 * Update player movement based on key input
 		 */
-		doPlayerMovement(input, delta);
+		if(!isAttacking)
+			doPlayerMovement(input, delta);
+		
+/*		*//**
+		 * Update player animation to attack
+		 *//*
+		if(isAttacking)
+			doPlayerAttack(input, delta);*/
+
 		
 	}
 	
@@ -239,7 +257,15 @@ public class Play extends BasicGameState {
 		}
 
 	}
-
+	private void doPlayerAttack(Input input, int delta)
+	{
+		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+		{
+			isAttacking = true;
+			walking[keysPressed.elementAt(2)].update(delta);
+		}
+		isAttacking = false;
+	}
 	private void drawDebug(Graphics g)
 	{
 		g.drawString(mouse, 10, 30);
@@ -269,18 +295,19 @@ public class Play extends BasicGameState {
 		 */
 		//----------------------------------------------------------------------------------------------------------normals
 
-			if(player.getXVel() == 0 && player.getYVel() >  0)      			//move down
+			if(player.getXVel() == 0 && player.getYVel() >  0) {      			//move down
 				walking[down].draw(player.getxCoord(), player.getyCoord());
+			}
 			
-			else if(player.getXVel() == 0 && player.getYVel() <  0)       		//move up
+			else if(player.getXVel() == 0 && player.getYVel() <  0) {       		//move up
 				walking[up].draw(player.getxCoord(), player.getyCoord());
-			
-			else if(player.getXVel() > 0 && player.getYVel() ==  0)       		//move right
+			}
+			else if(player.getXVel() > 0 && player.getYVel() ==  0) {       		//move right
 				walking[right].draw(player.getxCoord(), player.getyCoord());
-			
-			else if(player.getXVel() < 0 && player.getYVel() ==  0)       		//move left
+			}
+			else if(player.getXVel() < 0 && player.getYVel() ==  0) {       		//move left
 				walking[left].draw(player.getxCoord(), player.getyCoord());
-		
+			}
 		
 			//-----------------------------------------------------------------------------------------------------diagonals
 
@@ -327,8 +354,28 @@ public class Play extends BasicGameState {
 			}
 	}
 	
+	private void drawAttackingAnimation()
+	{
+		/*pauseAllAnimations();*/
+		if(keysPressed.elementAt(2) == up)
+		{
+			attacking[up].draw(player.getxCoord(), player.getyCoord());
+		}
+		else if(keysPressed.elementAt(2) == left)
+		{
+			attacking[left].draw(player.getxCoord(), player.getyCoord());
+		}
+		else if(keysPressed.elementAt(2) == down)
+		{
+			attacking[down].draw(player.getxCoord(), player.getyCoord());
+		}
+		else if(keysPressed.elementAt(2) == right)
+		{
+			attacking[right].draw(player.getxCoord(), player.getyCoord());
+		}
+	}
 
-
+	
 	@Override
 	public int getID() 
 	{
