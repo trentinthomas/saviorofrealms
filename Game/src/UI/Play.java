@@ -1,5 +1,7 @@
 package UI;
 
+import java.util.*;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -7,6 +9,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -33,15 +37,19 @@ public class Play extends BasicGameState {
 	boolean leftKeyPressed  = false;
 	boolean downKeyPressed  = false;
 	boolean rightKeyPressed = false;
-	
+
+
 	private int lastKeyPressed = 2;
-	private int lastKeyReleased = 2;
+	private int lastKeyReleased = 2;	
+	private Vector<Integer> keysPressed;
+
 	
 	String mouse = "No input yet!";
 	private Player player;
 	
 	public Play(int state)
 	{
+		
 	}
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
@@ -51,6 +59,7 @@ public class Play extends BasicGameState {
 			if(player == null) {
 				player = GameSessionFactory.getGameSession().getPlayer();
 			}
+			
 			ss = new SpriteSheet(player.getImage(), 64, 64);
 			
 			walking = new Animation[4];
@@ -58,6 +67,11 @@ public class Play extends BasicGameState {
 			walking[left]  = new Animation(ss, 0, 9,  8, 9,  true, animSpeed, false);
 			walking[down]  = new Animation(ss, 1, 10, 8, 10, true, animSpeed, false);
 			walking[right] = new Animation(ss, 0, 11, 8, 11, true, animSpeed, false);
+			
+			keysPressed = new Vector<Integer>();
+			for(int i = 0; i < 3; i++)
+				keysPressed.add(i);
+
 		}
 
 	}
@@ -65,11 +79,14 @@ public class Play extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
 		
+
 		ss = new SpriteSheet(player.getImage(), 64, 64);
-		//g.drawImage(player, playerx, playery);
+
 		g.drawString(mouse, 10, 30);
-		g.drawString("x: " + player.getxCoord() + " y: " + player.getyCoord(), 30, 50);
+		g.drawString("x: " + player.getCenterX() + " y: " + player.getCenterY(), 30, 50);
 		g.drawString("velx: " + player.getXVel() + " vely: " + player.getYVel(), 30, 70);
+		g.drawString("key1: " + keysPressed.elementAt(0) + "\nkey2: " + keysPressed.get(1) + 
+					 "\nkey3: " + keysPressed.get(2), 30, 90);
 		
 		//inventory outline or something? could probably make this a picture of sorts
 		g.drawRect(gc.getWidth() - (inventoryWidth + guiPadding), 
@@ -87,6 +104,7 @@ public class Play extends BasicGameState {
 		 * Do animations
 		 */
 		//----------------------------------------------------------------------------------------------------------normals
+
 			if(player.getXVel() == 0 && player.getYVel() >  0)      			//move down
 				walking[down].draw(player.getxCoord(), player.getyCoord());
 			
@@ -98,35 +116,44 @@ public class Play extends BasicGameState {
 			
 			else if(player.getXVel() < 0 && player.getYVel() ==  0)       		//move left
 				walking[left].draw(player.getxCoord(), player.getyCoord());
-
+		
+		
 			//-----------------------------------------------------------------------------------------------------diagonals
 
 			else if(player.getXVel() < 0 && player.getYVel() < 0) { 						//up to left
-				   if(lastKeyPressed == up)
-				      walking[up].draw(player.getxCoord(), player.getyCoord());
-				   if(lastKeyPressed == left)
-				      walking[left].draw(player.getxCoord(), player.getyCoord());
-				}
+			   if(lastKeyPressed == up)
+			      walking[up].draw(player.getxCoord(), player.getyCoord());
+			   else if(lastKeyPressed == left)
+			      walking[left].draw(player.getxCoord(), player.getyCoord());
+			   else
+				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
+			}
 
 			else if(player.getXVel() > 0 && player.getYVel() < 0)  {    					 //up to right
 			   if(lastKeyPressed == up)
 			      walking[up].draw(player.getxCoord(), player.getyCoord());
-			   if(lastKeyPressed == right)
+			   else if(lastKeyPressed == right)
 			      walking[right].draw(player.getxCoord(), player.getyCoord());
+			   else
+				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
 			}
 
 			else if(player.getXVel() < 0 && player.getYVel() > 0)  {     					//down to left
 			   if(lastKeyPressed == down)
 			      walking[down].draw(player.getxCoord(), player.getyCoord());
-			   if(lastKeyPressed == left)
+			   else if(lastKeyPressed == left)
 			      walking[left].draw(player.getxCoord(), player.getyCoord());
+			   else
+				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
 			}
 
 			else if(player.getXVel() > 0 && player.getYVel() > 0)  {     					//down to right
 			   if(lastKeyPressed == down)
 			      walking[down].draw(player.getxCoord(), player.getyCoord());
-			   if(lastKeyPressed == right)
+			   else if(lastKeyPressed == right)
 			      walking[right].draw(player.getxCoord(), player.getyCoord());
+			   else
+				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
 			}
 			
 			else 
@@ -134,7 +161,8 @@ public class Play extends BasicGameState {
 				walking[lastKeyReleased].setCurrentFrame(0);
 				walking[lastKeyReleased].draw(player.getxCoord(), player.getyCoord());
 			}
-		//}
+		
+
 	}
 
 	@Override
@@ -142,7 +170,7 @@ public class Play extends BasicGameState {
 	{
 		
 		Input input = gc.getInput();
-		
+
 		/**
 		 * Used for debug purposes
 		 */
@@ -168,14 +196,25 @@ public class Play extends BasicGameState {
 		/**
 		 * Test keyboard input for the last key pressed
 		 */
-		if(input.isKeyPressed(Input.KEY_W) || input.isKeyPressed(Input.KEY_UP))
+		if(input.isKeyPressed(Input.KEY_W) || input.isKeyPressed(Input.KEY_UP)){
 			lastKeyPressed = up;
-		if(input.isKeyPressed(Input.KEY_A) || input.isKeyPressed(Input.KEY_LEFT))
+/*			addToPressedKeys(up);
+*/		}
+		
+		if(input.isKeyPressed(Input.KEY_A) || input.isKeyPressed(Input.KEY_LEFT)){
 			lastKeyPressed = left;
-		if(input.isKeyPressed(Input.KEY_S) || input.isKeyPressed(Input.KEY_DOWN))
+/*			addToPressedKeys(left);
+*/		}
+		
+		if(input.isKeyPressed(Input.KEY_S) || input.isKeyPressed(Input.KEY_DOWN)){
 			lastKeyPressed = down;
-		if(input.isKeyPressed(Input.KEY_D) || input.isKeyPressed(Input.KEY_RIGHT))
+/*			addToPressedKeys(down);
+*/		}
+		
+		if(input.isKeyPressed(Input.KEY_D) || input.isKeyPressed(Input.KEY_RIGHT)){
 			lastKeyPressed = right;
+/*			addToPressedKeys(right);
+*/		}
 		
 		
 		
@@ -188,11 +227,12 @@ public class Play extends BasicGameState {
 			player.setYVel(-player.getSpeed());
 			walking[up].update(delta);
 			lastKeyReleased = up;
+			addToPressedKeys(up);
 		}
 		else { // key not down			
 			if(!downKeyPressed)
 				player.setYVel(0);
-			
+
 			upKeyPressed = false;
 		}
 		
@@ -202,6 +242,7 @@ public class Play extends BasicGameState {
 			player.setXVel(-player.getSpeed());
 			walking[left].update(delta);
 			lastKeyReleased = left;
+			addToPressedKeys(left);
 		}
 		else {
 			if(!rightKeyPressed)
@@ -216,6 +257,7 @@ public class Play extends BasicGameState {
 			player.setYVel(player.getSpeed());
 			walking[down].update(delta);
 			lastKeyReleased = down;
+			addToPressedKeys(down);
 		}
 		else { // key not down
 			
@@ -231,34 +273,40 @@ public class Play extends BasicGameState {
 			player.setXVel(player.getSpeed());
 			walking[right].update(delta);
 			lastKeyReleased = right;
+			addToPressedKeys(right);
 		}
 		else {
-			if(!leftKeyPressed)
+			if(!leftKeyPressed) {
 				player.setXVel(0);
+			}
 
 			rightKeyPressed = false;
 		}
-
-
-		/**
-		 * Test keyboard input for the last key pressed
-		 */
-		if(input.isKeyPressed(Input.KEY_W))
-			lastKeyPressed = up;
-		if(input.isKeyPressed(Input.KEY_A))
-			lastKeyPressed = left;
-		if(input.isKeyPressed(Input.KEY_S))
-			lastKeyPressed = down;
-		if(input.isKeyPressed(Input.KEY_D))
-			lastKeyPressed = right;
-		
 			
-		
-		
-		
 		//----------------------------------------------------------------------------
 		
 		player.move();
+
+	}
+	
+	private void addToPressedKeys(int num)
+	{
+		try {
+			
+			if(keysPressed.isEmpty())
+				keysPressed.add(num);
+			
+			else if(keysPressed.size() <= 3)
+			{
+				
+				keysPressed.remove(0);
+				keysPressed.add(num);
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 
 	}
 

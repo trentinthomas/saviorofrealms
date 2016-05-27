@@ -112,7 +112,7 @@ public abstract class Entity implements Serializable
 	 */
 	public int getxCoord() 
 	{
-		return xCoord;
+		return xCoord - this.getHalfWidth();
 	}
 
 	/**
@@ -130,7 +130,7 @@ public abstract class Entity implements Serializable
 	 */
 	public int getyCoord() 
 	{
-		return yCoord;
+		return yCoord - this.getHalfHeight();
 	}
 
 	/**
