@@ -1,7 +1,5 @@
 package Entities;
 
-import java.awt.Graphics;
-import java.awt.Point;
 import java.io.Serializable;
 
 import org.newdawn.slick.Image;

@@ -1,5 +1,6 @@
 package Items;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class Weapon extends Item {
@@ -11,8 +12,8 @@ public abstract class Weapon extends Item {
 
 	protected Random random;
 	
-	public int minDamage;
-	public int maxDamage;
+	private int minDamage;
+	private int maxDamage;
 	
 	//Used for generating a min damage and max damage for a new weapon upon generation.
 	protected int minDamageMin;
@@ -24,10 +25,13 @@ public abstract class Weapon extends Item {
 	public double critPercent;
 	public double critDamageMultiplier;
 	
+	//if we want to get modifiers for enchanting/rolling onto weapons. Probably want to create Modifier class.
+	public List<Integer> modifiers;
+	
 	public Weapon()
 	{
 		super();
-		generateMinAndMax();
+		generateMinAndMaxDamage();
 	}
 	
 	public Weapon(int minDamage, int maxDamage) {
@@ -42,9 +46,19 @@ public abstract class Weapon extends Item {
 		return ItemType.WEAPON;
 	}
 	
-	public void generateMinAndMax() {
+	public void generateMinAndMaxDamage() {
 		this.minDamage = minDamageMin + random.nextInt( ( minDamageMax - minDamageMin) + 1 );
 		this.maxDamage = maxDamageMin + random.nextInt( ( maxDamageMax - maxDamageMin) + 1 );
+	}
+	
+	public int getMinDamage()
+	{
+		return minDamage;
+	}
+	
+	public int getMaxDamage()
+	{
+		return maxDamage;
 	}
 	
 	public abstract void attack();

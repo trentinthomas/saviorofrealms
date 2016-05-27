@@ -1,6 +1,6 @@
 package UI;
 
-import java.util.*;
+import java.util.Vector;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
@@ -9,8 +9,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 

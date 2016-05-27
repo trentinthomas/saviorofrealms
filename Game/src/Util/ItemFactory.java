@@ -13,8 +13,8 @@ public class ItemFactory {
 		Item item = null;
 		if(itemId == Item.BRONZE_SWORD_ID)
 		{
-			Weapon weapon = (Weapon) item;
-			weapon.generateMinAndMax();
+			Weapon weapon = new BronzeSword();
+			weapon.generateMinAndMaxDamage();
 			item = weapon;
 		}
 		return item;

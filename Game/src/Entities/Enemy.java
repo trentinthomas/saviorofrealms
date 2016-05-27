@@ -1,6 +1,7 @@
 package Entities;
 
 import java.awt.Graphics;
+
 import Util.GameSessionFactory;;
 
 /**
@@ -11,6 +12,11 @@ import Util.GameSessionFactory;;
 public abstract class Enemy extends Entity
 {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -276268313229956899L;
+
 	public enum EnemyType { GOBLIN, IMP};
 	
 	private EnemyType enemyType;

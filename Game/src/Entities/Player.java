@@ -1,12 +1,14 @@
 package Entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import Items.Inventory;
 import saviorOfRealms.errorHandling.InsufficientFundsException;
 
 public abstract class Player extends Entity{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2387359505606625000L;
 
 	public enum PlayerType { BARBARIAN, ARCHER, WIZARD };
 	protected PlayerType playerType;
@@ -25,8 +27,6 @@ public abstract class Player extends Entity{
 		xCoord += xVel;
 		yCoord += yVel;
 	}
-	
-	public abstract void paint(Graphics g);
 	
 	public abstract void attack(int x, int y);
 	

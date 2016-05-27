@@ -1,8 +1,5 @@
 package Entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import org.newdawn.slick.Image;
 
 import Util.Resources;
@@ -15,6 +12,20 @@ import Util.Resources;
  */
 public class Barbarian extends Player
 {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6129474299759272536L;
+	
+	public static int DEFAULT_DAMAGE = 10;
+	public static int DEFAULT_HITPOINTS = 100;
+	public static int DEFAULT_DEFENCE = 10;
+	public static int DEFAULT_SPEED = 3;
+	public static int DEFAULT_XCOORD = 200;
+	public static int DEFAULT_YCOORD = 200;
+	public static int DEFAULT_WIDTH = 32;
+	public static int DEFAULT_HEIGHT = 64;
 	
 	/**
 	 * If the player already has a game and loads one, it calls this.
@@ -37,19 +48,9 @@ public class Barbarian extends Player
 	 */
 	public Barbarian()
 	{
-		super(10, 100, 20, 2, 200, 200, EntityType.PLAYER, 40, 40, PlayerType.BARBARIAN);
+		super(DEFAULT_DAMAGE, DEFAULT_HITPOINTS, DEFAULT_DEFENCE, DEFAULT_SPEED, DEFAULT_XCOORD, DEFAULT_YCOORD, EntityType.PLAYER, DEFAULT_WIDTH, DEFAULT_HEIGHT, PlayerType.BARBARIAN);
 	}
 	
-	/**
-	 * Draws the barbarian on the screen. Will eventually be an Image. Change image and animation based on 
-	 * direction pushed.
-	 */
-	@Override
-	public void paint(Graphics g)
-	{
-		g.setColor(Color.RED);
-		g.fillRect(xCoord, yCoord, width, height);
-	}
 
 	@Override
 	public void attack(int x, int y) {
