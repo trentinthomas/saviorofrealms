@@ -1,6 +1,8 @@
 package Entities;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 import Util.Resources;
 
@@ -40,5 +42,25 @@ public class Wizard extends Player
 	public Image getImage()
 	{
 		return Resources.getImage("wizard");
+	}
+
+	@Override
+	public void initAnimations() {
+		
+		ss = new SpriteSheet(getImage(), 64, 64);
+		
+		walking = new Animation[4];
+		walking[UP]    = new Animation(ss, 1, 8,  8, 8,  true, ANIMSPEED, false);
+		walking[LEFT]  = new Animation(ss, 0, 9,  8, 9,  true, ANIMSPEED, false);
+		walking[DOWN]  = new Animation(ss, 1, 10, 8, 10, true, ANIMSPEED, false);
+		walking[RIGHT] = new Animation(ss, 0, 11, 8, 11, true, ANIMSPEED, false);
+		
+		attacking = new Animation[4];
+		attacking[UP]    = new Animation(ss, 0, 0, 6, 0,  true, ANIMSPEED*2, false);
+		attacking[LEFT]  = new Animation(ss, 0, 1, 6, 1,  true, ANIMSPEED*2, false);
+		attacking[DOWN]  = new Animation(ss, 0, 2, 6, 2,  true, ANIMSPEED*2, false);
+		attacking[RIGHT] = new Animation(ss, 0, 3, 6, 3,  true, ANIMSPEED*2, false);
+		
+		
 	}
 }

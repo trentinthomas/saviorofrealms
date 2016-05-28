@@ -50,8 +50,6 @@ public abstract class Enemy extends Entity
 		yCoord += yVel;
 	}
 	
-	public abstract void paint(Graphics g);
-	
 	public EnemyType getEnemyType()
 	{
 		return enemyType;

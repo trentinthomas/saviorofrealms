@@ -2,7 +2,9 @@ package Entities;
 
 import java.io.Serializable;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 import saviorOfRealms.errorHandling.EntityDeadException;
 
@@ -18,26 +20,52 @@ public abstract class Entity implements Serializable
 	private static final long serialVersionUID = 1L;
 	
 	
+	public static final int UP = 0;
+	public static final int LEFT = 1;
+	public static final int DOWN = 2;
+	public static final int RIGHT = 3;
+	protected static final int ANIMSPEED = 55; //walking speed
+	
+	
 	protected int damage; //how much damage the entity does
 	protected int hitpoints; //how many hitpoints the entity does
 	protected int defense; //
 	protected int speed;
-	protected int xCoord;
-	protected int yCoord;
+	protected float xCoord; //TODO FLOAT
+	protected float yCoord; //TODO FLOAT
 	protected int centerOfEntity;
 	protected int currentHitPoints;
 	
-	protected int xVel;
-	protected int yVel;
+	protected float xVel;
+	protected float yVel;
 	
-	protected int width;
-	protected int height;
+	protected float width;
+	protected float height;
+	
+	protected SpriteSheet ss;
+	protected Animation[] walking;
+	protected Animation[] attacking;
+	
+//	ss = new SpriteSheet(player.getImage(), 64, 64);
+//	
+//	walking = new Animation[4];
+//	walking[up]    = new Animation(ss, 1, 8,  8, 8,  true, animSpeed, false);
+//	walking[left]  = new Animation(ss, 0, 9,  8, 9,  true, animSpeed, false);
+//	walking[down]  = new Animation(ss, 1, 10, 8, 10, true, animSpeed, false);
+//	walking[right] = new Animation(ss, 0, 11, 8, 11, true, animSpeed, false);
+//	
+//	attacking = new Animation[4];
+//	attacking[up]    = new Animation(ss, 1, 12, 5, 12,  true, animSpeed, false);
+//	attacking[left]  = new Animation(ss, 1, 13, 5, 13,  true, animSpeed, false);
+//	attacking[down]  = new Animation(ss, 1, 14, 5, 14,  true, animSpeed, false);
+//	attacking[right] = new Animation(ss, 1, 15, 5, 15,  true, animSpeed, false);
 	
 	protected enum EntityType {PLAYER, NPC, ENEMY, ITEM};
+	public enum AnimationType {MOVEMENT, ATTACKING};
 	
 	protected EntityType entityType;
 	
-	public Entity(int damage, int hitpoints, int defense, int speed, int xCoord, int yCoord, EntityType entityType, int width, int height)
+	public Entity(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType, int width, int height)
 	{
 		this.setDamage(damage);
 		this.hitpoints = hitpoints;
@@ -48,6 +76,7 @@ public abstract class Entity implements Serializable
 		this.entityType = entityType;
 		this.width = width;
 		this.height = height;
+		initAnimations();
 	}
 	
 	/**
@@ -108,8 +137,8 @@ public abstract class Entity implements Serializable
 	 * Gets the x coordinate of the entity
 	 * @return xCoord
 	 */
-	public int getxCoord() 
-	{
+	public float getxCoord() 
+	{ 
 		return xCoord - this.getHalfWidth();
 	}
 
@@ -126,7 +155,7 @@ public abstract class Entity implements Serializable
 	 * Gets the y coordinate of the entity
 	 * @return yCoord
 	 */
-	public int getyCoord() 
+	public float getyCoord() 
 	{
 		return yCoord - this.getHalfHeight();
 	}
@@ -160,67 +189,67 @@ public abstract class Entity implements Serializable
 	
 
 
-	public void setXVel(int xVel) {
+	public void setXVel(float xVel) {
 		this.xVel = xVel;
 	}
 	
-	public int getXVel() {
+	public float getXVel() {
 		return this.xVel;
 	}
 	
-	public void setYVel(int yVel)
+	public void setYVel(float yVel)
 	{
 		this.yVel = yVel;
 	}
 	
-	public int getYVel() {
+	public float getYVel() {
 		return this.yVel;
 	}
 	
-	public void setWidth(int width)
+	public void setWidth(float width)
 	{
 		this.width = width;
 	}
-	public int getWidth()
+	public float getWidth()
 	{
 		return width;
 	}
 	
-	public void setHeight(int height)
+	public void setHeight(float height)
 	{
 		this.height = height;
 	}
 	
 	
-	public int getHeight()
+	public float getHeight()
 	{
 		return height;
 	}
 	
-	public int getEndX()
+	public float getEndX()
 	{
 		return xCoord + width;
 	}
 	
-	public int getEndY()
+	public float getEndY()
 	{
 		return yCoord + height;
 	}
 	
-	public int getHalfWidth() {
+	public float getHalfWidth() {
 		return width/2;
 	}
 	
-	public int getHalfHeight() {
+	public float getHalfHeight() {
 		return height/2;
 	}
 	
-	public int getCenterX()
+	public float getCenterX()
 	{
 		return xCoord + getHalfWidth();
 	}
 	
-	public int getCenterY()
+	public float getCenterY()
 	{
 		return yCoord + getHalfHeight();
 	}
@@ -254,10 +283,22 @@ public abstract class Entity implements Serializable
 		}
 	}
 	
+	public Animation getAnimation(AnimationType at, int direction)
+	{
+		if(at == AnimationType.MOVEMENT)
+		{
+			return walking[direction];
+		}
+		else if(at == AnimationType.ATTACKING)
+			return attacking[direction];
+		return null;
+	}
+	
 	/**
 	 * abstract move method to allow entities
 	 * to move uniquely
 	 */
 	public abstract void move();
 	public abstract Image getImage();
+	public abstract void initAnimations();
 }

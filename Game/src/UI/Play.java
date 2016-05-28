@@ -3,39 +3,37 @@ package UI;
 import java.util.Vector;
 
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
+import Entities.Entity;
 import Entities.Player;
+import Entities.Entity.AnimationType;
+import Util.Camera;
 import Util.GameSessionFactory;
 import Util.Window;
 
 /*import Util.Resources;*/
 
 public class Play extends BasicGameState {
-	Animation [] walking;
-	Animation [] attacking;
-	SpriteSheet ss;
 	
 	private final int inventoryWidth = 125;
 	private final int inventoryHeight = 200;
 	private final int itemSlotWidth = 200;
 	private final int itemSlotHeight = 30;
 	private final int guiPadding = 5;
-	private final int animSpeed = 55; //walking speed
 	private final int up = 0;
 	private final int left = 1;
 	private final int down = 2;
 	private final int right = 3;
+	private final int PIXEL_OFFSET = 10;
 	
 	boolean upKeyPressed    = false;
 	boolean leftKeyPressed  = false;
@@ -45,19 +43,29 @@ public class Play extends BasicGameState {
 	boolean stopAttacking = false;
 	
 	private boolean debug = false;
+	private float mouseX;
+	private float mouseY;
 
 	private int lastKeyPressed = 2;
 	private int lastKeyReleased = 2;	
 	private Vector<Integer> keysPressed;
 
+	private float[] topTrianglePoints;
+	private float[] rightTrianglePoints;
+	private float[] leftTrianglePoints;
+	private float[] bottomTrianglePoints;
+	private float[] playerHitBoxPoints;
+	
 	private Shape attackAreaTop;
 	private Shape attackAreaLeft;
 	private Shape attackAreaBottom;
 	private Shape attackAreaRight;
+	private Shape playerHitBox;
 	
 	String mouse = "No input yet!";
 	private Player player;
 	
+	private Camera cam;
 	private TiledMap map;
 	
 	public Play(int state)
@@ -68,55 +76,45 @@ public class Play extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{	
 		map = new TiledMap("res/testworldv4.tmx");
+		cam = new Camera(map.getWidth() - Window.WIDTH, map.getHeight() - Window.HEIGHT);
 		if(GameSessionFactory.hasGameSession())
 		{
-			if(player == null) {
-				player = GameSessionFactory.getGameSession().getPlayer();
-			}
-			
-			ss = new SpriteSheet(player.getImage(), 64, 64);
-			
-			walking = new Animation[4];
-			walking[up]    = new Animation(ss, 1, 8,  8, 8,  true, animSpeed, false);
-			walking[left]  = new Animation(ss, 0, 9,  8, 9,  true, animSpeed, false);
-			walking[down]  = new Animation(ss, 1, 10, 8, 10, true, animSpeed, false);
-			walking[right] = new Animation(ss, 0, 11, 8, 11, true, animSpeed, false);
-			
-			attacking = new Animation[4];
-			attacking[up]    = new Animation(ss, 1, 12, 5, 12,  true, animSpeed, false);
-			attacking[left]  = new Animation(ss, 1, 13, 5, 13,  true, animSpeed, false);
-			attacking[down]  = new Animation(ss, 1, 14, 5, 14,  true, animSpeed, false);
-			attacking[right] = new Animation(ss, 1, 15, 5, 15,  true, animSpeed, false);
+			player = GameSessionFactory.getGameSession().getPlayer();
 			
 			keysPressed = new Vector<Integer>();
 			for(int i = 0; i < 3; i++)
 				keysPressed.add(i);
 			
-			float[] topTrianglePoints =  new float[]{Window.WIDTH, Window.HEIGHT, Window.WIDTH/2, Window.HEIGHT/2, 0, Window.HEIGHT};
+			topTrianglePoints =  new float[]{Window.WIDTH, Window.HEIGHT, Window.WIDTH/2, Window.HEIGHT/2, 0, Window.HEIGHT};
 			attackAreaTop = new Polygon(topTrianglePoints);
 			
-			float[] leftTrianglePoints = new float[]{0, 0, Window.WIDTH/2, Window.HEIGHT/2, 0, Window.HEIGHT};
+			leftTrianglePoints = new float[]{0, 0, Window.WIDTH/2, Window.HEIGHT/2, 0, Window.HEIGHT};
 			attackAreaLeft = new Polygon(leftTrianglePoints);
 			
-			float[] bottomTrianglePoints = new float[]{0, 0, Window.WIDTH/2, Window.HEIGHT/2, Window.WIDTH, 0};
+			bottomTrianglePoints = new float[]{0, 0, Window.WIDTH/2, Window.HEIGHT/2, Window.WIDTH, 0};
 			attackAreaBottom = new Polygon(bottomTrianglePoints);
 			
-			float[] rightTrianglePoints = new float[]{Window.WIDTH, Window.HEIGHT, Window.WIDTH/2, Window.HEIGHT/2, Window.WIDTH, 0};
+			rightTrianglePoints = new float[]{Window.WIDTH, Window.HEIGHT, Window.WIDTH/2, Window.HEIGHT/2, Window.WIDTH, 0};
 			attackAreaRight = new Polygon(rightTrianglePoints);
+			
+
+			playerHitBoxPoints = new float[]{player.getxCoord(), player.getyCoord(), (player.getxCoord()+player.getWidth()), 
+					player.getyCoord(),player.getxCoord()+player.getWidth(), player.getyCoord()+player.getHeight(),
+					player.getxCoord(), player.getyCoord() + player.getHeight() };
+			playerHitBox = new Polygon(playerHitBoxPoints);
 			
 		}
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
-		map.render(player.getxCoord(), player.getyCoord());
-		if(lastKeyReleased == keysPressed.elementAt(1))
-			g.drawLine(100, 100, 100, 200);
-
-		ss = new SpriteSheet(player.getImage(), 64, 64);
+		cam.checkPosition();
+		g.translate(-cam.getX(), -cam.getY());
 		
+		map.render(0, 0);
 		
-
+		updateAttackAreas();
+		
 		if( debug )
 			drawDebug(g);
 		drawHUD(gc, g);
@@ -142,8 +140,8 @@ public class Play extends BasicGameState {
 			debug = !debug;
 		}
 
-		int mouseX = Mouse.getX();
-		int mouseY = Mouse.getY();
+		mouseX = Mouse.getX() + cam.getX();
+		mouseY = Mouse.getY() + cam.getY();
 
 		
 		/**
@@ -154,21 +152,26 @@ public class Play extends BasicGameState {
 		
 		if( input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
 		{
-			isAttacking = true;
-			player.setCurrentAnimation(attacking[lastKeyPressed]);
+			isAttacking = true;			
 			
 			if(attackAreaTop.contains(mouseX, mouseY)) {
+				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.UP));
 				System.out.println("top area");
 			}
 			else if(attackAreaRight.contains(mouseX, mouseY)) {
+				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.RIGHT));
 				System.out.println("right area");
 			}
 			else if(attackAreaBottom.contains(mouseX, mouseY)) {
+				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.DOWN));
 				System.out.println("bottom area");
 			}
 			else {
 				System.out.println("left area");
+				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.LEFT));
 			}
+			
+			
 		}
 		/**
 		 * Update player movement based on key input
@@ -180,15 +183,49 @@ public class Play extends BasicGameState {
 		 * Update player animation to attack
 		 */
 		if(isAttacking)
-		{
 			doPlayerAttack(input, delta);
-		}
+
 
 		
 	}
 	
+	private void updateAttackAreas()
+	{
+		//this is a little janky? possibly
+		topTrianglePoints = new float[]{cam.getX() + Window.WIDTH, cam.getY() + Window.HEIGHT, 
+										cam.getX() + Window.WIDTH/2, cam.getY() + Window.HEIGHT/2, 
+										cam.getX() + 0, cam.getY() + Window.HEIGHT};
+		leftTrianglePoints = new float[]{cam.getX() + 0, cam.getY() + 0, 
+										cam.getX() + Window.WIDTH/2, cam.getY() + Window.HEIGHT/2, 
+										cam.getX() + 0, cam.getY() + Window.HEIGHT};
+		bottomTrianglePoints = new float[]{cam.getX() + 0, cam.getY() + 0, 
+										cam.getX() + Window.WIDTH/2, cam.getY() + Window.HEIGHT/2, 
+										cam.getX() + Window.WIDTH, cam.getY() + 0};
+		rightTrianglePoints = new float[]{cam.getX() + Window.WIDTH, cam.getY() + Window.HEIGHT, 
+										cam.getX() + Window.WIDTH/2, cam.getY() + Window.HEIGHT/2, 
+										cam.getX() + Window.WIDTH, cam.getY() + 0};
+		
+		playerHitBoxPoints = new float[]{
+				cam.getX() + player.getHalfWidth() + Window.WIDTH/2,
+				cam.getY() - player.getHalfHeight() + Window.HEIGHT/2 + PIXEL_OFFSET, 
+				cam.getX() + player.getHalfWidth() + Window.WIDTH/2,
+				cam.getY() + player.getHalfHeight() + Window.HEIGHT/2,
+				cam.getX() - player.getHalfWidth() + Window.WIDTH/2,
+				cam.getY() + player.getHalfHeight() + Window.HEIGHT/2,
+				cam.getX() - player.getHalfWidth() + Window.WIDTH/2,
+				cam.getY() - player.getHalfHeight() + Window.HEIGHT/2 + PIXEL_OFFSET};
+				
+		//this is a little janky? possibly
+		attackAreaTop = new Polygon(topTrianglePoints);
+		attackAreaLeft = new Polygon(leftTrianglePoints);
+		attackAreaBottom = new Polygon(bottomTrianglePoints);
+		attackAreaRight = new Polygon(rightTrianglePoints);
+		playerHitBox = new Polygon(playerHitBoxPoints);
+	}
+	
 	private void doPlayerMovement(Input input, int delta)
 	{
+		boolean updateDelta = true;
 		/**
 		 * Make the player run
 		 */
@@ -219,8 +256,6 @@ public class Play extends BasicGameState {
 			lastKeyPressed = right;
 		}
 		
-		
-		
 		/**
 		 * Test keyboard input and set player velocity accordingly
 		 */
@@ -228,7 +263,8 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && !downKeyPressed) {
 			upKeyPressed = true;
 			player.setYVel(-player.getSpeed());
-			player.getCurrentAnimation().update(delta);
+			player.getCurrentAnimation().update(updateDelta ? delta : 0);
+			updateDelta = false;
 			lastKeyReleased = up;
 			addToKeysPressed(up);
 		}
@@ -243,7 +279,8 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && !rightKeyPressed) {
 			leftKeyPressed = true;
 			player.setXVel(-player.getSpeed());
-			player.getCurrentAnimation().update(delta);
+			player.getCurrentAnimation().update(updateDelta ? delta : 0);
+			updateDelta = false;
 			lastKeyReleased = left;
 			addToKeysPressed(left);
 		}
@@ -258,7 +295,8 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) && !upKeyPressed) {
 			downKeyPressed = true;
 			player.setYVel(player.getSpeed());
-			player.getCurrentAnimation().update(delta);
+			player.getCurrentAnimation().update(updateDelta ? delta : 0);
+			updateDelta = false;
 			lastKeyReleased = down;
 			addToKeysPressed(down);
 		}
@@ -274,7 +312,8 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && !leftKeyPressed) {
 			rightKeyPressed = true;
 			player.setXVel(player.getSpeed());
-			player.getCurrentAnimation().update(delta);
+			player.getCurrentAnimation().update(updateDelta ? delta : 0);
+			updateDelta = false;
 			lastKeyReleased = right;
 			addToKeysPressed(right);
 		}
@@ -326,30 +365,40 @@ public class Play extends BasicGameState {
 	}
 	private void drawDebug(Graphics g)
 	{
+		
 		g.draw(attackAreaTop);
 		g.draw(attackAreaLeft);
 		g.draw(attackAreaBottom);
 		g.draw(attackAreaRight);
+		g.draw(playerHitBox);
 		
-		g.drawString(mouse, 10, 30);
-/*		mouse = "Mouse Position: x(" + Input + ") y(" + mouseY + ")";
-*/		g.drawString("x: " + player.getCenterX() + " y: " + player.getCenterY(), 30, 50);
-		g.drawString("velx: " + player.getXVel() + " vely: " + player.getYVel(), 30, 70);
+		if(lastKeyReleased == keysPressed.elementAt(1))
+			g.drawLine(cam.getX() + 100, cam.getY() + 100, cam.getX() + 100, cam.getY() + 200);
+		
+		g.drawString(mouse, cam.getX() + 10, cam.getY() + 30);
+		mouse = "Mouse Position: x(" +  mouseX + ") y(" + mouseY + ")";
+		g.drawString("x: " + player.getCenterX() + " y: " + player.getCenterY(), cam.getX() + 30, cam.getY() + 50);
+		//g.drawString("player x: " + player.getxCoord() + " player y: " + player.getyCoord(), cam.getX() + 30, cam.getY() + 230);
+		g.drawString("velx: " + player.getXVel() + " vely: " + player.getYVel(), cam.getX() + 30, cam.getY() + 70);
 		g.drawString("key1: " + keysPressed.elementAt(0) + "\nkey2: " + keysPressed.get(1) + 
-					 "\nkey3: " + keysPressed.get(2), 30, 90);
+					 "\nkey3: " + keysPressed.get(2), cam.getX() + 30, cam.getY() + 90);
+		g.drawString("camX: " + cam.getX() + " camY: " + cam.getY(), cam.getX() + 30, cam.getY() + 210);
 	}
 	
 	private void drawHUD(GameContainer gc, Graphics g)
 	{
 		//inventory outline or something? could probably make this a picture of sorts
-		g.drawRect(gc.getWidth() - (inventoryWidth + guiPadding), 
-				   gc.getHeight() -(inventoryHeight + guiPadding), 
+		g.drawRect(cam.getX() + (gc.getWidth() - (inventoryWidth + guiPadding)), 
+				   cam.getY() + (gc.getHeight() -(inventoryHeight + guiPadding)), 
 				   inventoryWidth, 
 				   inventoryHeight);
 		
+		//width = 808
+		//height = 500
+		
 		//item slots or something? this too could possibly be some sort of image
-		g.drawRect(gc.getWidth()/2 - itemSlotWidth/2, 
-				   gc.getHeight() - (itemSlotHeight + guiPadding), 
+		g.drawRect(cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
+				   cam.getY() + (gc.getHeight() - (itemSlotHeight + guiPadding)), 
 				   itemSlotWidth, 
 				   itemSlotHeight);
 	}
@@ -361,103 +410,70 @@ public class Play extends BasicGameState {
 		//----------------------------------------------------------------------------------------------------------normals
 
 			if(player.getXVel() == 0 && player.getYVel() >  0) {      			//move down
-				player.setCurrentAnimation(walking[down]);
+				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.DOWN));
 			}
-			
 			else if(player.getXVel() == 0 && player.getYVel() <  0) {       		//move up
-				player.setCurrentAnimation(walking[up]);
+				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.UP));
 			}
 			else if(player.getXVel() > 0 && player.getYVel() ==  0) {       		//move right
-				player.setCurrentAnimation(walking[right]);
+				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.RIGHT));
 			}
 			else if(player.getXVel() < 0 && player.getYVel() ==  0) {       		//move left
-				player.setCurrentAnimation(walking[left]);
+				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.LEFT));
 			}
 		
 			//-----------------------------------------------------------------------------------------------------diagonals
 
 			else if(player.getXVel() < 0 && player.getYVel() < 0) { 						//up to left
 			   if(lastKeyPressed == up)
-			      player.setCurrentAnimation(walking[up]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.UP));
 			   else if(lastKeyPressed == left)
-			      player.setCurrentAnimation(walking[left]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.LEFT));
 			   else
-				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
 			}
 
 			else if(player.getXVel() > 0 && player.getYVel() < 0)  {    					 //up to right
 			   if(lastKeyPressed == up)
-				   player.setCurrentAnimation(walking[up]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.UP));
 			   else if(lastKeyPressed == right)
-				   player.setCurrentAnimation(walking[right]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.RIGHT));
 			   else
-				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
+			   {
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
+			   }
 			}
 
 			else if(player.getXVel() < 0 && player.getYVel() > 0)  {     					//down to left
 			   if(lastKeyPressed == down)
-				   player.setCurrentAnimation(walking[down]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.DOWN));
 			   else if(lastKeyPressed == left)
-				   player.setCurrentAnimation(walking[left]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.LEFT));
 			   else
-				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
 			}
 
 			else if(player.getXVel() > 0 && player.getYVel() > 0)  {     					//down to right
 			   if(lastKeyPressed == down)
-				   player.setCurrentAnimation(walking[down]);
+				   				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.DOWN));
 			   else if(lastKeyPressed == right)
-				   player.setCurrentAnimation(walking[right]);
+				   				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.RIGHT));
 			   else
-				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
 			}
 			
 			else 
 			{
-				player.setCurrentAnimation(walking[keysPressed.elementAt(2)], 0);
-				player.setCurrentAnimation(walking[keysPressed.elementAt(2)]);
+
+				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(2)), 0);
+				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(2)));
 			}
-			player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord());
+			player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord() + player.getHalfHeight());
 	}
 	
 	private void drawAttackingAnimation(int mouseX, int mouseY)
 	{
-		/*pauseAllAnimations();*/
-					//mouse location implementation
-		if(mouseY > player.getCenterY())       //attack up
-			player.setCurrentAnimation(attacking[up]);
-/*			lastKeyPressed = up;*/
-		else if(mouseX < player.getCenterX()) //attack left
-			player.setCurrentAnimation(attacking[left]);
-/*			lastKeyPressed = left;
-*/		else if(mouseY < player.getCenterY()) //attack down
-/*			lastKeyPressed = down;
-*/			player.setCurrentAnimation(attacking[down]);
-		else if(mouseX > player.getCenterX()) //attack right
-/*			lastKeyPressed = right;
-*/			player.setCurrentAnimation(attacking[right]);
-
-		
-		
-		
-		
-/*		if(keysPressed.elementAt(2) == up)
-		{
-			player.setCurrentAnimation(attacking[up]);
-		}
-		else if(keysPressed.elementAt(2) == left)
-		{
-			player.setCurrentAnimation(attacking[left]);
-		}
-		else if(keysPressed.elementAt(2) == down)
-		{
-			player.setCurrentAnimation(attacking[down]);
-		}
-		else if(keysPressed.elementAt(2) == right)
-		{
-			player.setCurrentAnimation(attacking[right]);
-		}*/
-		player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord());
+		player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord() + player.getHalfHeight());
 	}
 
 	

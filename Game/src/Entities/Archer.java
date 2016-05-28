@@ -1,6 +1,8 @@
 package Entities;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 import Util.Resources;
 
@@ -39,6 +41,25 @@ public class Archer extends Player
 	public Image getImage()
 	{
 		return Resources.getImage("archer");
+	}
+
+	@Override
+	public void initAnimations() {
+		
+		ss = new SpriteSheet(getImage(), 64, 64);
+		
+		walking = new Animation[4];
+		walking[UP]    = new Animation(ss, 1, 8,  8, 8,  true, ANIMSPEED, false);
+		walking[LEFT]  = new Animation(ss, 0, 9,  8, 9,  true, ANIMSPEED, false);
+		walking[DOWN]  = new Animation(ss, 1, 10, 8, 10, true, ANIMSPEED, false);
+		walking[RIGHT] = new Animation(ss, 0, 11, 8, 11, true, ANIMSPEED, false);
+		
+		attacking = new Animation[4];
+		attacking[UP]    = new Animation(ss, 0, 16, 11, 16,  true, ANIMSPEED, false);
+		attacking[LEFT]  = new Animation(ss, 0, 17, 11, 17,  true, ANIMSPEED, false);
+		attacking[DOWN]  = new Animation(ss, 0, 18, 11, 18,  true, ANIMSPEED, false);
+		attacking[RIGHT] = new Animation(ss, 0, 19, 11, 19,  true, ANIMSPEED, false);
+		
 	}
 	
 }
