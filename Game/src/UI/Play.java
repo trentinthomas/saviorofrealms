@@ -38,6 +38,7 @@ public class Play extends BasicGameState {
 	boolean downKeyPressed  = false;
 	boolean rightKeyPressed = false;
 	boolean isAttacking = false;
+	boolean stopAttacking = false;
 
 	private int lastKeyPressed = 2;
 	private int lastKeyReleased = 2;	
@@ -94,7 +95,7 @@ public class Play extends BasicGameState {
 		if(!isAttacking)
 			drawWalkingAnimation();
 		if(isAttacking)
-		drawAttackingAnimation();
+			drawAttackingAnimation();
 			
 
 	}
@@ -118,7 +119,11 @@ public class Play extends BasicGameState {
 		if(input.isKeyDown(Input.KEY_ESCAPE))
 			sbg.enterState(Engine.paused);
 		
-		
+		if( input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+		{
+			isAttacking = true;
+			player.setCurrentAnimation(attacking[lastKeyPressed]);
+		}
 		/**
 		 * Update player movement based on key input
 		 */
@@ -127,9 +132,11 @@ public class Play extends BasicGameState {
 		
 /*		*//**
 		 * Update player animation to attack
-		 *//*
+		 */
 		if(isAttacking)
-			doPlayerAttack(input, delta);*/
+		{
+			doPlayerAttack(input, delta);
+		}
 
 		
 	}
@@ -175,7 +182,7 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && !downKeyPressed) {
 			upKeyPressed = true;
 			player.setYVel(-player.getSpeed());
-			walking[up].update(delta);
+			player.getCurrentAnimation().update(delta);
 			lastKeyReleased = up;
 			addToKeysPressed(up);
 		}
@@ -190,7 +197,7 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && !rightKeyPressed) {
 			leftKeyPressed = true;
 			player.setXVel(-player.getSpeed());
-			walking[left].update(delta);
+			player.getCurrentAnimation().update(delta);
 			lastKeyReleased = left;
 			addToKeysPressed(left);
 		}
@@ -205,7 +212,7 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) && !upKeyPressed) {
 			downKeyPressed = true;
 			player.setYVel(player.getSpeed());
-			walking[down].update(delta);
+			player.getCurrentAnimation().update(delta);
 			lastKeyReleased = down;
 			addToKeysPressed(down);
 		}
@@ -221,7 +228,7 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && !leftKeyPressed) {
 			rightKeyPressed = true;
 			player.setXVel(player.getSpeed());
-			walking[right].update(delta);
+			player.getCurrentAnimation().update(delta);
 			lastKeyReleased = right;
 			addToKeysPressed(right);
 		}
@@ -259,12 +266,18 @@ public class Play extends BasicGameState {
 	}
 	private void doPlayerAttack(Input input, int delta)
 	{
-		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
-		{
-			isAttacking = true;
-			walking[keysPressed.elementAt(2)].update(delta);
+		System.out.println("Frame is " + player.getCurrentAnimation().getFrame());
+		player.getCurrentAnimation().update(delta);
+		
+		if( player.getCurrentAnimation().getFrame() == 4 || stopAttacking ) {
+			
+			stopAttacking = true;
+			
+			if(player.getCurrentAnimation().getFrame() == 0) {
+				isAttacking = false;
+				stopAttacking = false;
+			}
 		}
-		isAttacking = false;
 	}
 	private void drawDebug(Graphics g)
 	{
@@ -296,62 +309,63 @@ public class Play extends BasicGameState {
 		//----------------------------------------------------------------------------------------------------------normals
 
 			if(player.getXVel() == 0 && player.getYVel() >  0) {      			//move down
-				walking[down].draw(player.getxCoord(), player.getyCoord());
+				player.setCurrentAnimation(walking[down]);
 			}
 			
 			else if(player.getXVel() == 0 && player.getYVel() <  0) {       		//move up
-				walking[up].draw(player.getxCoord(), player.getyCoord());
+				player.setCurrentAnimation(walking[up]);
 			}
 			else if(player.getXVel() > 0 && player.getYVel() ==  0) {       		//move right
-				walking[right].draw(player.getxCoord(), player.getyCoord());
+				player.setCurrentAnimation(walking[right]);
 			}
 			else if(player.getXVel() < 0 && player.getYVel() ==  0) {       		//move left
-				walking[left].draw(player.getxCoord(), player.getyCoord());
+				player.setCurrentAnimation(walking[left]);
 			}
 		
 			//-----------------------------------------------------------------------------------------------------diagonals
 
 			else if(player.getXVel() < 0 && player.getYVel() < 0) { 						//up to left
 			   if(lastKeyPressed == up)
-			      walking[up].draw(player.getxCoord(), player.getyCoord());
+			      player.setCurrentAnimation(walking[up]);
 			   else if(lastKeyPressed == left)
-			      walking[left].draw(player.getxCoord(), player.getyCoord());
+			      player.setCurrentAnimation(walking[left]);
 			   else
-				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
 			}
 
 			else if(player.getXVel() > 0 && player.getYVel() < 0)  {    					 //up to right
 			   if(lastKeyPressed == up)
-			      walking[up].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[up]);
 			   else if(lastKeyPressed == right)
-			      walking[right].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[right]);
 			   else
-				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
 			}
 
 			else if(player.getXVel() < 0 && player.getYVel() > 0)  {     					//down to left
 			   if(lastKeyPressed == down)
-			      walking[down].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[down]);
 			   else if(lastKeyPressed == left)
-			      walking[left].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[left]);
 			   else
-				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
 			}
 
 			else if(player.getXVel() > 0 && player.getYVel() > 0)  {     					//down to right
 			   if(lastKeyPressed == down)
-			      walking[down].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[down]);
 			   else if(lastKeyPressed == right)
-			      walking[right].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[right]);
 			   else
-				   walking[keysPressed.elementAt(1)].draw(player.getxCoord(), player.getyCoord());
+				   player.setCurrentAnimation(walking[keysPressed.elementAt(1)]);
 			}
 			
 			else 
 			{
-				walking[keysPressed.elementAt(2)].setCurrentFrame(0);
-				walking[keysPressed.elementAt(2)].draw(player.getxCoord(), player.getyCoord());
+				player.setCurrentAnimation(walking[keysPressed.elementAt(2)], 0);
+				player.setCurrentAnimation(walking[keysPressed.elementAt(2)]);
 			}
+			player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord());
 	}
 	
 	private void drawAttackingAnimation()
@@ -359,20 +373,21 @@ public class Play extends BasicGameState {
 		/*pauseAllAnimations();*/
 		if(keysPressed.elementAt(2) == up)
 		{
-			attacking[up].draw(player.getxCoord(), player.getyCoord());
+			player.setCurrentAnimation(attacking[up]);
 		}
 		else if(keysPressed.elementAt(2) == left)
 		{
-			attacking[left].draw(player.getxCoord(), player.getyCoord());
+			player.setCurrentAnimation(attacking[left]);
 		}
 		else if(keysPressed.elementAt(2) == down)
 		{
-			attacking[down].draw(player.getxCoord(), player.getyCoord());
+			player.setCurrentAnimation(attacking[down]);
 		}
 		else if(keysPressed.elementAt(2) == right)
 		{
-			attacking[right].draw(player.getxCoord(), player.getyCoord());
+			player.setCurrentAnimation(attacking[right]);
 		}
+		player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord());
 	}
 
 	
