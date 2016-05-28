@@ -1,7 +1,6 @@
 package UI;
 
-import java.awt.Color;
-import java.util.*;
+import java.util.Vector;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Animation;
@@ -10,11 +9,15 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.TiledMap;
 
 import Entities.Player;
 import Util.GameSessionFactory;
+import Util.Window;
 
 /*import Util.Resources;*/
 
@@ -33,20 +36,29 @@ public class Play extends BasicGameState {
 	private final int left = 1;
 	private final int down = 2;
 	private final int right = 3;
+	
 	boolean upKeyPressed    = false;
 	boolean leftKeyPressed  = false;
 	boolean downKeyPressed  = false;
 	boolean rightKeyPressed = false;
 	boolean isAttacking = false;
 	boolean stopAttacking = false;
+	
+	private boolean debug = false;
 
 	private int lastKeyPressed = 2;
 	private int lastKeyReleased = 2;	
 	private Vector<Integer> keysPressed;
 
+	private Shape attackAreaTop;
+	private Shape attackAreaLeft;
+	private Shape attackAreaBottom;
+	private Shape attackAreaRight;
 	
 	String mouse = "No input yet!";
 	private Player player;
+	
+	private TiledMap map;
 	
 	public Play(int state)
 	{
@@ -55,6 +67,7 @@ public class Play extends BasicGameState {
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{	
+		map = new TiledMap("res/testworldv4.tmx");
 		if(GameSessionFactory.hasGameSession())
 		{
 			if(player == null) {
@@ -78,24 +91,39 @@ public class Play extends BasicGameState {
 			keysPressed = new Vector<Integer>();
 			for(int i = 0; i < 3; i++)
 				keysPressed.add(i);
-
+			
+			float[] topTrianglePoints =  new float[]{Window.WIDTH, Window.HEIGHT, Window.WIDTH/2, Window.HEIGHT/2, 0, Window.HEIGHT};
+			attackAreaTop = new Polygon(topTrianglePoints);
+			
+			float[] leftTrianglePoints = new float[]{0, 0, Window.WIDTH/2, Window.HEIGHT/2, 0, Window.HEIGHT};
+			attackAreaLeft = new Polygon(leftTrianglePoints);
+			
+			float[] bottomTrianglePoints = new float[]{0, 0, Window.WIDTH/2, Window.HEIGHT/2, Window.WIDTH, 0};
+			attackAreaBottom = new Polygon(bottomTrianglePoints);
+			
+			float[] rightTrianglePoints = new float[]{Window.WIDTH, Window.HEIGHT, Window.WIDTH/2, Window.HEIGHT/2, Window.WIDTH, 0};
+			attackAreaRight = new Polygon(rightTrianglePoints);
+			
 		}
-
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
+		map.render(player.getxCoord(), player.getyCoord());
 		if(lastKeyReleased == keysPressed.elementAt(1))
 			g.drawLine(100, 100, 100, 200);
 
 		ss = new SpriteSheet(player.getImage(), 64, 64);
 		
-		drawDebug(g);
+		
+
+		if( debug )
+			drawDebug(g);
 		drawHUD(gc, g);
 		if(!isAttacking)
 			drawWalkingAnimation();
 		if(isAttacking)
-			drawAttackingAnimation();
+			drawAttackingAnimation(Mouse.getX(), Mouse.getY());
 			
 
 	}
@@ -109,9 +137,14 @@ public class Play extends BasicGameState {
 		/**
 		 * Used for debug purposes
 		 */
+		if( input.isKeyPressed(Input.KEY_F1))
+		{
+			debug = !debug;
+		}
+
 		int mouseX = Mouse.getX();
 		int mouseY = Mouse.getY();
-		mouse = "Mouse Position: x(" + mouseX + ") y(" + mouseY + ")";
+
 		
 		/**
 		 * Go to pause menu
@@ -123,6 +156,19 @@ public class Play extends BasicGameState {
 		{
 			isAttacking = true;
 			player.setCurrentAnimation(attacking[lastKeyPressed]);
+			
+			if(attackAreaTop.contains(mouseX, mouseY)) {
+				System.out.println("top area");
+			}
+			else if(attackAreaRight.contains(mouseX, mouseY)) {
+				System.out.println("right area");
+			}
+			else if(attackAreaBottom.contains(mouseX, mouseY)) {
+				System.out.println("bottom area");
+			}
+			else {
+				System.out.println("left area");
+			}
 		}
 		/**
 		 * Update player movement based on key input
@@ -266,7 +312,6 @@ public class Play extends BasicGameState {
 	}
 	private void doPlayerAttack(Input input, int delta)
 	{
-		System.out.println("Frame is " + player.getCurrentAnimation().getFrame());
 		player.getCurrentAnimation().update(delta);
 		
 		if( player.getCurrentAnimation().getFrame() == 4 || stopAttacking ) {
@@ -281,12 +326,19 @@ public class Play extends BasicGameState {
 	}
 	private void drawDebug(Graphics g)
 	{
+		g.draw(attackAreaTop);
+		g.draw(attackAreaLeft);
+		g.draw(attackAreaBottom);
+		g.draw(attackAreaRight);
+		
 		g.drawString(mouse, 10, 30);
-		g.drawString("x: " + player.getCenterX() + " y: " + player.getCenterY(), 30, 50);
+/*		mouse = "Mouse Position: x(" + Input + ") y(" + mouseY + ")";
+*/		g.drawString("x: " + player.getCenterX() + " y: " + player.getCenterY(), 30, 50);
 		g.drawString("velx: " + player.getXVel() + " vely: " + player.getYVel(), 30, 70);
 		g.drawString("key1: " + keysPressed.elementAt(0) + "\nkey2: " + keysPressed.get(1) + 
 					 "\nkey3: " + keysPressed.get(2), 30, 90);
 	}
+	
 	private void drawHUD(GameContainer gc, Graphics g)
 	{
 		//inventory outline or something? could probably make this a picture of sorts
@@ -368,10 +420,28 @@ public class Play extends BasicGameState {
 			player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord());
 	}
 	
-	private void drawAttackingAnimation()
+	private void drawAttackingAnimation(int mouseX, int mouseY)
 	{
 		/*pauseAllAnimations();*/
-		if(keysPressed.elementAt(2) == up)
+					//mouse location implementation
+		if(mouseY > player.getCenterY())       //attack up
+			player.setCurrentAnimation(attacking[up]);
+/*			lastKeyPressed = up;*/
+		else if(mouseX < player.getCenterX()) //attack left
+			player.setCurrentAnimation(attacking[left]);
+/*			lastKeyPressed = left;
+*/		else if(mouseY < player.getCenterY()) //attack down
+/*			lastKeyPressed = down;
+*/			player.setCurrentAnimation(attacking[down]);
+		else if(mouseX > player.getCenterX()) //attack right
+/*			lastKeyPressed = right;
+*/			player.setCurrentAnimation(attacking[right]);
+
+		
+		
+		
+		
+/*		if(keysPressed.elementAt(2) == up)
 		{
 			player.setCurrentAnimation(attacking[up]);
 		}
@@ -386,7 +456,7 @@ public class Play extends BasicGameState {
 		else if(keysPressed.elementAt(2) == right)
 		{
 			player.setCurrentAnimation(attacking[right]);
-		}
+		}*/
 		player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord());
 	}
 
