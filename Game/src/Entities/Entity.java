@@ -3,6 +3,7 @@ package Entities;
 import java.io.Serializable;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
@@ -24,17 +25,19 @@ public abstract class Entity implements Serializable
 	public static final int LEFT = 1;
 	public static final int DOWN = 2;
 	public static final int RIGHT = 3;
-	protected static final int ANIMSPEED = 55; //walking speed
+	protected static final int ANIMSPEED = 55; //speed of the Animation
 	
+	
+	protected int level;
+	protected int experience;
 	
 	protected int damage; //how much damage the entity does
-	protected int hitpoints; //how many hitpoints the entity does
-	protected int defense; //
-	protected int speed;
-	protected float xCoord; //TODO FLOAT
-	protected float yCoord; //TODO FLOAT
-	protected int centerOfEntity;
-	protected int currentHitPoints;
+	protected int maxHitpoints; //how many hitpoints the entity has maximum
+	protected int defense; //how much defence the entity has
+	protected int speed; //how fast the entity is
+	protected float xCoord; //where on the map the entity is.
+	protected float yCoord; //where on the map the entity is.
+	protected int currentHitPoints; //what the current hitponits of the entity is
 	
 	protected float xVel;
 	protected float yVel;
@@ -45,20 +48,10 @@ public abstract class Entity implements Serializable
 	protected SpriteSheet ss;
 	protected Animation[] walking;
 	protected Animation[] attacking;
+	protected int lastAttackingFrame;
+	private Animation currentAnimation;
 	
-//	ss = new SpriteSheet(player.getImage(), 64, 64);
-//	
-//	walking = new Animation[4];
-//	walking[up]    = new Animation(ss, 1, 8,  8, 8,  true, animSpeed, false);
-//	walking[left]  = new Animation(ss, 0, 9,  8, 9,  true, animSpeed, false);
-//	walking[down]  = new Animation(ss, 1, 10, 8, 10, true, animSpeed, false);
-//	walking[right] = new Animation(ss, 0, 11, 8, 11, true, animSpeed, false);
-//	
-//	attacking = new Animation[4];
-//	attacking[up]    = new Animation(ss, 1, 12, 5, 12,  true, animSpeed, false);
-//	attacking[left]  = new Animation(ss, 1, 13, 5, 13,  true, animSpeed, false);
-//	attacking[down]  = new Animation(ss, 1, 14, 5, 14,  true, animSpeed, false);
-//	attacking[right] = new Animation(ss, 1, 15, 5, 15,  true, animSpeed, false);
+	private int directionFacing;
 	
 	protected enum EntityType {PLAYER, NPC, ENEMY, ITEM};
 	public enum AnimationType {MOVEMENT, ATTACKING};
@@ -68,7 +61,7 @@ public abstract class Entity implements Serializable
 	public Entity(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType, int width, int height)
 	{
 		this.setDamage(damage);
-		this.hitpoints = hitpoints;
+		this.maxHitpoints = hitpoints;
 		this.defense = defense;
 		this.speed = speed;
 		this.xCoord = xCoord;
@@ -77,6 +70,8 @@ public abstract class Entity implements Serializable
 		this.width = width;
 		this.height = height;
 		initAnimations();
+		level = 1;
+		experience = 0;
 	}
 	
 	/**
@@ -85,7 +80,7 @@ public abstract class Entity implements Serializable
 	 */
 	public int getHitpoints() 
 	{
-		return hitpoints;
+		return maxHitpoints;
 	}
 
 	/**
@@ -94,7 +89,7 @@ public abstract class Entity implements Serializable
 	 */
 	public void setHitpoints(int hitpoints) 
 	{
-		this.hitpoints = hitpoints;
+		this.maxHitpoints = hitpoints;
 	}
 
 	/**
@@ -268,14 +263,14 @@ public abstract class Entity implements Serializable
 	
 	public boolean isMoving()
 	{
-		return (xVel > 0 && yVel > 0);
+		return (xVel > 0 || yVel > 0);
 	}
 	
 	public void addHitpoints(int hitpoints)
 	{
-		if(currentHitPoints + hitpoints > this.hitpoints)
+		if(currentHitPoints + hitpoints > this.maxHitpoints)
 		{
-			currentHitPoints = this.hitpoints;
+			currentHitPoints = this.maxHitpoints;
 		}
 		else
 		{
@@ -294,6 +289,63 @@ public abstract class Entity implements Serializable
 		return null;
 	}
 	
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getExperience() {
+		return experience;
+	}
+
+	public void setExperience(int experience) {
+		this.experience = experience;
+	}
+	
+	@Override
+	public String toString() {
+		return "EntityType: " + entityType + "\n"
+				+ "maxhitpoints: " + maxHitpoints + "\n"
+				+ "xCoord: " + xCoord + "\n"
+				+ "yCoord: " + yCoord + "\n"
+				+ "speed: " + speed + "\n"
+				+ "xVel: " + xVel + "\n"
+				+ "width: " + width + "\n"
+				+ "level: " + level + "\n"
+				+ "damage: " + damage + "\n"
+				+ "currentAnimation: " + currentAnimation + "\n";
+	} 
+	
+	public void setCurrentAnimation(Animation animation)
+	{
+		this.currentAnimation = animation;
+	}
+	
+	public void setCurrentAnimation(Animation animation, int frame)
+	{
+		this.currentAnimation = animation;
+		currentAnimation.setCurrentFrame(frame);
+	}
+	
+	public Animation getCurrentAnimation() {
+		return currentAnimation;
+	}
+	
+	public int getLastAttackingFrame() {
+		return lastAttackingFrame;
+	}
+	
+	public int getDirectionFacing() {
+		return directionFacing;
+	}
+	
+	public void setDirectionFacing(int directionFacing) {
+		this.directionFacing = directionFacing;
+	}
+	
 	/**
 	 * abstract move method to allow entities
 	 * to move uniquely
@@ -301,4 +353,8 @@ public abstract class Entity implements Serializable
 	public abstract void move();
 	public abstract Image getImage();
 	public abstract void initAnimations();
+
+
+	
+	
 }

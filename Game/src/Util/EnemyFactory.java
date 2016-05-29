@@ -7,7 +7,7 @@ import Entities.Goblin;
 public class EnemyFactory 
 {
 	
-	public static void spawnEnemy( EnemyType enemyType, int xCoord, int yCoord)
+	public static void spawnEnemy( EnemyType enemyType, float xCoord, float yCoord)
 	{
 		Enemy enemy;
 		if(enemyType == EnemyType.GOBLIN)

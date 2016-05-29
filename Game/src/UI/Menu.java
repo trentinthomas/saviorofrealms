@@ -43,6 +43,7 @@ public class Menu extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{
+		new Resources();
 		up_singleplayer = new Image("/res/buttons/up_singleplayer.png");
 		up_multiplayer = new Image("/res/buttons/up_multiplayer.png");
 		up_options = new Image("/res/buttons/up_options.png");
@@ -52,7 +53,7 @@ public class Menu extends BasicGameState {
 		down_multiplayer = new Image("/res/buttons/down_multiplayer.png");
 		down_options = new Image("/res/buttons/down_options.png");
 		down_exit = new Image("/res/buttons/down_exit.png");
-		new Resources();
+		
 		
 /*		gc.setAlwaysRender(true);
 		gc.setTargetFrameRate(60);

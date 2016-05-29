@@ -4,6 +4,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import Util.GameSessionFactory;
 import Util.Resources;
 
 public class Archer extends Player
@@ -33,9 +34,33 @@ public class Archer extends Player
 	}
 	
 
+	
+	/**
+	 * 
+	 * @param damage
+	 * @param hitpoints
+	 * @param defense
+	 * @param speed
+	 * @param xCoord
+	 * @param yCoord
+	 * @param entityType
+	 * @param width
+	 * @param height
+	 */
 	@Override
 	public void attack(int x, int y) {
-		// TODO Auto-generated method stub
+		Player player = GameSessionFactory.getGameSession().getPlayer();
+		Projectile arrow = new Arrow(0,0,0,12,player.getxCoord(),player.getyCoord(), EntityType.ITEM, 0, 0);
+		if(player.getDirectionFacing() == LEFT)
+			arrow.setXVel(-arrow.getSpeed());
+		else if(player.getDirectionFacing() == UP)
+			arrow.setYVel(-arrow.getSpeed());
+		else if(player.getDirectionFacing() == RIGHT)
+			arrow.setXVel(arrow.getSpeed());
+		else if(player.getDirectionFacing() == DOWN)
+			arrow.setYVel(arrow.getSpeed());
+		
+		GameSessionFactory.getGameSession().addEntity(arrow);
 	}
 	
 	public Image getImage()
@@ -50,16 +75,17 @@ public class Archer extends Player
 		
 		walking = new Animation[4];
 		walking[UP]    = new Animation(ss, 1, 8,  8, 8,  true, ANIMSPEED, false);
-		walking[LEFT]  = new Animation(ss, 0, 9,  8, 9,  true, ANIMSPEED, false);
+		walking[LEFT]  = new Animation(ss, 0, 9,  8, 9,  true, ANIMSPEED, false); 
 		walking[DOWN]  = new Animation(ss, 1, 10, 8, 10, true, ANIMSPEED, false);
 		walking[RIGHT] = new Animation(ss, 0, 11, 8, 11, true, ANIMSPEED, false);
 		
 		attacking = new Animation[4];
-		attacking[UP]    = new Animation(ss, 0, 16, 11, 16,  true, ANIMSPEED, false);
-		attacking[LEFT]  = new Animation(ss, 0, 17, 11, 17,  true, ANIMSPEED, false);
-		attacking[DOWN]  = new Animation(ss, 0, 18, 11, 18,  true, ANIMSPEED, false);
-		attacking[RIGHT] = new Animation(ss, 0, 19, 11, 19,  true, ANIMSPEED, false);
+		attacking[UP]    = new Animation(ss, 0, 16, 10, 16,  true, ANIMSPEED, false);
+		attacking[LEFT]  = new Animation(ss, 0, 17, 10, 17,  true, ANIMSPEED, false);
+		attacking[DOWN]  = new Animation(ss, 0, 18, 10, 18,  true, ANIMSPEED, false);
+		attacking[RIGHT] = new Animation(ss, 0, 19, 10, 19,  true, ANIMSPEED, false);
 		
+		lastAttackingFrame = 9;
 	}
 	
 }

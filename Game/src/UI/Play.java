@@ -15,8 +15,10 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import Entities.Entity;
 import Entities.Player;
+import Entities.Enemy.EnemyType;
 import Entities.Entity.AnimationType;
 import Util.Camera;
+import Util.EnemyFactory;
 import Util.GameSessionFactory;
 import Util.Window;
 
@@ -120,8 +122,10 @@ public class Play extends BasicGameState {
 		drawHUD(gc, g);
 		if(!isAttacking)
 			drawWalkingAnimation();
-		if(isAttacking)
-			drawAttackingAnimation(Mouse.getX(), Mouse.getY());
+		
+		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
+			e.getCurrentAnimation().draw(e.getxCoord(), e.getyCoord() + e.getHalfHeight());
+		}
 			
 
 	}
@@ -156,19 +160,23 @@ public class Play extends BasicGameState {
 			
 			if(attackAreaTop.contains(mouseX, mouseY)) {
 				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.UP));
+				player.setDirectionFacing(Entity.UP);
 				System.out.println("top area");
 			}
 			else if(attackAreaRight.contains(mouseX, mouseY)) {
 				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.RIGHT));
+				player.setDirectionFacing(Entity.RIGHT);
 				System.out.println("right area");
 			}
 			else if(attackAreaBottom.contains(mouseX, mouseY)) {
 				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.DOWN));
+				player.setDirectionFacing(Entity.DOWN);
 				System.out.println("bottom area");
 			}
 			else {
 				System.out.println("left area");
 				player.setCurrentAnimation(player.getAnimation(AnimationType.ATTACKING, Entity.LEFT));
+				player.setDirectionFacing(Entity.LEFT);
 			}
 			
 			
@@ -185,7 +193,12 @@ public class Play extends BasicGameState {
 		if(isAttacking)
 			doPlayerAttack(input, delta);
 
-
+		for(Entity e : GameSessionFactory.getGameSession().getEntities())
+		{
+			if(e.getCurrentAnimation() != null)
+				e.getCurrentAnimation().update(delta);
+			e.move();
+		}
 		
 	}
 	
@@ -324,9 +337,14 @@ public class Play extends BasicGameState {
 
 			rightKeyPressed = false;
 		}
+		
+		if((input.isKeyPressed(Input.KEY_N))) {
+			EnemyFactory.spawnEnemy(EnemyType.GOBLIN, player.getxCoord() + Window.WIDTH, player.getyCoord() + Window.HEIGHT);
+		}
 			
 		//----------------------------------------------------------------------------
-		
+		for(Entity e : GameSessionFactory.getGameSession().getEntities())
+			e.move();
 		player.move();
 	}
 	private void addToKeysPressed(int num)
@@ -351,13 +369,15 @@ public class Play extends BasicGameState {
 	}
 	private void doPlayerAttack(Input input, int delta)
 	{
-		player.getCurrentAnimation().update(delta);
+		for(Entity e : GameSessionFactory.getGameSession().getEntities())
+			e.getCurrentAnimation().update(delta);
 		
-		if( player.getCurrentAnimation().getFrame() == 4 || stopAttacking ) {
+		if( player.getCurrentAnimation().getFrame() == player.getLastAttackingFrame() || stopAttacking ) {
 			
 			stopAttacking = true;
 			
 			if(player.getCurrentAnimation().getFrame() == 0) {
+				player.attack(0,0); //TODO if we want to make it go towards where we clicked the mouse, we need to enter the mouse coords here.
 				isAttacking = false;
 				stopAttacking = false;
 			}
@@ -383,6 +403,7 @@ public class Play extends BasicGameState {
 		g.drawString("key1: " + keysPressed.elementAt(0) + "\nkey2: " + keysPressed.get(1) + 
 					 "\nkey3: " + keysPressed.get(2), cam.getX() + 30, cam.getY() + 90);
 		g.drawString("camX: " + cam.getX() + " camY: " + cam.getY(), cam.getX() + 30, cam.getY() + 210);
+		g.drawString("entities: " + GameSessionFactory.getGameSession().getEntities().size(), cam.getX() + 30, cam.getY() + 230);
 	}
 	
 	private void drawHUD(GameContainer gc, Graphics g)
@@ -468,12 +489,8 @@ public class Play extends BasicGameState {
 				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(2)), 0);
 				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(2)));
 			}
-			player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord() + player.getHalfHeight());
-	}
-	
-	private void drawAttackingAnimation(int mouseX, int mouseY)
-	{
-		player.getCurrentAnimation().draw(player.getxCoord(), player.getyCoord() + player.getHalfHeight());
+			
+
 	}
 
 	

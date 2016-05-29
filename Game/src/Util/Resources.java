@@ -20,16 +20,25 @@ public class Resources {
 		sounds = new HashMap<String, Sound>();
 		
 		try {
-			images.put("barbarian", loadImage("/res/spritesheets/barbarian_dagger.png"));
-			images.put("archer", loadImage("/res/spritesheets/archerv3.png"));
-			images.put("wizard", loadImage("/res/spritesheets/wizard.png"));
-			
-			sprites.put("wizard", loadSprite("res/spritesheets/wizard.png", 64, 64));
-			sprites.put("barbarian", loadSprite("res/spritesheets/barbarian_dagger.png", 64, 64));
-			sprites.put("archer", loadSprite("res/spritesheets/archerv3.png", 64, 64));
+			loadSpriteSheets();
+			loadButtons();
+			loadIcons();
 		} catch(SlickException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void loadIcons() throws SlickException {
+		images.put("arrow", loadImage("/res/arrow.png"));
+		
+	}
+
+	private void loadSpriteSheets() throws SlickException {
+		images.put("barbarian", loadImage("/res/spritesheets/barbarian_dagger.png"));
+		images.put("archer", loadImage("/res/spritesheets/archerv3.png"));
+		images.put("wizard", loadImage("/res/spritesheets/wizard.png"));
+		images.put("goblin", loadImage("/res/spritesheets/goblin.png"));
+		
 	}
 
 	private SpriteSheet loadSprite(String path, int i, int j) throws SlickException {
@@ -56,5 +65,13 @@ public class Resources {
 		return sounds.get(getter);
 	}
 	
+	private void loadButtons() throws SlickException {
+		images.put("up_barbarian", loadImage("/res/buttons/up_barbarian.png"));
+		images.put("up_archer", loadImage("/res/buttons/up_archer.png"));
+		images.put("up_wizard", loadImage("/res/buttons/up_wizard.png"));
+		images.put("down_barbarian", loadImage("/res/buttons/down_barbarian.png"));
+		images.put("down_archer", loadImage("/res/buttons/down_archer.png"));
+		images.put("down_wizard", loadImage("/res/buttons/down_wizard.png"));
+	}
 
 }

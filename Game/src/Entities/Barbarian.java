@@ -82,7 +82,7 @@ public class Barbarian extends Player
 		attacking[DOWN]  = new Animation(ss, 1, 14, 5, 14,  true, ANIMSPEED, false);
 		attacking[RIGHT] = new Animation(ss, 1, 15, 5, 15,  true, ANIMSPEED, false);
 		
-		
+		lastAttackingFrame = 4;
 	}
 	
 

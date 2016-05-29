@@ -61,6 +61,6 @@ public class Wizard extends Player
 		attacking[DOWN]  = new Animation(ss, 0, 2, 6, 2,  true, ANIMSPEED*2, false);
 		attacking[RIGHT] = new Animation(ss, 0, 3, 6, 3,  true, ANIMSPEED*2, false);
 		
-		
+		lastAttackingFrame = 5;
 	}
 }

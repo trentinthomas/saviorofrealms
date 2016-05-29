@@ -7,6 +7,8 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import Util.Resources;
+
 public class Goblin extends Enemy
 {
 	
@@ -15,24 +17,26 @@ public class Goblin extends Enemy
 	 */
 	private static final long serialVersionUID = 8094431321460940037L;
 
-	public Goblin(int damage, int hitpoints, int defense, int speed, int xCoord, int yCoord, EntityType entityType, int width, int height) {
+	public Goblin(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType, int width, int height) {
 		super(damage, hitpoints, defense, speed, xCoord, yCoord, EntityType.ENEMY, width, height, EnemyType.GOBLIN);
+		this.setCurrentAnimation(walking[DOWN]);
 	}
 	
 	public Goblin()
 	{
 		super(10, 100, 10, 1, 0, 0, EntityType.ENEMY, 40, 40, EnemyType.GOBLIN);
+		this.setCurrentAnimation(walking[DOWN]);
 	}
 	
-	public Goblin(int xCoord, int yCoord)
+	public Goblin(float xCoord, float yCoord)
 	{
-		super(10, 100, 10, 10, xCoord, yCoord, EntityType.ENEMY, 40, 40, EnemyType.GOBLIN);
+		super(10, 100, 10, 1, xCoord, yCoord, EntityType.ENEMY, 40, 40, EnemyType.GOBLIN);
+		this.setCurrentAnimation(walking[DOWN]);
 	}
 	
 	public Image getImage()
 	{
-		//TODO
-		return null;
+		return Resources.getImage("goblin");
 	}
 
 	@Override
@@ -53,5 +57,11 @@ public class Goblin extends Enemy
 		attacking[DOWN]  = new Animation(ss, 1, 14, 5, 14,  true, ANIMSPEED, false);
 		attacking[RIGHT] = new Animation(ss, 1, 15, 5, 15,  true, ANIMSPEED, false);
 		
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() 
+				+ "EnemyType: " + EnemyType.GOBLIN;
 	}
 }
