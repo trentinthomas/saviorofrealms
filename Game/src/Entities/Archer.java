@@ -50,7 +50,7 @@ public class Archer extends Player
 	@Override
 	public void attack(int x, int y) {
 		Player player = GameSessionFactory.getGameSession().getPlayer();
-		Projectile arrow = new Arrow(0,0,0,12,player.getxCoord(),player.getyCoord(), EntityType.ITEM, 0, 0);
+		Projectile arrow = new Arrow(0,0,0,12,player.getCenterX(),player.getCenterY() - 14, EntityType.ITEM, 0, 0);
 		if(player.getDirectionFacing() == LEFT)
 			arrow.setXVel(-arrow.getSpeed());
 		else if(player.getDirectionFacing() == UP)

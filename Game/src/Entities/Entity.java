@@ -34,13 +34,13 @@ public abstract class Entity implements Serializable
 	protected int damage; //how much damage the entity does
 	protected int maxHitpoints; //how many hitpoints the entity has maximum
 	protected int defense; //how much defence the entity has
-	protected int speed; //how fast the entity is
+	protected double speed; //how fast the entity is
 	protected float xCoord; //where on the map the entity is.
 	protected float yCoord; //where on the map the entity is.
 	protected int currentHitPoints; //what the current hitponits of the entity is
 	
-	protected float xVel;
-	protected float yVel;
+	protected double xVel;
+	protected double yVel;
 	
 	protected float width;
 	protected float height;
@@ -114,7 +114,7 @@ public abstract class Entity implements Serializable
 	 * Gets the speed of the entity
 	 * @return
 	 */
-	public int getSpeed() 
+	public double getSpeed() 
 	{
 		return speed;
 	}
@@ -184,20 +184,20 @@ public abstract class Entity implements Serializable
 	
 
 
-	public void setXVel(float xVel) {
-		this.xVel = xVel;
+	public void setXVel(double d) {
+		this.xVel = d;
 	}
 	
-	public float getXVel() {
+	public double getXVel() {
 		return this.xVel;
 	}
 	
-	public void setYVel(float yVel)
+	public void setYVel(double yVel)
 	{
 		this.yVel = yVel;
 	}
 	
-	public float getYVel() {
+	public double getYVel() {
 		return this.yVel;
 	}
 	

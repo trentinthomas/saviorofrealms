@@ -46,6 +46,8 @@ public class Paused extends BasicGameState {
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
+		g.setBackground(Color.blue);
+		
 		if(!hoverResume)
 			g.drawImage(up_resume, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight*2);
 		else

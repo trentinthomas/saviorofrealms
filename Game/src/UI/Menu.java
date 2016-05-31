@@ -1,6 +1,7 @@
 package UI;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -65,6 +66,7 @@ public class Menu extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
 		g.drawString(mouse, 10, 30);
+		g.setBackground(Color.black);
 		//g.drawLine(0, gc.getHeight()/2, gc.getWidth(), gc.getHeight()/2);
 		
 /*		g.drawLine(0, gc.getHeight()/2, gc.getWidth(), gc.getHeight()/2);

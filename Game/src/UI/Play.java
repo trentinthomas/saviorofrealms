@@ -1,7 +1,8 @@
 package UI;
 
+/*import java.awt.Color;*/
 import java.util.Vector;
-
+import org.newdawn.slick.*;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -36,18 +37,21 @@ public class Play extends BasicGameState {
 	private final int down = 2;
 	private final int right = 3;
 	private final int PIXEL_OFFSET = 10;
-	
+	private final double diagonalOffset = .7071;
 	boolean upKeyPressed    = false;
 	boolean leftKeyPressed  = false;
 	boolean downKeyPressed  = false;
 	boolean rightKeyPressed = false;
 	boolean isAttacking = false;
 	boolean stopAttacking = false;
-	
+	boolean movingDiagonal = false;
 	private boolean debug = false;
 	private float mouseX;
 	private float mouseY;
+	private float hudMouseX;
+	private float hudMouseY;
 
+	
 	private int lastKeyPressed = 2;
 	private int lastKeyReleased = 2;	
 	private Vector<Integer> keysPressed;
@@ -69,6 +73,8 @@ public class Play extends BasicGameState {
 	
 	private Camera cam;
 	private TiledMap map;
+	
+	private boolean hoveringOverHUD = false;
 	
 	public Play(int state)
 	{
@@ -110,9 +116,10 @@ public class Play extends BasicGameState {
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
+		g.setBackground(Color.black);
+		
 		cam.checkPosition();
 		g.translate(-cam.getX(), -cam.getY());
-		
 		map.render(0, 0);
 		
 		updateAttackAreas();
@@ -122,7 +129,6 @@ public class Play extends BasicGameState {
 		drawHUD(gc, g);
 		if(!isAttacking)
 			drawWalkingAnimation();
-		
 		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
 			e.getCurrentAnimation().draw(e.getxCoord(), e.getyCoord() + e.getHalfHeight());
 		}
@@ -247,7 +253,7 @@ public class Play extends BasicGameState {
 		if(input.isKeyDown(Input.KEY_LCONTROL))
 			player.setSpeed(10); 
 		else
-			player.setSpeed(2); 
+			player.setSpeed(1); 
 		
 		
 		/**
@@ -269,13 +275,21 @@ public class Play extends BasicGameState {
 			lastKeyPressed = right;
 		}
 		
+		if((input.isKeyDown(Input.KEY_W) && input.isKeyDown(Input.KEY_D)) ||
+				(input.isKeyDown(Input.KEY_W) && input.isKeyDown(Input.KEY_A)) ||
+				(input.isKeyDown(Input.KEY_S) && input.isKeyDown(Input.KEY_D)) ||
+				(input.isKeyDown(Input.KEY_S) && input.isKeyDown(Input.KEY_A)))
+			movingDiagonal = true;
+		else
+			movingDiagonal = false;
+		
 		/**
 		 * Test keyboard input and set player velocity accordingly
 		 */
 		//------------------------------------------------------------------------- w pressed, move up
 		if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && !downKeyPressed) {
 			upKeyPressed = true;
-			player.setYVel(-player.getSpeed());
+			player.setYVel(movingDiagonal ? -player.getSpeed() * diagonalOffset :  -player.getSpeed());
 			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = up;
@@ -291,7 +305,7 @@ public class Play extends BasicGameState {
 		//------------------------------------------------------------------------- a pressed, move left
 		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && !rightKeyPressed) {
 			leftKeyPressed = true;
-			player.setXVel(-player.getSpeed());
+			player.setXVel(movingDiagonal ? -player.getSpeed() * diagonalOffset :  -player.getSpeed());
 			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = left;
@@ -307,7 +321,7 @@ public class Play extends BasicGameState {
 		//------------------------------------------------------------------------- s pressed, move down
 		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) && !upKeyPressed) {
 			downKeyPressed = true;
-			player.setYVel(player.getSpeed());
+			player.setYVel(movingDiagonal ? player.getSpeed() * diagonalOffset :  player.getSpeed());
 			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = down;
@@ -324,7 +338,7 @@ public class Play extends BasicGameState {
 		//------------------------------------------------------------------------- d pressed, move right
 		if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && !leftKeyPressed) {
 			rightKeyPressed = true;
-			player.setXVel(player.getSpeed());
+			player.setXVel(movingDiagonal ? player.getSpeed() * diagonalOffset :  player.getSpeed());
 			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = right;
