@@ -7,6 +7,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import Util.GameSession;
+import Util.GameSessionFactory;
 import saviorOfRealms.errorHandling.EntityDeadException;
 
 /**
@@ -51,9 +53,12 @@ public abstract class Entity implements Serializable
 	protected int lastAttackingFrame;
 	private Animation currentAnimation;
 	
+	private int entityID;
+	private int ownerID;
+	
 	private int directionFacing;
 	
-	protected enum EntityType {PLAYER, NPC, ENEMY, ITEM};
+	public enum EntityType {PLAYER, NPC, ENEMY, PROJECTILE};
 	public enum AnimationType {MOVEMENT, ATTACKING};
 	
 	protected EntityType entityType;
@@ -72,6 +77,8 @@ public abstract class Entity implements Serializable
 		initAnimations();
 		level = 1;
 		experience = 0;
+		entityID = GameSession.entityId++;
+		currentHitPoints = maxHitpoints;
 	}
 	
 	/**
@@ -251,7 +258,12 @@ public abstract class Entity implements Serializable
 	
 	public boolean testCollision(Entity e)
 	{
-		return (e.getEndX() >= xCoord && e.getEndY() >= yCoord && getEndX() >= e.getxCoord() && getEndY() >= e.getyCoord());
+		return (e.getEndX() >= xCoord 
+				&& e.getEndY() >= yCoord 
+				&& getEndX() >= e.getxCoord() 
+				&& getEndY() >= e.getyCoord() 
+				&& e.getEntityId() != getEntityId() 
+				&& e.getOwnerID() != getOwnerID());
 	}
 	
 	public void subtractHitpoints(int hitpoints) throws EntityDeadException
@@ -344,6 +356,22 @@ public abstract class Entity implements Serializable
 	
 	public void setDirectionFacing(int directionFacing) {
 		this.directionFacing = directionFacing;
+	}
+	
+	public EntityType getEntityType() {
+		return entityType;
+	}
+	
+	public int getEntityId() {
+		return entityID;
+	}
+	
+	public void setOwnerID(int ownerID) {
+		this.ownerID = ownerID;
+	}
+	
+	public int getOwnerID() {
+		return ownerID;
 	}
 	
 	/**

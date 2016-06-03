@@ -13,6 +13,7 @@ import Entities.Player;
  */
 public class GameSession 
 {
+	public static int entityId;
 	
 	private List<Entity> entities;
 	
@@ -25,6 +26,7 @@ public class GameSession
 		entities = new ArrayList<Entity>();
 		player = null;
 		this.ID = IDNum;
+		entityId = 0;
 	}
 	
 	public void setEntities(ArrayList<Entity> entities)

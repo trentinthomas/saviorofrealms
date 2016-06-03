@@ -18,8 +18,8 @@ public class Wizard extends Player
 	public static final int DEFAULT_HITPOINTS = 70;
 	public static final int DEFAULT_DEFENCE = 10;
 	public static final int DEFAULT_SPEED = 5;
-	public static final int DEFAULT_XCOORD = 200;
-	public static final int DEFAULT_YCOORD = 200;
+	public static final int DEFAULT_XCOORD = 10000;
+	public static final int DEFAULT_YCOORD = 10000;
 	public static final int DEFAULT_WIDTH = 32;
 	public static final int DEFAULT_HEIGHT = 64;
 	
@@ -62,5 +62,7 @@ public class Wizard extends Player
 		attacking[RIGHT] = new Animation(ss, 0, 3, 6, 3,  true, ANIMSPEED*2, false);
 		
 		lastAttackingFrame = 5;
+		
+		setCurrentAnimation(walking[DOWN]);
 	}
 }

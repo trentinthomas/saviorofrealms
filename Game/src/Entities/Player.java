@@ -59,5 +59,10 @@ public abstract class Player extends Entity{
 	protected void levelUp() {
 		//TODO implement a way to levelup, increasing stats and adding talent points etc.
 	}
+	
+	@Override
+	public int getOwnerID() {
+		return getEntityId();
+	}
 
 }

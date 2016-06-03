@@ -24,8 +24,8 @@ public class Barbarian extends Player
 	public static int DEFAULT_HITPOINTS = 100;
 	public static int DEFAULT_DEFENCE = 10;
 	public static int DEFAULT_SPEED = 3;
-	public static int DEFAULT_XCOORD = 200;
-	public static int DEFAULT_YCOORD = 200;
+	public static int DEFAULT_XCOORD = 10000;
+	public static int DEFAULT_YCOORD = 10000;
 	public static int DEFAULT_WIDTH = 32;
 	public static int DEFAULT_HEIGHT = 64;
 	
@@ -83,6 +83,8 @@ public class Barbarian extends Player
 		attacking[RIGHT] = new Animation(ss, 1, 15, 5, 15,  true, ANIMSPEED, false);
 		
 		lastAttackingFrame = 4;
+		
+		setCurrentAnimation(walking[DOWN]);
 	}
 	
 

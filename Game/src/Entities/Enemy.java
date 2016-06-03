@@ -34,22 +34,6 @@ public abstract class Enemy extends Entity
 	public void move() 
 	{
 		Player player = GameSessionFactory.getGameSession().getPlayer();
-//		if(GameSessionFactory.getGameSession().getPlayer().getxCoord() < this.xCoord + player.getWidth() )
-//		{
-//			this.setXVel(-this.speed);
-//		}
-//		if(GameSessionFactory.getGameSession().getPlayer().getxCoord() > this.xCoord)
-//		{
-//			this.setXVel(this.speed);
-//		}
-//		if(GameSessionFactory.getGameSession().getPlayer().getyCoord() < this.yCoord)
-//		{
-//			this.setYVel(-this.speed);
-//		}
-//		if(GameSessionFactory.getGameSession().getPlayer().getyCoord() > this.yCoord)
-//		{
-//			this.setYVel(this.speed);
-//		}
 		
 		//I found that vectors are a lot easier to coordinate with movement for enemies. It looks cleaner too.
 		Vector2f vector = new Vector2f();
@@ -66,6 +50,11 @@ public abstract class Enemy extends Entity
 	public EnemyType getEnemyType()
 	{
 		return enemyType;
+	}
+	
+	@Override
+	public int getOwnerID() {
+		return getEntityId();
 	}
 
 }

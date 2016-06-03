@@ -21,8 +21,8 @@ public class Arrow extends Projectile {
 	 * @param height
 	 */
 	public Arrow(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType,
-			int width, int height) {
-		super(damage, hitpoints, defense, speed, xCoord, yCoord, entityType, width, height);
+			int width, int height, int ownerID) {
+		super(damage, hitpoints, defense, speed, xCoord, yCoord, entityType, width, height, ownerID);
 		// TODO Auto-generated constructor stub
 		this.setCurrentAnimation(walking[DOWN]);
 	}

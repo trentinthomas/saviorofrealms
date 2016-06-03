@@ -23,6 +23,7 @@ public class Resources {
 			loadSpriteSheets();
 			loadButtons();
 			loadIcons();
+			loadTiles();
 		} catch(SlickException e) {
 			e.printStackTrace();
 		}
@@ -30,7 +31,10 @@ public class Resources {
 
 	private void loadIcons() throws SlickException {
 		images.put("arrow", loadImage("/res/arrow.png"));
-		
+	}
+	
+	private void loadTiles() throws SlickException {
+		images.put("tiles", loadImage("/res/tileset.png"));
 	}
 
 	private void loadSpriteSheets() throws SlickException {

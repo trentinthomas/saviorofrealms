@@ -19,8 +19,8 @@ public class Archer extends Player
 	public static final int DEFAULT_HITPOINTS = 70;
 	public static final int DEFAULT_DEFENCE = 10;
 	public static final int DEFAULT_SPEED = 5;
-	public static final int DEFAULT_XCOORD = 200;
-	public static final int DEFAULT_YCOORD = 200;
+	public static final int DEFAULT_XCOORD = 10000;
+	public static final int DEFAULT_YCOORD = 10000;
 	public static final int DEFAULT_WIDTH = 32;
 	public static final int DEFAULT_HEIGHT = 64;
 	
@@ -50,7 +50,7 @@ public class Archer extends Player
 	@Override
 	public void attack(int x, int y) {
 		Player player = GameSessionFactory.getGameSession().getPlayer();
-		Projectile arrow = new Arrow(0,0,0,12,player.getCenterX(),player.getCenterY() - 14, EntityType.ITEM, 0, 0);
+		Projectile arrow = new Arrow(getDamage(),0,0,12,player.getCenterX(),player.getCenterY() - 14, EntityType.PROJECTILE, 0, 0, getEntityId());
 		if(player.getDirectionFacing() == LEFT)
 			arrow.setXVel(-arrow.getSpeed());
 		else if(player.getDirectionFacing() == UP)
@@ -86,6 +86,8 @@ public class Archer extends Player
 		attacking[RIGHT] = new Animation(ss, 0, 19, 10, 19,  true, ANIMSPEED, false);
 		
 		lastAttackingFrame = 9;
+		
+		setCurrentAnimation(walking[DOWN]);
 	}
 	
 }

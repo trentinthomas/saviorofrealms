@@ -1,5 +1,6 @@
 package UI;
 
+import java.util.ArrayList;
 /*import java.awt.Color;*/
 import java.util.Vector;
 import org.newdawn.slick.*;
@@ -18,10 +19,15 @@ import Entities.Entity;
 import Entities.Player;
 import Entities.Enemy.EnemyType;
 import Entities.Entity.AnimationType;
+import Entities.Entity.EntityType;
 import Util.Camera;
 import Util.EnemyFactory;
 import Util.GameSessionFactory;
+import Util.Resources;
 import Util.Window;
+import saviorOfRealms.Tiles.Tile;
+import saviorOfRealms.WorldGeneration.HexMapGenerator;
+import saviorOfRealms.errorHandling.EntityDeadException;
 
 /*import Util.Resources;*/
 
@@ -36,16 +42,16 @@ public class Play extends BasicGameState {
 	private final int left = 1;
 	private final int down = 2;
 	private final int right = 3;
-	private final int PIXEL_OFFSET = 10;
+	public final static int PIXEL_OFFSET = 10;
 	private final double diagonalOffset = .7071;
-	boolean upKeyPressed    = false;
-	boolean leftKeyPressed  = false;
-	boolean downKeyPressed  = false;
-	boolean rightKeyPressed = false;
-	boolean isAttacking = false;
-	boolean stopAttacking = false;
-	boolean movingDiagonal = false;
-	private boolean debug = false;
+	boolean upKeyPressed;
+	boolean leftKeyPressed;
+	boolean downKeyPressed;
+	boolean rightKeyPressed;
+	boolean isAttacking;
+	boolean stopAttacking;
+	boolean movingDiagonal;
+	boolean debug;
 	private float mouseX;
 	private float mouseY;
 	private float hudMouseX;
@@ -72,7 +78,13 @@ public class Play extends BasicGameState {
 	private Player player;
 	
 	private Camera cam;
-	private TiledMap map;
+	//private TiledMap map;
+	private int[][] map;
+	
+	float playerX;
+	float playerY;
+	float maxMapX;
+	float maxMapY;
 	
 	private boolean hoveringOverHUD = false;
 	
@@ -83,8 +95,9 @@ public class Play extends BasicGameState {
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{	
-		map = new TiledMap("res/testworldv4.tmx");
-		cam = new Camera(map.getWidth() - Window.WIDTH, map.getHeight() - Window.HEIGHT);
+		//map = new TiledMap("res/testworldv4.tmx");
+		map = new HexMapGenerator().getDiamondSquare();
+		cam = new Camera();
 		if(GameSessionFactory.hasGameSession())
 		{
 			player = GameSessionFactory.getGameSession().getPlayer();
@@ -112,6 +125,18 @@ public class Play extends BasicGameState {
 			playerHitBox = new Polygon(playerHitBoxPoints);
 			
 		}
+		
+		isAttacking = false;
+		stopAttacking = false;
+		movingDiagonal = false;
+		
+		upKeyPressed    = false;
+		leftKeyPressed  = false;
+		downKeyPressed  = false;
+		rightKeyPressed = false;
+		
+		movingDiagonal = false;
+		debug = false;
 	}
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
@@ -120,21 +145,27 @@ public class Play extends BasicGameState {
 		
 		cam.checkPosition();
 		g.translate(-cam.getX(), -cam.getY());
-		map.render(0, 0);
+		//map.render(0, 0);
+		
+		drawMap(g);		
+		drawHUD(gc, g);
 		
 		updateAttackAreas();
 		
 		if( debug )
 			drawDebug(g);
-		drawHUD(gc, g);
+		
 		if(!isAttacking)
 			drawWalkingAnimation();
+		
 		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
 			e.getCurrentAnimation().draw(e.getxCoord(), e.getyCoord() + e.getHalfHeight());
 		}
 			
 
 	}
+
+
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException 
@@ -160,7 +191,7 @@ public class Play extends BasicGameState {
 		if(input.isKeyDown(Input.KEY_ESCAPE))
 			sbg.enterState(Engine.paused);
 		
-		if( input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+		if( input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && isAttacking != true)
 		{
 			isAttacking = true;			
 			
@@ -203,7 +234,42 @@ public class Play extends BasicGameState {
 		{
 			if(e.getCurrentAnimation() != null)
 				e.getCurrentAnimation().update(delta);
-			e.move();
+			if(e.getEntityType() != Entity.EntityType.PLAYER)
+				e.move();
+			else
+			{
+				if(!isAttacking)
+				{
+					e.move();
+				}
+			}
+		}
+		
+		checkForCollisions();
+		
+	}
+	
+	private void drawMap(Graphics g) {
+		playerX = Math.abs(player.getxCoord() - Window.WIDTH) / (Tile.TILE_WIDTH);
+		playerY = Math.abs(player.getyCoord() - Window.HEIGHT) / (Tile.TILE_HEIGHT); 
+		
+		//TODO cant have Absolute value here always. - chunk idea should solve this
+		maxMapX = Math.abs(Window.WIDTH / (Tile.TILE_WIDTH/2));
+		maxMapY = Math.abs(Window.HEIGHT / (Tile.TILE_HEIGHT/2));
+		
+		
+		for(int column = (int)playerX; column < (int)maxMapX + playerX; column++) {
+			for(int row = (int) playerY; row < map[column].length; row++) {
+				switch(map[column][row])
+				{
+				case 0:
+					g.drawImage(Resources.getImage("tiles").getSubImage(32, 0, 32, 32), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+					break;
+				default:
+					g.drawImage(Resources.getImage("tiles").getSubImage(0, 0, 32, 32), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+					break;
+				}
+			}
 		}
 		
 	}
@@ -253,7 +319,7 @@ public class Play extends BasicGameState {
 		if(input.isKeyDown(Input.KEY_LCONTROL))
 			player.setSpeed(10); 
 		else
-			player.setSpeed(1); 
+			player.setSpeed(2); 
 		
 		
 		/**
@@ -290,7 +356,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && !downKeyPressed) {
 			upKeyPressed = true;
 			player.setYVel(movingDiagonal ? -player.getSpeed() * diagonalOffset :  -player.getSpeed());
-			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = up;
 			addToKeysPressed(up);
@@ -306,7 +371,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && !rightKeyPressed) {
 			leftKeyPressed = true;
 			player.setXVel(movingDiagonal ? -player.getSpeed() * diagonalOffset :  -player.getSpeed());
-			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = left;
 			addToKeysPressed(left);
@@ -322,7 +386,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) && !upKeyPressed) {
 			downKeyPressed = true;
 			player.setYVel(movingDiagonal ? player.getSpeed() * diagonalOffset :  player.getSpeed());
-			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = down;
 			addToKeysPressed(down);
@@ -339,7 +402,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && !leftKeyPressed) {
 			rightKeyPressed = true;
 			player.setXVel(movingDiagonal ? player.getSpeed() * diagonalOffset :  player.getSpeed());
-			player.getCurrentAnimation().update(updateDelta ? delta : 0);
 			updateDelta = false;
 			lastKeyReleased = right;
 			addToKeysPressed(right);
@@ -357,10 +419,15 @@ public class Play extends BasicGameState {
 		}
 			
 		//----------------------------------------------------------------------------
-		for(Entity e : GameSessionFactory.getGameSession().getEntities())
-			e.move();
-		player.move();
+		
+		if((input.isKeyPressed(Input.KEY_Q))) {
+			for(Entity e : GameSessionFactory.getGameSession().getEntities())
+			{
+				System.out.println(e.getClass().getName() + " entity id is: " + e.getEntityId());
+			}
+		}
 	}
+	
 	private void addToKeysPressed(int num)
 	{
 		try {
@@ -383,8 +450,6 @@ public class Play extends BasicGameState {
 	}
 	private void doPlayerAttack(Input input, int delta)
 	{
-		for(Entity e : GameSessionFactory.getGameSession().getEntities())
-			e.getCurrentAnimation().update(delta);
 		
 		if( player.getCurrentAnimation().getFrame() == player.getLastAttackingFrame() || stopAttacking ) {
 			
@@ -418,6 +483,12 @@ public class Play extends BasicGameState {
 					 "\nkey3: " + keysPressed.get(2), cam.getX() + 30, cam.getY() + 90);
 		g.drawString("camX: " + cam.getX() + " camY: " + cam.getY(), cam.getX() + 30, cam.getY() + 210);
 		g.drawString("entities: " + GameSessionFactory.getGameSession().getEntities().size(), cam.getX() + 30, cam.getY() + 230);
+		g.drawString("playerX: " + playerX, cam.getX() + 30, cam.getY() + 250);
+		g.drawString("playerY: " + playerY, cam.getX() + 30, cam.getY() + 270);
+		g.drawString("maxMapX: " + maxMapX, cam.getX() + 30, cam.getY() + 290);
+		g.drawString("maxMapY: " + maxMapX, cam.getX() + 30, cam.getY() + 310);
+		g.drawString("mapSizeX: " + map[0].length, cam.getX() + 30, cam.getY() + 330);
+		g.drawString("mapSizeY: " + map.length, cam.getX() + 30, cam.getY() + 350);
 	}
 	
 	private void drawHUD(GameContainer gc, Graphics g)
@@ -437,6 +508,7 @@ public class Play extends BasicGameState {
 				   itemSlotWidth, 
 				   itemSlotHeight);
 	}
+	
 	private void drawWalkingAnimation()
 	{
 		/**
@@ -499,12 +571,49 @@ public class Play extends BasicGameState {
 			
 			else 
 			{
-
 				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(2)), 0);
 				player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(2)));
 			}
 			
 
+	}
+	
+	//TODO: Enemy entity only dies if player shoots arrow from below the enemy (shouldnt happen because projectile damage is 0)
+	public void checkForCollisions() {
+		ArrayList<Entity> removeList = new ArrayList<Entity>();
+		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
+			for(Entity ee : GameSessionFactory.getGameSession().getEntities() ) {
+				if(e.testCollision(ee)) {
+					System.out.println(e.getClass().getName() + " collided with " + ee.getClass().getName());
+					if( e.getEntityType().equals(EntityType.PROJECTILE) )
+					{
+						try {
+							ee.subtractHitpoints(e.getDamage());
+						} catch (EntityDeadException e1) {
+							removeList.add(ee);
+						}
+						removeList.add(e);
+					}
+					else if( e.getEntityType().equals(EntityType.PLAYER) )
+					{
+						try {
+							e.subtractHitpoints(ee.getDamage());
+						} catch (EntityDeadException e1) {
+							removeList.add(e);
+						}
+					}
+					else if( e.getEntityType().equals(EntityType.ENEMY) && !ee.getEntityType().equals(EntityType.ENEMY) ) {
+						try {
+							e.subtractHitpoints( ee.getDamage() );
+						} catch (EntityDeadException e1) {
+							removeList.add(e);
+						}
+					}
+				}
+			}
+		}
+		
+		GameSessionFactory.getGameSession().getEntities().removeAll(removeList);
 	}
 
 	
