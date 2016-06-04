@@ -5,14 +5,18 @@ import java.util.Vector;
 
 import org.newdawn.slick.geom.Vector2f;
 
-import Util.GameSessionFactory;;
+import Items.Item;
+import Items.ItemsDroppable;
+import Util.GameSessionFactory;
+import Util.ItemFactory;
+import saviorOfRealms.errorHandling.ItemNotFoundException;;
 
 /**
  * 
  * @author Trentin
  *
  */
-public abstract class Enemy extends Entity
+public abstract class Enemy extends Entity implements ItemsDroppable
 {
 	
 	/**
@@ -55,6 +59,17 @@ public abstract class Enemy extends Entity
 	@Override
 	public int getOwnerID() {
 		return getEntityId();
+	}
+
+	public void calculateDropItem() {
+		Item drop;
+		try {
+			drop = ItemFactory.generateItem(Item.BRONZE_SWORD_ID);
+		} catch (ItemNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

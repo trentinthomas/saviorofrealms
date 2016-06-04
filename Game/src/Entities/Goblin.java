@@ -7,6 +7,8 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import Items.DropTable;
+import Items.Item;
 import Util.Resources;
 
 public class Goblin extends Enemy
@@ -63,5 +65,16 @@ public class Goblin extends Enemy
 	public String toString() {
 		return super.toString() 
 				+ "EnemyType: " + EnemyType.GOBLIN;
+	}
+
+	@Override
+	public void initializeDropTable() {
+		dropTable.addItem(Item.BRONZE_SWORD_ID, 1.00);
+		
+	}
+
+	@Override
+	public Item getDropTableItem() {
+		return dropTable.getNextItem();
 	}
 }

@@ -17,12 +17,14 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import Entities.Entity;
 import Entities.Player;
+import Entities.Enemy;
 import Entities.Enemy.EnemyType;
 import Entities.Entity.AnimationType;
 import Entities.Entity.EntityType;
 import Util.Camera;
 import Util.EnemyFactory;
 import Util.GameSessionFactory;
+import Util.ItemFactory;
 import Util.Resources;
 import Util.Window;
 import saviorOfRealms.Tiles.Tile;
@@ -606,6 +608,8 @@ public class Play extends BasicGameState {
 						try {
 							e.subtractHitpoints( ee.getDamage() );
 						} catch (EntityDeadException e1) {
+							Enemy enemy = (Enemy)e;
+							enemy.calculateDropItem();
 							removeList.add(e);
 						}
 					}
