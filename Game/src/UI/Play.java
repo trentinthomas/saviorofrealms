@@ -3,8 +3,9 @@ package UI;
 import java.util.ArrayList;
 /*import java.awt.Color;*/
 import java.util.Vector;
-import org.newdawn.slick.*;
+
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -13,18 +14,17 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 
-import Entities.Entity;
-import Entities.Player;
 import Entities.Enemy;
 import Entities.Enemy.EnemyType;
+import Entities.Entity;
 import Entities.Entity.AnimationType;
 import Entities.Entity.EntityType;
+import Entities.Player;
+import Items.Item;
 import Util.Camera;
 import Util.EnemyFactory;
 import Util.GameSessionFactory;
-import Util.ItemFactory;
 import Util.Resources;
 import Util.Window;
 import saviorOfRealms.Tiles.Tile;
@@ -162,6 +162,9 @@ public class Play extends BasicGameState {
 		
 		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
 			e.getCurrentAnimation().draw(e.getxCoord(), e.getyCoord() + e.getHalfHeight());
+		}
+		for(Item item : GameSessionFactory.getGameSession().getItemsOnGround().keySet()) {
+			g.drawImage(item.getItemImage(), GameSessionFactory.getGameSession().getItemsOnGround().get(item).getCenterX(), GameSessionFactory.getGameSession().getItemsOnGround().get(item).getCenterY());
 		}
 			
 
@@ -587,11 +590,13 @@ public class Play extends BasicGameState {
 			for(Entity ee : GameSessionFactory.getGameSession().getEntities() ) {
 				if(e.testCollision(ee)) {
 					System.out.println(e.getClass().getName() + " collided with " + ee.getClass().getName());
-					if( e.getEntityType().equals(EntityType.PROJECTILE) )
+					if( e.getEntityType().equals(EntityType.PROJECTILE) && ee.getEntityType().equals(EntityType.ENEMY))
 					{
 						try {
 							ee.subtractHitpoints(e.getDamage());
 						} catch (EntityDeadException e1) {
+							Enemy enemy = (Enemy)ee;
+							enemy.calculateDropItem();
 							removeList.add(ee);
 						}
 						removeList.add(e);

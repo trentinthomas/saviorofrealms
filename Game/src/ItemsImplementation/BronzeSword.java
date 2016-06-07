@@ -1,9 +1,10 @@
 package ItemsImplementation;
 
-import java.awt.Image;
+import org.newdawn.slick.Image;
 
 import Items.Item;
 import Items.Weapon;
+import Util.Resources;
 
 public class BronzeSword extends Weapon {
 
@@ -31,7 +32,7 @@ public class BronzeSword extends Weapon {
 	@Override
 	public Image getItemImage() {
 		// TODO Auto-generated method stub
-		return null;
+		return Resources.getImage("bronzeSword");
 	}
 
 	public int getStackSize() {

@@ -2,12 +2,14 @@ package Items;
 
 import java.util.HashMap;
 
+import ItemsImplementation.BronzeSword;
 import Util.ItemFactory;
 import saviorOfRealms.errorHandling.ItemNotFoundException;
 
 public class DropTable {
 
 	HashMap<Integer, Double> dropTable;
+	
 	public DropTable( ) {
 		dropTable = new HashMap<Integer, Double>();
 	}
@@ -18,6 +20,7 @@ public class DropTable {
 
 	public Item getNextItem() throws ItemNotFoundException {
 		double percentage = 1;
+		
 		
 		int itemIDToDrop = 0;
 		//TODO need to make this random, instead of getting the same item everytime from droptable.

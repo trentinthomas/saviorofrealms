@@ -1,7 +1,8 @@
 package Items;
 
-import java.awt.Image;
 import java.io.Serializable;
+
+import org.newdawn.slick.Image;
 
 public abstract class Item implements Serializable {
 	

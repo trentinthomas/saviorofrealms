@@ -1,15 +1,12 @@
 package Entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
-import Items.DropTable;
 import Items.Item;
 import Util.Resources;
+import saviorOfRealms.errorHandling.ItemNotFoundException;
 
 public class Goblin extends Enemy
 {
@@ -75,6 +72,11 @@ public class Goblin extends Enemy
 
 	@Override
 	public Item getDropTableItem() {
-		return dropTable.getNextItem();
+		try{
+			return dropTable.getNextItem();
+		} catch(ItemNotFoundException infe) {
+			infe.printStackTrace();
+		}
+		return null;
 	}
 }

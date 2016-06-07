@@ -62,13 +62,15 @@ public abstract class Enemy extends Entity implements ItemsDroppable
 	}
 
 	public void calculateDropItem() {
-		Item drop;
+		Item drop = null;
 		try {
 			drop = ItemFactory.generateItem(Item.BRONZE_SWORD_ID);
 		} catch (ItemNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		GameSessionFactory.getGameSession().addItemToGround(drop, this.xCoord, this.yCoord);
 		
 	}
 

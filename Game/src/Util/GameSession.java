@@ -1,10 +1,14 @@
 package Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import org.newdawn.slick.geom.Point;
 
 import Entities.Entity;
 import Entities.Player;
+import Items.Item;
 
 /**
  * GameSession will hold all variables where we need access to them globally, such as an array of all enemies on the map, or other important variables.
@@ -16,6 +20,7 @@ public class GameSession
 	public static int entityId;
 	
 	private List<Entity> entities;
+	private HashMap<Item, Point> itemsOnGround;
 	
 	private Player player;
 	private String gameFile;
@@ -24,6 +29,7 @@ public class GameSession
 	public GameSession(int IDNum)
 	{
 		entities = new ArrayList<Entity>();
+		itemsOnGround = new HashMap<Item, Point>();
 		player = null;
 		this.ID = IDNum;
 		entityId = 0;
@@ -77,6 +83,16 @@ public class GameSession
 	public void setGameFile(String gameFile)
 	{
 		this.gameFile = gameFile;
+	}
+	
+	public HashMap<Item, Point> getItemsOnGround() {
+		return itemsOnGround;
+	}
+
+	public void addItemToGround(Item drop, float xCoord, float yCoord) {
+		// TODO Auto-generated method stub
+		itemsOnGround.put(drop, new Point(xCoord, yCoord));
+		
 	}
 
 }

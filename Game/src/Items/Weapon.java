@@ -31,6 +31,7 @@ public abstract class Weapon extends Item {
 	public Weapon()
 	{
 		super();
+		random = new Random();
 		generateMinAndMaxDamage();
 	}
 	
