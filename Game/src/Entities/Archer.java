@@ -50,15 +50,27 @@ public class Archer extends Player
 	@Override
 	public void attack(int x, int y) {
 		Player player = GameSessionFactory.getGameSession().getPlayer();
-		Projectile arrow = new Arrow(getDamage(),0,0,12,player.getCenterX(),player.getCenterY() - 14, EntityType.PROJECTILE, 0, 0, getEntityId());
+		Projectile arrow = null;
 		if(player.getDirectionFacing() == LEFT)
+		{
+			arrow = new Arrow(getDamage(),0,0,12,player.getCenterX(),player.getCenterY() - 14, EntityType.PROJECTILE, 0, 0, getEntityId(), 3);
 			arrow.setXVel(-arrow.getSpeed());
+		}
 		else if(player.getDirectionFacing() == UP)
+		{
+			arrow = new Arrow(getDamage(),0,0,12,player.getCenterX() - 14, player.getCenterY() - 14, EntityType.PROJECTILE, 0, 0, getEntityId(), 1);
 			arrow.setYVel(-arrow.getSpeed());
+		}
 		else if(player.getDirectionFacing() == RIGHT)
+		{
+			arrow = new Arrow(getDamage(),0,0,12,player.getCenterX(),player.getCenterY() - 14, EntityType.PROJECTILE, 0, 0, getEntityId(), 4);
 			arrow.setXVel(arrow.getSpeed());
+		}
 		else if(player.getDirectionFacing() == DOWN)
+		{
+			arrow = new Arrow(getDamage(),0,0,12,player.getCenterX() - 14, player.getCenterY() - 14, EntityType.PROJECTILE, 0, 0, getEntityId(), 2);
 			arrow.setYVel(arrow.getSpeed());
+		}
 		
 		GameSessionFactory.getGameSession().addEntity(arrow);
 	}

@@ -21,10 +21,18 @@ public class Arrow extends Projectile {
 	 * @param height
 	 */
 	public Arrow(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType,
-			int width, int height, int ownerID) {
+			int width, int height, int ownerID, int direction) {
 		super(damage, hitpoints, defense, speed, xCoord, yCoord, entityType, width, height, ownerID);
 		// TODO Auto-generated constructor stub
-		this.setCurrentAnimation(walking[DOWN]);
+		if(direction == 1)
+			this.setCurrentAnimation(walking[UP]);
+		else if(direction == 2)
+			this.setCurrentAnimation(walking[DOWN]);
+		else if(direction == 3)
+			this.setCurrentAnimation(walking[LEFT]);
+		else if(direction == 4)
+			this.setCurrentAnimation(walking[RIGHT]);
+					
 	}
 
 	@Override
@@ -48,13 +56,14 @@ public class Arrow extends Projectile {
 		
 		
 		walking = new Animation[4];
+
 		walking[LEFT]  = new Animation(ss, 0, 0,  0, 0,  true, ANIMSPEED, false);
-		ss.rotate(90);
-		walking[UP]    = new Animation(ss, 0, 0,  0, 0,  true, ANIMSPEED, false);
-		ss.rotate(90);
-		walking[RIGHT] = new Animation(ss, 0, 0, 0, 0, true, ANIMSPEED, false);
-		//ss.rotate(90);
-		walking[DOWN]  = new Animation(ss, 0, 0, 0, 0, true, ANIMSPEED, false);
+
+		walking[UP]    = new Animation(ss, 1, 0,  1, 0,  true, ANIMSPEED, false);
+
+		walking[RIGHT] = new Animation(ss, 2, 0, 2, 0, true, ANIMSPEED, false);
+
+		walking[DOWN]  = new Animation(ss, 3, 0, 3, 0, true, ANIMSPEED, false);
 		
 		attacking = new Animation[4];
 		attacking[UP]    = new Animation(ss, 0, 0, 0, 0,  true, ANIMSPEED*2, false);
