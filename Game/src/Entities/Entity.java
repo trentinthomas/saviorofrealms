@@ -19,8 +19,8 @@ import saviorOfRealms.errorHandling.EntityDeadException;
 public abstract class Entity implements Serializable
 {
 	
+	private static final long serialVersionUID = -1448174602088544515L;
 	//TODO implement a way to serialize all the entities into a file and read them back into the game.
-	private static final long serialVersionUID = 1L;
 	
 	
 	public static final int UP = 0;

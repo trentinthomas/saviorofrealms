@@ -63,5 +63,6 @@ public abstract class Weapon extends Item {
 	}
 	
 	public abstract void attack();
+	public abstract void initializeMinAndMaxDamage();
 	
 }

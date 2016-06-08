@@ -40,7 +40,6 @@ public class Goblin extends Enemy
 
 	@Override
 	public void initAnimations() {
-		// TODO Auto-generated method stub
 		
 		ss = new SpriteSheet(getImage(), 64, 64);
 		

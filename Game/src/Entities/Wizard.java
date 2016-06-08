@@ -35,7 +35,7 @@ public class Wizard extends Player
 
 	@Override
 	public void attack(int x, int y) {
-		// TODO Auto-generated method stub
+		// TODO make attack with wizards
 		
 	}
 	

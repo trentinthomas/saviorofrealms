@@ -4,7 +4,9 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import Util.GameSessionFactory;
 import Util.Resources;
+import Util.Window;
 
 public class Arrow extends Projectile {
 
@@ -39,17 +41,22 @@ public class Arrow extends Projectile {
 	public void move() {
 		xCoord += xVel;
 		yCoord += yVel;
+		
+		//If this is off the screen according to the player, add to the remove list to remove on next update.
+		if(Math.abs(xCoord - GameSessionFactory.getGameSession().getPlayer().getxCoord()) > Window.WIDTH
+				|| Math.abs(yCoord - GameSessionFactory.getGameSession().getPlayer().getyCoord()) > Window.HEIGHT)
+		{
+			GameSessionFactory.getGameSession().getRemoveListEntities().add(this);
+		}
 	}
 
 	@Override
 	public Image getImage() {
-		// TODO Auto-generated method stub
 		return Resources.getImage("arrow");
 	}
 
 	@Override
 	public void initAnimations() {
-		// TODO Auto-generated method stub
 		
 		ss = new SpriteSheet(getImage(), 32,32);
 		

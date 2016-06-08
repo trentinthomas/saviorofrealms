@@ -1,6 +1,7 @@
 package UI;
 
 import java.util.ArrayList;
+import java.util.List;
 /*import java.awt.Color;*/
 import java.util.Vector;
 
@@ -583,9 +584,8 @@ public class Play extends BasicGameState {
 
 	}
 	
-	//TODO: Enemy entity only dies if player shoots arrow from below the enemy (shouldnt happen because projectile damage is 0)
 	public void checkForCollisions() {
-		ArrayList<Entity> removeList = new ArrayList<Entity>();
+		List<Entity> removeList = GameSessionFactory.getGameSession().getRemoveListEntities();
 		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
 			for(Entity ee : GameSessionFactory.getGameSession().getEntities() ) {
 				if(e.testCollision(ee)) {

@@ -56,7 +56,7 @@ public class Barbarian extends Player
 
 	@Override
 	public void attack(int x, int y) {
-		// TODO Auto-generated method stub
+		// TODO attack with barbarian
 		
 	}
 	

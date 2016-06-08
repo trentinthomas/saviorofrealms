@@ -66,7 +66,6 @@ public abstract class Enemy extends Entity implements ItemsDroppable
 		try {
 			drop = ItemFactory.generateItem(Item.BRONZE_SWORD_ID);
 		} catch (ItemNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

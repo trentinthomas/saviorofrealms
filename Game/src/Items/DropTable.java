@@ -1,6 +1,7 @@
 package Items;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import ItemsImplementation.BronzeSword;
 import Util.ItemFactory;
@@ -25,6 +26,12 @@ public class DropTable {
 		int itemIDToDrop = 0;
 		//TODO need to make this random, instead of getting the same item everytime from droptable.
 		//So instead of for loop, do a while loop and percentage is > 0.   
+//		while(percentage > 0)
+//		{
+//			Random random = new Random();
+			//get a random item from the hashmap.
+//		}
+		
 		for( int itemId : dropTable.keySet() )
 		{
 			percentage -= dropTable.get(itemId);

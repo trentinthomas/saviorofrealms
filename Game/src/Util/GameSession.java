@@ -20,6 +20,7 @@ public class GameSession
 	public static int entityId;
 	
 	private List<Entity> entities;
+	private List<Entity> removeEntities; //We need this to remove entities we dont need anymore.
 	private HashMap<Item, Point> itemsOnGround;
 	
 	private Player player;
@@ -29,6 +30,7 @@ public class GameSession
 	public GameSession(int IDNum)
 	{
 		entities = new ArrayList<Entity>();
+		removeEntities = new ArrayList<Entity>();
 		itemsOnGround = new HashMap<Item, Point>();
 		player = null;
 		this.ID = IDNum;
@@ -61,6 +63,10 @@ public class GameSession
 		return null;
 	}
 	
+	public List<Entity> getRemoveListEntities() {
+		return removeEntities;
+	}
+	
 	public Player getPlayer()
 	{
 		return player;
@@ -90,9 +96,7 @@ public class GameSession
 	}
 
 	public void addItemToGround(Item drop, float xCoord, float yCoord) {
-		// TODO Auto-generated method stub
 		itemsOnGround.put(drop, new Point(xCoord, yCoord));
-		
 	}
 
 }

@@ -15,12 +15,12 @@ public class BronzeSword extends Weapon {
 
 	public BronzeSword()
 	{
+		
 		super();
 	}
 	
 	public BronzeSword( int minDamage, int maxDamage ) {
-		super( minDamage, maxDamage);
-		// TODO Auto-generated constructor stub
+		super( minDamage, maxDamage );
 	}
 
 	@Override
@@ -37,6 +37,15 @@ public class BronzeSword extends Weapon {
 
 	public int getStackSize() {
 		return Item.NOT_STACKABLE;
+	}
+
+	@Override
+	public void initializeMinAndMaxDamage() {
+		// TODO Auto-generated method stub
+		minDamageMin = 3;
+		minDamageMax = 4;
+		maxDamageMin = 5;
+		maxDamageMax = 7;
 	}
 
 

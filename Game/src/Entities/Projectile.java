@@ -12,7 +12,6 @@ public abstract class Projectile extends Entity {
 			int width, int height, int ownerID) {
 		super(damage, hitpoints, defense, speed, xCoord, yCoord, entityType, width, height);
 		setOwnerID(ownerID);
-		// TODO Auto-generated constructor stub
 	}
 
 }
