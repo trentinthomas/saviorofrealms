@@ -55,7 +55,7 @@ public class Barbarian extends Player
 	
 
 	@Override
-	public void attack(int x, int y) {
+	public void attack(float x, float y) {
 		// TODO attack with barbarian
 		
 	}

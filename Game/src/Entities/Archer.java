@@ -30,7 +30,7 @@ public class Archer extends Player
 	
 	public Archer()
 	{
-		super(DEFAULT_DAMAGE, DEFAULT_HITPOINTS, DEFAULT_DEFENCE, DEFAULT_SPEED, DEFAULT_XCOORD, DEFAULT_YCOORD, EntityType.PLAYER, DEFAULT_WIDTH, DEFAULT_HEIGHT, PlayerType.WIZARD);
+		super(DEFAULT_DAMAGE, DEFAULT_HITPOINTS, DEFAULT_DEFENCE, DEFAULT_SPEED, DEFAULT_XCOORD, DEFAULT_YCOORD, EntityType.PLAYER, DEFAULT_WIDTH, DEFAULT_HEIGHT, PlayerType.ARCHER);
 	}
 	
 
@@ -48,7 +48,7 @@ public class Archer extends Player
 	 * @param height
 	 */
 	@Override
-	public void attack(int x, int y) {
+	public void attack(float x, float y) {
 		Player player = GameSessionFactory.getGameSession().getPlayer();
 		Projectile arrow = null;
 		if(player.getDirectionFacing() == LEFT)

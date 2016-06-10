@@ -31,7 +31,7 @@ public abstract class Player extends Entity{
 		yCoord += yVel;
 	}
 	
-	public abstract void attack(int x, int y);
+	public abstract void attack(float mouseX, float mouseY);
 	
 	public PlayerType getPlayerType()
 	{

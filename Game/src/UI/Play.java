@@ -23,6 +23,7 @@ import Entities.Entity;
 import Entities.Entity.AnimationType;
 import Entities.Entity.EntityType;
 import Entities.Player;
+import Entities.Player.PlayerType;
 import Items.Item;
 import Util.Camera;
 import Util.EnemyFactory;
@@ -484,8 +485,12 @@ public class Play extends BasicGameState {
 			
 			stopAttacking = true;
 			
+
 			if(player.getCurrentAnimation().getFrame() == 0) {
-				player.attack(0,0); //TODO if we want to make it go towards where we clicked the mouse, we need to enter the mouse coords here.
+				if(player.getPlayerType() == PlayerType.WIZARD)
+					player.attack(mouseX, mouseY);
+				else
+					player.attack(0,0); //TODO if we want to make it go towards where we clicked the mouse, we need to enter the mouse coords here.
 				isAttacking = false;
 				stopAttacking = false;
 			}
@@ -582,7 +587,7 @@ public class Play extends BasicGameState {
 			   else if(lastKeyPressed == left)
 				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.LEFT));
 			   else
-				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(0)));
 			}
 
 			else if(player.getXVel() > 0 && player.getYVel() < 0)  {    					 //up to right
@@ -592,7 +597,7 @@ public class Play extends BasicGameState {
 				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.RIGHT));
 			   else
 			   {
-				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(0)));
 			   }
 			}
 
@@ -602,7 +607,7 @@ public class Play extends BasicGameState {
 			   else if(lastKeyPressed == left)
 				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.LEFT));
 			   else
-				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(0)));
 			}
 
 			else if(player.getXVel() > 0 && player.getYVel() > 0)  {     					//down to right
@@ -611,7 +616,7 @@ public class Play extends BasicGameState {
 			   else if(lastKeyPressed == right)
 				   				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, Entity.RIGHT));
 			   else
-				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(1)));
+				   player.setCurrentAnimation(player.getAnimation(AnimationType.MOVEMENT, keysPressed.elementAt(0)));
 			}
 			
 			else 

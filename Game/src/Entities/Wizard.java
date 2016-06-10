@@ -4,6 +4,8 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import Entities.Entity.EntityType;
+import Util.GameSessionFactory;
 import Util.Resources;
 
 public class Wizard extends Player
@@ -34,9 +36,9 @@ public class Wizard extends Player
 	}
 
 	@Override
-	public void attack(int x, int y) {
+	public void attack(float x, float y) {
 		// TODO make attack with wizards
-		
+
 	}
 	
 	public Image getImage()
