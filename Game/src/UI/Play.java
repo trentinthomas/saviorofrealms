@@ -9,6 +9,7 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Polygon;
@@ -36,10 +37,14 @@ import saviorOfRealms.errorHandling.EntityDeadException;
 
 public class Play extends BasicGameState {
 	
-	private final int inventoryWidth = 125;
-	private final int inventoryHeight = 200;
-	private final int itemSlotWidth = 200;
-	private final int itemSlotHeight = 30;
+	private final int inventoryWidth = 195;
+	private final int inventoryHeight = 240;
+	private final int itemSlotWidth = 465;
+	private final int itemSlotHeight = 60;
+	private final int healthWidth = 190;
+	private final int healthHeight = 25;
+	private final int energyWidth = 190;
+	private final int energyHeight = 25;
 	private final int guiPadding = 5;
 	private final int up = 0;
 	private final int left = 1;
@@ -76,6 +81,11 @@ public class Play extends BasicGameState {
 	private Shape attackAreaBottom;
 	private Shape attackAreaRight;
 	private Shape playerHitBox;
+	
+	Image inventory_20;
+	Image quickSlots;
+	Image healthBar;
+	Image energyBar;
 	
 	String mouse = "No input yet!";
 	private Player player;
@@ -128,6 +138,11 @@ public class Play extends BasicGameState {
 			playerHitBox = new Polygon(playerHitBoxPoints);
 			
 		}
+		
+		inventory_20 = new Image("/res/inventory_20.png");
+		quickSlots = new Image("/res/quickSlots.png");
+		healthBar = new Image("/res/healthBar.png");
+		energyBar = new Image("/res/energyBar.png");
 		
 		isAttacking = false;
 		stopAttacking = false;
@@ -500,19 +515,25 @@ public class Play extends BasicGameState {
 	private void drawHUD(GameContainer gc, Graphics g)
 	{
 		//inventory outline or something? could probably make this a picture of sorts
-		g.drawRect(cam.getX() + (gc.getWidth() - (inventoryWidth + guiPadding)), 
-				   cam.getY() + (gc.getHeight() -(inventoryHeight + guiPadding)), 
-				   inventoryWidth, 
-				   inventoryHeight);
+		g.drawImage( inventory_20,
+				cam.getX() + (gc.getWidth() - (inventoryWidth + guiPadding)), 
+				cam.getY() + (gc.getHeight() -(inventoryHeight + guiPadding)));
 		
 		//width = 808
 		//height = 500
 		
 		//item slots or something? this too could possibly be some sort of image
-		g.drawRect(cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
-				   cam.getY() + (gc.getHeight() - (itemSlotHeight + guiPadding)), 
-				   itemSlotWidth, 
-				   itemSlotHeight);
+		g.drawImage( quickSlots,
+				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
+				cam.getY() + (gc.getHeight() - (itemSlotHeight + guiPadding)));
+		
+		g.drawImage( healthBar,
+				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
+				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight + healthHeight - guiPadding)));
+		
+		g.drawImage( energyBar,
+				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
+				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight)));
 	}
 	
 	private void drawWalkingAnimation()

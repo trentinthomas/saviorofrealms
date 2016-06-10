@@ -32,7 +32,10 @@ public class Resources {
 	}
 
 	private void loadHUD() throws SlickException {
-		images.put("inventory_20", loadImage("/res/inventory_20"));
+		images.put("inventory_20", loadImage("/res/inventory_20.png"));
+		images.put("quickSlots", loadImage("/res/quickSlots.png"));
+		images.put("healthBar", loadImage("/res/healthBar.png"));
+		images.put("energyBar", loadImage("/res/energyBar.png"));
 	}
 	
 	private void loadIcons() throws SlickException {
