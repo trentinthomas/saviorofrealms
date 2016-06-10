@@ -323,7 +323,7 @@ public class Play extends BasicGameState {
 		//TODO: 1) Change this so that it move the camara rather than the player
 		//		byproduct of this is that the character stays in the middle of the screen
 		if(input.isKeyDown(Input.KEY_LCONTROL))
-			player.setSpeed(10); 
+			player.setSpeed(20); 
 		else
 			player.setSpeed(2); 
 		
