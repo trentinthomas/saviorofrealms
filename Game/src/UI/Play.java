@@ -45,6 +45,10 @@ public class Play extends BasicGameState {
 	private final int healthHeight = 25;
 	private final int energyWidth = 190;
 	private final int energyHeight = 25;
+	private final int experienceWidth = 190;
+	private final int experienceHeight = 25;
+	private final int currentLevelHeight = 85;
+	private final int currentLevelWidth = 85;
 	private final int guiPadding = 5;
 	private final int up = 0;
 	private final int left = 1;
@@ -86,6 +90,8 @@ public class Play extends BasicGameState {
 	Image quickSlots;
 	Image healthBar;
 	Image energyBar;
+	Image experienceBar;
+	Image currentLevel;
 	
 	String mouse = "No input yet!";
 	private Player player;
@@ -143,6 +149,8 @@ public class Play extends BasicGameState {
 		quickSlots = new Image("/res/quickSlots.png");
 		healthBar = new Image("/res/healthBar.png");
 		energyBar = new Image("/res/energyBar.png");
+		experienceBar = new Image("/res/experienceBar.png");
+		currentLevel = new Image("/res/currentLevel.png");
 		
 		isAttacking = false;
 		stopAttacking = false;
@@ -527,6 +535,11 @@ public class Play extends BasicGameState {
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + guiPadding)));
 		
+		g.drawImage( currentLevel,
+				cam.getX() + (gc.getWidth()/2 - currentLevelWidth/2), 
+				cam.getY() + (gc.getHeight() - (itemSlotHeight + currentLevelHeight)));
+
+		
 		g.drawImage( healthBar,
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight + healthHeight - guiPadding)));
@@ -534,6 +547,11 @@ public class Play extends BasicGameState {
 		g.drawImage( energyBar,
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight)));
+		
+		//TODO: See if there is a reason why this is 
+		g.drawImage( experienceBar,
+				cam.getX() + (gc.getWidth()/2 + (-experienceWidth + itemSlotWidth/2 + -guiPadding + 1)), 
+				cam.getY() + (gc.getHeight() - (itemSlotHeight + experienceHeight)));
 	}
 	
 	private void drawWalkingAnimation()

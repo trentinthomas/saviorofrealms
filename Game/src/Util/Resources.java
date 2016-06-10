@@ -36,6 +36,8 @@ public class Resources {
 		images.put("quickSlots", loadImage("/res/quickSlots.png"));
 		images.put("healthBar", loadImage("/res/healthBar.png"));
 		images.put("energyBar", loadImage("/res/energyBar.png"));
+		images.put("experienceBar", loadImage("/res/experienceBar.png"));
+		images.put("currentLevel", loadImage("/res/currentLevel.png"));
 	}
 	
 	private void loadIcons() throws SlickException {
