@@ -1,8 +1,10 @@
 package Entities;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.geom.Circle;
 
 import Items.Inventory;
+import Items.Item;
 import saviorOfRealms.errorHandling.InsufficientFundsException;
 
 public abstract class Player extends Entity{
@@ -11,17 +13,23 @@ public abstract class Player extends Entity{
 	 * 
 	 */
 	private static final long serialVersionUID = 2387359505606625000L;
+	
+	private static final float PLAYER_PICKUP_RADIUS = 5;
 
 	public enum PlayerType { BARBARIAN, ARCHER, WIZARD };
 	protected PlayerType playerType;
 	private Inventory inventory;
 	private int currency;
+	
+	private Circle pickupRadius;
 
 	
 	public Player(int damage, int hitpoints, int defence, int speed, int xCoord, int yCoord, EntityType entityType, int width, int height, PlayerType playerType) {
 		super(damage, hitpoints, defence, speed, xCoord, yCoord, EntityType.PLAYER, width, height);
 		this.playerType = playerType;
 		inventory = new Inventory();
+		
+		pickupRadius = new Circle(xCoord, yCoord, PLAYER_PICKUP_RADIUS);
 	}
 	
 	@Override
@@ -63,6 +71,10 @@ public abstract class Player extends Entity{
 	@Override
 	public int getOwnerID() {
 		return getEntityId();
+	}
+
+	public boolean canPickUp(Item item) {
+		return pickupRadius.contains(item.getX(), item.getY());
 	}
 
 }

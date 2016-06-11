@@ -20,8 +20,9 @@ public class GameSession
 	public static int entityId;
 	
 	private List<Entity> entities;
-	private List<Entity> removeEntities; //We need this to remove entities we dont need anymore.
-	private HashMap<Item, Point> itemsOnGround;
+	private List<Entity> removeEntities; //We need this to remove entities that are dead or that we do not need anymore.
+	private List<Item> itemsOnGround;
+	private List<Item> removeItemsOnGround; //We need this to remove items that have been picked up or we do not need anymore.
 	
 	private Player player;
 	private String gameFile;
@@ -31,7 +32,7 @@ public class GameSession
 	{
 		entities = new ArrayList<Entity>();
 		removeEntities = new ArrayList<Entity>();
-		itemsOnGround = new HashMap<Item, Point>();
+		itemsOnGround = new ArrayList<Item>();
 		player = null;
 		this.ID = IDNum;
 		entityId = 0;
@@ -91,12 +92,23 @@ public class GameSession
 		this.gameFile = gameFile;
 	}
 	
-	public HashMap<Item, Point> getItemsOnGround() {
+	public List<Item> getItemsOnGround() {
 		return itemsOnGround;
 	}
 
 	public void addItemToGround(Item drop, float xCoord, float yCoord) {
-		itemsOnGround.put(drop, new Point(xCoord, yCoord));
+		drop.setX(xCoord);
+		drop.setY(yCoord);
+		itemsOnGround.add(drop);
+	}
+	
+	public void removeItemFromGround(Item item)
+	{
+		removeItemsOnGround.add(item);
+	}
+	
+	public void removeItemsFromGround() {
+		itemsOnGround.removeAll(removeItemsOnGround);
 	}
 
 }

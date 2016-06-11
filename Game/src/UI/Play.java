@@ -1,9 +1,12 @@
 package UI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 /*import java.awt.Color;*/
 import java.util.Vector;
+
+import saviorOfRealms.*;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
@@ -12,6 +15,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -27,6 +31,7 @@ import Entities.Player.PlayerType;
 import Items.Item;
 import Util.Camera;
 import Util.EnemyFactory;
+import Util.GameSession;
 import Util.GameSessionFactory;
 import Util.Resources;
 import Util.Window;
@@ -188,8 +193,8 @@ public class Play extends BasicGameState {
 		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
 			e.getCurrentAnimation().draw(e.getxCoord(), e.getyCoord() + e.getHalfHeight());
 		}
-		for(Item item : GameSessionFactory.getGameSession().getItemsOnGround().keySet()) {
-			g.drawImage(item.getItemImage(), GameSessionFactory.getGameSession().getItemsOnGround().get(item).getCenterX(), GameSessionFactory.getGameSession().getItemsOnGround().get(item).getCenterY());
+		for(Item item : GameSessionFactory.getGameSession().getItemsOnGround()) {
+			g.drawImage(item.getItemImage(), item.getX(), item.getY());
 		}
 			
 
@@ -219,7 +224,9 @@ public class Play extends BasicGameState {
 		 * Go to pause menu
 		 */
 		if(input.isKeyDown(Input.KEY_ESCAPE))
+		{
 			sbg.enterState(Engine.paused);
+		}
 		
 		if( input.isMousePressed(Input.MOUSE_LEFT_BUTTON) && isAttacking != true)
 		{
@@ -248,6 +255,17 @@ public class Play extends BasicGameState {
 			
 			
 		}
+		if( input.isKeyPressed( Input.KEY_SPACE ) ) {
+			List<Item> items = GameSessionFactory.getGameSession().getItemsOnGround();
+			for( Item item : items ) {
+				if( player.canPickUp(item) ) {
+					player.getInventory().addItem(item);
+					GameSessionFactory.getGameSession().removeItemFromGround(item);
+				}
+			}
+			GameSessionFactory.getGameSession().removeItemsFromGround();
+		}
+		
 		/**
 		 * Update player movement based on key input
 		 */
