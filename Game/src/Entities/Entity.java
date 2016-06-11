@@ -7,8 +7,11 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import UI.Play;
+import Util.Camera;
 import Util.GameSession;
 import Util.GameSessionFactory;
+import Util.Window;
 import saviorOfRealms.errorHandling.EntityDeadException;
 
 /**
@@ -372,6 +375,18 @@ public abstract class Entity implements Serializable
 	
 	public int getOwnerID() {
 		return ownerID;
+	}
+	
+	public float[] getHitBox(Camera cam) {
+		return new float[]{
+				cam.getX() + getHalfWidth() + Window.WIDTH/2,
+				cam.getY() - getHalfHeight() + Window.HEIGHT/2 + Play.PIXEL_OFFSET, 
+				cam.getX() + getHalfWidth() + Window.WIDTH/2,
+				cam.getY() + getHalfHeight() + Window.HEIGHT/2,
+				cam.getX() - getHalfWidth() + Window.WIDTH/2,
+				cam.getY() + getHalfHeight() + Window.HEIGHT/2,
+				cam.getX() - getHalfWidth() + Window.WIDTH/2,
+				cam.getY() - getHalfHeight() + Window.HEIGHT/2 + Play.PIXEL_OFFSET};
 	}
 	
 	/**

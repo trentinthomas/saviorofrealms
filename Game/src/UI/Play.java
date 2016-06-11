@@ -33,7 +33,6 @@ import saviorOfRealms.Tiles.Tile;
 import saviorOfRealms.WorldGeneration.HexMapGenerator;
 import saviorOfRealms.errorHandling.EntityDeadException;
 
-/*import Util.Resources;*/
 
 public class Play extends BasicGameState {
 	
@@ -336,28 +335,17 @@ public class Play extends BasicGameState {
 		rightTrianglePoints = new float[]{cam.getX() + Window.WIDTH, cam.getY() + Window.HEIGHT, 
 										cam.getX() + Window.WIDTH/2, cam.getY() + Window.HEIGHT/2, 
 										cam.getX() + Window.WIDTH, cam.getY() + 0};
-		
-		playerHitBoxPoints = new float[]{
-				cam.getX() + player.getHalfWidth() + Window.WIDTH/2,
-				cam.getY() - player.getHalfHeight() + Window.HEIGHT/2 + PIXEL_OFFSET, 
-				cam.getX() + player.getHalfWidth() + Window.WIDTH/2,
-				cam.getY() + player.getHalfHeight() + Window.HEIGHT/2,
-				cam.getX() - player.getHalfWidth() + Window.WIDTH/2,
-				cam.getY() + player.getHalfHeight() + Window.HEIGHT/2,
-				cam.getX() - player.getHalfWidth() + Window.WIDTH/2,
-				cam.getY() - player.getHalfHeight() + Window.HEIGHT/2 + PIXEL_OFFSET};
 				
 		//this is a little janky? possibly
 		attackAreaTop = new Polygon(topTrianglePoints);
 		attackAreaLeft = new Polygon(leftTrianglePoints);
 		attackAreaBottom = new Polygon(bottomTrianglePoints);
 		attackAreaRight = new Polygon(rightTrianglePoints);
-		playerHitBox = new Polygon(playerHitBoxPoints);
+		playerHitBox = new Polygon(player.getHitBox(cam));
 	}
 	
 	private void doPlayerMovement(Input input, int delta)
 	{
-		boolean updateDelta = true;
 		/**
 		 * Make the player run
 		 */
@@ -403,7 +391,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && !downKeyPressed) {
 			upKeyPressed = true;
 			player.setYVel(movingDiagonal ? -player.getSpeed() * diagonalOffset :  -player.getSpeed());
-			updateDelta = false;
 			lastKeyReleased = up;
 			addToKeysPressed(up);
 		}
@@ -418,7 +405,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && !rightKeyPressed) {
 			leftKeyPressed = true;
 			player.setXVel(movingDiagonal ? -player.getSpeed() * diagonalOffset :  -player.getSpeed());
-			updateDelta = false;
 			lastKeyReleased = left;
 			addToKeysPressed(left);
 		}
@@ -433,7 +419,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) && !upKeyPressed) {
 			downKeyPressed = true;
 			player.setYVel(movingDiagonal ? player.getSpeed() * diagonalOffset :  player.getSpeed());
-			updateDelta = false;
 			lastKeyReleased = down;
 			addToKeysPressed(down);
 		}
@@ -449,7 +434,6 @@ public class Play extends BasicGameState {
 		if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && !leftKeyPressed) {
 			rightKeyPressed = true;
 			player.setXVel(movingDiagonal ? player.getSpeed() * diagonalOffset :  player.getSpeed());
-			updateDelta = false;
 			lastKeyReleased = right;
 			addToKeysPressed(right);
 		}
@@ -654,7 +638,9 @@ public class Play extends BasicGameState {
 		for(Entity e : GameSessionFactory.getGameSession().getEntities()) {
 			for(Entity ee : GameSessionFactory.getGameSession().getEntities() ) {
 				if(e.testCollision(ee)) {
-					System.out.println(e.getClass().getName() + " collided with " + ee.getClass().getName());
+					
+					if(e.getEntityType() != ee.getEntityType()) System.out.println(e.getClass().getName() + " collided with " + ee.getClass().getName());
+					
 					if( e.getEntityType().equals(EntityType.PROJECTILE) && ee.getEntityType().equals(EntityType.ENEMY))
 					{
 						try {
@@ -666,12 +652,31 @@ public class Play extends BasicGameState {
 						}
 						removeList.add(e);
 					}
+					else if( ee.getEntityType().equals(EntityType.PROJECTILE) && e.getEntityType().equals(EntityType.ENEMY))
+					{
+						try {
+							e.subtractHitpoints(ee.getDamage());
+						} catch (EntityDeadException e1) {
+							Enemy enemy = (Enemy)e;
+							enemy.calculateDropItem();
+							removeList.add(e);
+						}
+						removeList.add(ee);
+					}
 					else if( e.getEntityType().equals(EntityType.PLAYER) )
 					{
 						try {
 							e.subtractHitpoints(ee.getDamage());
 						} catch (EntityDeadException e1) {
-							removeList.add(e);
+							System.out.println("GAMEOVER");
+						}
+					}
+					else if( ee.getEntityType().equals(EntityType.PLAYER) )
+					{
+						try {
+							e.subtractHitpoints(ee.getDamage());
+						} catch (EntityDeadException e1) {
+							System.out.println("GAMEOVER");
 						}
 					}
 					else if( e.getEntityType().equals(EntityType.ENEMY) && !ee.getEntityType().equals(EntityType.ENEMY) ) {
@@ -681,6 +686,15 @@ public class Play extends BasicGameState {
 							Enemy enemy = (Enemy)e;
 							enemy.calculateDropItem();
 							removeList.add(e);
+						}
+					}
+					else if( ee.getEntityType().equals(EntityType.ENEMY) && !e.getEntityType().equals(EntityType.ENEMY) ) {
+						try {
+							ee.subtractHitpoints( e.getDamage() );
+						} catch (EntityDeadException e1) {
+							Enemy enemy = (Enemy)ee;
+							enemy.calculateDropItem();
+							removeList.add(ee);
 						}
 					}
 				}
