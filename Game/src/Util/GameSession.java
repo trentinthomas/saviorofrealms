@@ -33,6 +33,7 @@ public class GameSession
 		entities = new ArrayList<Entity>();
 		removeEntities = new ArrayList<Entity>();
 		itemsOnGround = new ArrayList<Item>();
+		removeItemsOnGround = new ArrayList<Item>();
 		player = null;
 		this.ID = IDNum;
 		entityId = 0;

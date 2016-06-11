@@ -1,7 +1,11 @@
 package Game.TrentinAndErikGame.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.newdawn.slick.SavedState;
+import org.newdawn.slick.SlickException;
 
 import Game.TrentinAndErikGame.entities.Entity;
 import Game.TrentinAndErikGame.entities.Player;
@@ -75,6 +79,19 @@ public class GameSession
 	public void setGameFile(String gameFile)
 	{
 		this.gameFile = gameFile;
+	}
+	
+	public void saveGame()
+	{
+		try {
+			SavedState save = new SavedState( getGameFile() );
+			save.save();
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 }

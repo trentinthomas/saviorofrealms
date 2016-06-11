@@ -1,12 +1,8 @@
 package UI;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 /*import java.awt.Color;*/
 import java.util.Vector;
-
-import saviorOfRealms.*;
 
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
@@ -15,7 +11,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -31,7 +26,6 @@ import Entities.Player.PlayerType;
 import Items.Item;
 import Util.Camera;
 import Util.EnemyFactory;
-import Util.GameSession;
 import Util.GameSessionFactory;
 import Util.Resources;
 import Util.Window;
@@ -70,6 +64,7 @@ public class Play extends BasicGameState {
 	boolean stopAttacking;
 	boolean movingDiagonal;
 	boolean debug;
+	private boolean showInventory;
 	private float mouseX;
 	private float mouseY;
 	private float hudMouseX;
@@ -161,6 +156,7 @@ public class Play extends BasicGameState {
 		isAttacking = false;
 		stopAttacking = false;
 		movingDiagonal = false;
+		showInventory = false;
 		
 		upKeyPressed    = false;
 		leftKeyPressed  = false;
@@ -263,7 +259,10 @@ public class Play extends BasicGameState {
 					GameSessionFactory.getGameSession().removeItemFromGround(item);
 				}
 			}
-			GameSessionFactory.getGameSession().removeItemsFromGround();
+			
+		}
+		if( input.isKeyPressed( Input.KEY_B ) ) {
+			showInventory = !showInventory;
 		}
 		
 		/**
@@ -294,7 +293,7 @@ public class Play extends BasicGameState {
 		}
 		
 		checkForCollisions();
-		
+		GameSessionFactory.getGameSession().removeItemsFromGround();
 	}
 	
 	private void drawMap(Graphics g) {
@@ -522,6 +521,7 @@ public class Play extends BasicGameState {
 		g.draw(attackAreaBottom);
 		g.draw(attackAreaRight);
 		g.draw(playerHitBox);
+		g.draw(player.pickupRadius);
 		
 		if(lastKeyReleased == keysPressed.elementAt(1))
 			g.drawLine(cam.getX() + 100, cam.getY() + 100, cam.getX() + 100, cam.getY() + 200);
@@ -546,9 +546,10 @@ public class Play extends BasicGameState {
 	private void drawHUD(GameContainer gc, Graphics g)
 	{
 		//inventory outline or something? could probably make this a picture of sorts
-		g.drawImage( inventory_20,
-				cam.getX() + (gc.getWidth() - (inventoryWidth + guiPadding)), 
-				cam.getY() + (gc.getHeight() -(inventoryHeight + guiPadding)));
+		if(showInventory)
+		{
+			drawInventory(g);
+		}
 		
 		//width = 808
 		//height = 500
@@ -577,6 +578,8 @@ public class Play extends BasicGameState {
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + experienceHeight)));
 	}
 	
+
+
 	private void drawWalkingAnimation()
 	{
 		/**
@@ -692,6 +695,15 @@ public class Play extends BasicGameState {
 	public int getID() 
 	{
 		return 3;
+	}
+	
+	private void drawInventory(Graphics g) {
+		// TODO Auto-generated method stub
+		g.drawImage( inventory_20,
+				cam.getX() + (Window.WIDTH - (inventoryWidth + guiPadding)), 
+				cam.getY() + (Window.HEIGHT -(inventoryHeight + guiPadding)));
+		
+		player.getInventory().drawInventoryItems(g, cam);
 	}
 
 	

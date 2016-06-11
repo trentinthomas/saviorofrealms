@@ -25,6 +25,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener, Mouse
 {
 	private Timer gameTimer = new Timer(33, this);
 	public static boolean startTimer;
+	private static PlayerInformationMenu pim;
 	
 	/**
 	 * Default constructor
@@ -32,6 +33,7 @@ public class WorldPanel extends JPanel implements GUICard, ActionListener, Mouse
 	public WorldPanel() {
 		super();
 		startTimer = false;
+		pim = new PlayerInformationMenu(this);
 		initUI();
 	}
 
