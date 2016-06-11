@@ -47,6 +47,15 @@ public abstract class Enemy extends Entity implements ItemsDroppable
 		vector.x /= hyp;
 		vector.y /= hyp;
 		
+		if(Math.abs(vector.x) > Math.abs(vector.y)) 
+		{
+			setCurrentAnimation(vector.x > 0 ? walking[RIGHT] : walking[LEFT]);
+		}
+		else
+		{
+			setCurrentAnimation(vector.y > 0 ? walking[DOWN] : walking[UP]);
+		}
+		
 		xCoord += vector.x*speed;
 		yCoord += vector.y*speed;
 	}
