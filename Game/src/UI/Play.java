@@ -94,6 +94,7 @@ public class Play extends BasicGameState {
 	private Image currentLevel;
 	
 	private boolean paused = false;
+	private boolean zoomed = true;
 	
 	private String mouse = "No input yet!";
 	private Player player;
@@ -173,7 +174,8 @@ public class Play extends BasicGameState {
 	{
 
 		g.setBackground(Color.black);
-		
+		if(!zoomed)
+			g.scale(0.25f, 0.25f);
 		cam.checkPosition();
 		g.translate(-cam.getX(), -cam.getY());
 		//map.render(0, 0);
@@ -214,6 +216,8 @@ public class Play extends BasicGameState {
 		 */
 		if( input.isKeyPressed(Input.KEY_F1))
 			debug = !debug;
+		if( input.isKeyPressed(Input.KEY_F2))
+			zoomed = !zoomed;
 
 		mouseX = Mouse.getX() + cam.getX();
 		mouseY = Mouse.getY() + cam.getY();
@@ -318,7 +322,7 @@ public class Play extends BasicGameState {
 		maxMapY = Math.abs(Window.HEIGHT / (Tile.TILE_HEIGHT/2));
 		
 		for(int column = (int)playerX; column < (int)maxMapX + playerX; column++) {
-			for(int row = (int) playerY; row < map[column].length; row++) {
+			for(int row = (int) playerY; row < (int)maxMapY + playerY; row++) {
 				switch(map[column][row])
 				{
 				case 0: //Deep water
@@ -474,7 +478,7 @@ public class Play extends BasicGameState {
 		}
 		
 		if((input.isKeyPressed(Input.KEY_N))) {
-			EnemyFactory.spawnEnemy(EnemyType.GOBLIN, player.getxCoord() + Window.WIDTH, player.getyCoord() + Window.HEIGHT);
+			EnemyFactory.spawnEnemy(EnemyType.GOBLIN, player.getxCoord() + 200, player.getyCoord());
 		}
 			
 		//----------------------------------------------------------------------------
