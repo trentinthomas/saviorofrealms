@@ -93,6 +93,8 @@ public class Play extends BasicGameState {
 	Image experienceBar;
 	Image currentLevel;
 	
+	boolean paused = false;
+	
 	String mouse = "No input yet!";
 	private Player player;
 	
@@ -168,6 +170,7 @@ public class Play extends BasicGameState {
 	
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
+
 		g.setBackground(Color.black);
 		
 		cam.checkPosition();
@@ -209,13 +212,21 @@ public class Play extends BasicGameState {
 		 * Used for debug purposes
 		 */
 		if( input.isKeyPressed(Input.KEY_F1))
-		{
 			debug = !debug;
-		}
 
 		mouseX = Mouse.getX() + cam.getX();
 		mouseY = Mouse.getY() + cam.getY();
 
+		if( input.isKeyDown(Input.KEY_H))
+			player.addHitpoints(3);
+		if( input.isKeyDown(Input.KEY_J))
+			try {
+				if(player.getCurrentHitpoints() > 0)
+				player.subtractHitpoints(3);
+			} catch (EntityDeadException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		
 		/**
 		 * Go to pause menu
@@ -527,6 +538,9 @@ public class Play extends BasicGameState {
 		g.drawString("maxMapY: " + maxMapX, cam.getX() + 30, cam.getY() + 310);
 		g.drawString("mapSizeX: " + map[0].length, cam.getX() + 30, cam.getY() + 330);
 		g.drawString("mapSizeY: " + map.length, cam.getX() + 30, cam.getY() + 350);
+		g.drawString("currentHP: " + player.getCurrentHitpoints(), cam.getX() + 30, cam.getY() + 370);
+		g.drawString("maxHP: " + player.getMaxHitpoints(), cam.getX() + 30, cam.getY() + 390);
+		g.drawString("hp percent: " + player.getHitpointsPerecentage(), cam.getX() + 30, cam.getY() + 410);
 	}
 	
 	private void drawHUD(GameContainer gc, Graphics g)
@@ -557,11 +571,26 @@ public class Play extends BasicGameState {
 		g.drawImage( healthBar,
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight)));
+		g.setColor(Color.green);
+		if(player.getHitpointsPerecentage() < .75)
+			g.setColor(Color.yellow);
+		if(player.getHitpointsPerecentage() < .5)
+			g.setColor(Color.orange);
+		if(player.getHitpointsPerecentage() < .25)
+			g.setColor(Color.red);
+		if(player.getCurrentHitpoints() > 0)
+			g.fillRect(
+				cam.getX() + guiPadding + (gc.getWidth()/2 - itemSlotWidth/2), 
+				cam.getY() + guiPadding + (gc.getHeight() - (itemSlotHeight + energyHeight)),
+				(int)(player.getHitpointsPerecentage() * (healthWidth - 5)),
+				15);
+		
 		
 		//TODO: See if there is a reason why this is 
 		g.drawImage( energyBar,
 				cam.getX() + (gc.getWidth()/2 + (-experienceWidth + itemSlotWidth/2 + -guiPadding + 1)), 
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + experienceHeight)));
+		g.setColor(Color.white);
 	}
 	
 
@@ -668,7 +697,8 @@ public class Play extends BasicGameState {
 					else if( e.getEntityType().equals(EntityType.PLAYER) )
 					{
 						try {
-							e.subtractHitpoints(ee.getDamage());
+							if(e.getCurrentHitpoints() > 0)
+								e.subtractHitpoints(ee.getDamage());
 						} catch (EntityDeadException e1) {
 							System.out.println("GAMEOVER");
 						}

@@ -35,7 +35,7 @@ public class Engine extends StateBasedGame{
 		gc.setAlwaysRender(true);
 		gc.setShowFPS(true);
 		gc.setVSync(true);
-		
+
 		this.getState(menu).init(gc, this);
 		this.getState(gameSelect).init(gc, this);
 		this.getState(playerSelect).init(gc, this);

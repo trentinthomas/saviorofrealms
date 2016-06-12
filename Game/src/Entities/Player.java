@@ -21,6 +21,7 @@ public abstract class Player extends Entity{
 	protected PlayerType playerType;
 	private Inventory inventory;
 	private int currency;
+	private int hitpoints;
 	
 	public Circle pickupRadius;
 

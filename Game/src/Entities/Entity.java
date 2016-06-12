@@ -85,14 +85,23 @@ public abstract class Entity implements Serializable
 	}
 	
 	/**
-	 * Gets the number of hitpoints the entity has
-	 * @return hitpoints
+	 * Gets the max number of hitpoints the entity has
+	 * @return maxhitpoints
 	 */
-	public int getHitpoints() 
+	public int getMaxHitpoints() 
 	{
 		return maxHitpoints;
 	}
+	
+	public int getCurrentHitpoints() 
+	{
+		return currentHitPoints;
+	}
 
+	public float getHitpointsPerecentage()
+	{
+		return (float)this.currentHitPoints / (float)this.maxHitpoints; 
+	}
 	/**
 	 * Sets the number of hitpoints the entity has
 	 * @param hitpoints
