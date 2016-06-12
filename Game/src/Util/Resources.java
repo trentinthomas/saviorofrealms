@@ -32,12 +32,12 @@ public class Resources {
 	}
 
 	private void loadHUD() throws SlickException {
-		images.put("inventory_20", loadImage("/res/inventory_20.png"));
-		images.put("quickSlots", loadImage("/res/quickSlots.png"));
-		images.put("healthBar", loadImage("/res/healthBar.png"));
-		images.put("energyBar", loadImage("/res/energyBar.png"));
-		images.put("experienceBar", loadImage("/res/experienceBar.png"));
-		images.put("currentLevel", loadImage("/res/currentLevel.png"));
+		images.put("inventory_20", loadImage("/res/hud/inventory_20.png"));
+		images.put("quickSlots", loadImage("/res/hud/quickSlots.png"));
+		images.put("healthBar", loadImage("/res/hud/healthBar.png"));
+		images.put("energyBar", loadImage("/res/hud/energyBar.png"));
+		/*images.put("experienceBar", loadImage("/res/hud/experienceBar.png"));*/
+		images.put("currentLevel", loadImage("/res/hud/currentLevel.png"));
 	}
 	
 	private void loadIcons() throws SlickException {

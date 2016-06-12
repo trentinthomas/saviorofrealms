@@ -145,12 +145,12 @@ public class Play extends BasicGameState {
 			
 		}
 		
-		inventory_20 = new Image("/res/inventory_20.png");
-		quickSlots = new Image("/res/quickSlots.png");
-		healthBar = new Image("/res/healthBar.png");
-		energyBar = new Image("/res/energyBar.png");
-		experienceBar = new Image("/res/experienceBar.png");
-		currentLevel = new Image("/res/currentLevel.png");
+		inventory_20 = new Image("/res/hud/inventory_20.png");
+		quickSlots = new Image("/res/hud/quickSlots.png");
+		healthBar = new Image("/res/hud/healthBar.png");
+		energyBar = new Image("/res/hud/energyBar.png");
+		/*experienceBar = new Image("/res/hud/experienceBar.png");*/
+		currentLevel = new Image("/res/hud/currentLevel.png");
 		
 		isAttacking = false;
 		stopAttacking = false;
@@ -175,7 +175,7 @@ public class Play extends BasicGameState {
 		//map.render(0, 0);
 		
 		drawMap(g);		
-		drawHUD(gc, g);
+		
 		
 		updateAttackAreas();
 		
@@ -191,6 +191,8 @@ public class Play extends BasicGameState {
 		for(Item item : GameSessionFactory.getGameSession().getItemsOnGround()) {
 			g.drawImage(item.getItemImage(), item.getX(), item.getY());
 		}
+		
+		drawHUD(gc, g);
 			
 
 	}
@@ -548,16 +550,16 @@ public class Play extends BasicGameState {
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + currentLevelHeight)));
 
 		
-		g.drawImage( healthBar,
+/*		g.drawImage( healthBar,
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
-				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight + healthHeight - guiPadding)));
+				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight + healthHeight - guiPadding)));*/
 		
-		g.drawImage( energyBar,
+		g.drawImage( healthBar,
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight)));
 		
 		//TODO: See if there is a reason why this is 
-		g.drawImage( experienceBar,
+		g.drawImage( energyBar,
 				cam.getX() + (gc.getWidth()/2 + (-experienceWidth + itemSlotWidth/2 + -guiPadding + 1)), 
 				cam.getY() + (gc.getHeight() - (itemSlotHeight + experienceHeight)));
 	}
