@@ -15,7 +15,7 @@ public class Archer extends Player
 	 */
 	private static final long serialVersionUID = -6896859090080642632L;
 	
-	public static final int DEFAULT_DAMAGE = 15;
+	public static final int DEFAULT_DAMAGE = 1000;
 	public static final int DEFAULT_HITPOINTS = 70;
 	public static final int DEFAULT_DEFENCE = 10;
 	public static final int DEFAULT_SPEED = 5;

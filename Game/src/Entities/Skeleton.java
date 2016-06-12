@@ -6,12 +6,10 @@ import org.newdawn.slick.SpriteSheet;
 
 import Items.Item;
 import ItemsImplementation.BronzeSword;
-import ItemsImplementation.IronSword;
-import ItemsImplementation.SteelSword;
 import Util.Resources;
 import saviorOfRealms.errorHandling.ItemNotFoundException;
 
-public class Goblin extends Enemy
+public class Skeleton extends Enemy
 {
 	
 	/**
@@ -19,26 +17,26 @@ public class Goblin extends Enemy
 	 */
 	private static final long serialVersionUID = 8094431321460940037L;
 
-	public Goblin(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType, int width, int height) {
-		super(damage, hitpoints, defense, speed, xCoord, yCoord, EntityType.ENEMY, width, height, EnemyType.GOBLIN);
+	public Skeleton(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType, int width, int height) {
+		super(damage, hitpoints, defense, speed, xCoord, yCoord, EntityType.ENEMY, width, height, EnemyType.SKELETON);
 		this.setCurrentAnimation(walking[DOWN]);
 	}
 	
-	public Goblin()
+	public Skeleton()
 	{
-		super(10, 100, 10, 1, 0, 0, EntityType.ENEMY, 40, 40, EnemyType.GOBLIN);
+		super(10, 100, 10, 1, 0, 0, EntityType.ENEMY, 40, 40, EnemyType.SKELETON);
 		this.setCurrentAnimation(walking[DOWN]);
 	}
 	
-	public Goblin(float xCoord, float yCoord)
+	public Skeleton(float xCoord, float yCoord)
 	{
-		super(10, 100, 10, 1, xCoord, yCoord, EntityType.ENEMY, 40, 40, EnemyType.GOBLIN);
+		super(10, 100, 10, 1, xCoord, yCoord, EntityType.ENEMY, 40, 40, EnemyType.SKELETON);
 		this.setCurrentAnimation(walking[DOWN]);
 	}
 	
 	public Image getImage()
 	{
-		return Resources.getImage("goblin");
+		return Resources.getImage("skeleton");
 	}
 
 	@Override
@@ -63,14 +61,13 @@ public class Goblin extends Enemy
 	@Override
 	public String toString() {
 		return super.toString() 
-				+ "EnemyType: " + EnemyType.GOBLIN;
+				+ "EnemyType: " + EnemyType.SKELETON;
 	}
 
 	@Override
 	public void initializeDropTable() {
-		dropTable.addItem(new BronzeSword(), .50);
-		dropTable.addItem(new IronSword(), .40);
-		dropTable.addItem(new SteelSword(), .10);
+		dropTable.addItem(new BronzeSword(), 1.00);
+		
 	}
 
 	@Override

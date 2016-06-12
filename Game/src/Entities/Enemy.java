@@ -24,7 +24,7 @@ public abstract class Enemy extends Entity implements ItemsDroppable
 	 */
 	private static final long serialVersionUID = -276268313229956899L;
 
-	public enum EnemyType { GOBLIN, IMP};
+	public enum EnemyType { GOBLIN, IMP, SKELETON};
 	
 	private EnemyType enemyType;
 	
@@ -32,6 +32,7 @@ public abstract class Enemy extends Entity implements ItemsDroppable
 	public Enemy(int damage, int hitpoints, int defense, int speed, float xCoord, float yCoord, EntityType entityType, int width, int height, EnemyType enemyType) {
 		super(damage, hitpoints, defense, speed, xCoord, yCoord, EntityType.ENEMY, width, height);
 		this.enemyType = enemyType;
+		initializeDropTable();
 	}
 
 	@Override
@@ -72,8 +73,9 @@ public abstract class Enemy extends Entity implements ItemsDroppable
 
 	public void calculateDropItem() {
 		Item drop = null;
+		
 		try {
-			drop = ItemFactory.generateItem(Item.BRONZE_SWORD_ID);
+			drop = dropTable.getNextItem();
 		} catch (ItemNotFoundException e) {
 			e.printStackTrace();
 		}

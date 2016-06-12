@@ -6,20 +6,15 @@ import Items.Item;
 import Items.Weapon;
 import Util.Resources;
 
-public class BronzeSword extends Weapon {
+public class SteelSword extends Weapon {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5966874472058830712L;
 
-	public BronzeSword()
+	public SteelSword()
 	{
-		
 		super();
 	}
 	
-	public BronzeSword( int minDamage, int maxDamage ) {
+	public SteelSword( int minDamage, int maxDamage ) {
 		super( minDamage, maxDamage );
 	}
 
@@ -32,7 +27,7 @@ public class BronzeSword extends Weapon {
 	@Override
 	public Image getItemImage() {
 		// TODO Auto-generated method stub
-		return Resources.getImage("bronzeSword");
+		return Resources.getImage("steelSword");
 	}
 
 	public int getStackSize() {
@@ -48,10 +43,7 @@ public class BronzeSword extends Weapon {
 		maxDamageMax = 7;
 	}
 
-	@Override
 	public int getItemID() {
-		return Item.BRONZE_SWORD_ID;
+		return Item.STEEL_SWORD_ID;
 	}
-
-
 }

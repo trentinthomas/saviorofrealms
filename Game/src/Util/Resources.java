@@ -41,8 +41,10 @@ public class Resources {
 	}
 	
 	private void loadIcons() throws SlickException {
-		images.put("arrow", loadImage("/res/arrow.png"));
-		images.put("bronzeSword", loadImage("/res/bronzeSword.png"));
+		images.put("arrow", loadImage("/res/items/arrow.png"));
+		images.put("bronzeSword", loadImage("/res/items/bronzeSword.png"));
+		images.put("ironSword", loadImage("/res/items/ironSword.png"));
+		images.put("steelSword", loadImage("/res/items/steelSword.png"));
 	}
 	
 	private void loadTiles() throws SlickException {

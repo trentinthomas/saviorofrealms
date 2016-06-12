@@ -1,6 +1,8 @@
 package Items;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import ItemsImplementation.BronzeSword;
@@ -9,14 +11,17 @@ import saviorOfRealms.errorHandling.ItemNotFoundException;
 
 public class DropTable {
 
-	HashMap<Integer, Double> dropTable;
+	List<Item> items;
+	Random random;
 	
 	public DropTable( ) {
-		dropTable = new HashMap<Integer, Double>();
+		items = new ArrayList<Item>();
+		random = new Random();
 	}
 
-	public void addItem(Integer itemId, Double percentage) {
-		dropTable.put(itemId, percentage);
+	public void addItem(Item item, Double percentage) {
+		items.add(item);
+		item.setDropRate(percentage);
 	}
 
 	public Item getNextItem() throws ItemNotFoundException {
@@ -26,20 +31,12 @@ public class DropTable {
 		int itemIDToDrop = 0;
 		//TODO need to make this random, instead of getting the same item everytime from droptable.
 		//So instead of for loop, do a while loop and percentage is > 0.   
-//		while(percentage > 0)
-//		{
-//			Random random = new Random();
-			//get a random item from the hashmap.
-//		}
-		
-		for( int itemId : dropTable.keySet() )
+		while(percentage > 0)
 		{
-			percentage -= dropTable.get(itemId);
-			if(percentage < 0)
-			{
-				itemIDToDrop = itemId;
-				break;
-			}
+			int getItem = (int)(Math.random() * items.size());
+//			get a random item from the hashmap.
+			percentage -= items.get(getItem).getDropRate();
+			itemIDToDrop = items.get(getItem).getItemID();
 		}
 		
 		return ItemFactory.generateItem(itemIDToDrop);

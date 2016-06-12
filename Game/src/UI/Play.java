@@ -1,7 +1,6 @@
 package UI;
 
 import java.util.List;
-/*import java.awt.Color;*/
 import java.util.Vector;
 
 import org.lwjgl.input.Mouse;
@@ -30,6 +29,7 @@ import Util.GameSessionFactory;
 import Util.Resources;
 import Util.Window;
 import saviorOfRealms.Tiles.Tile;
+import saviorOfRealms.WorldGeneration.Chunk;
 import saviorOfRealms.WorldGeneration.HexMapGenerator;
 import saviorOfRealms.errorHandling.EntityDeadException;
 
@@ -55,14 +55,14 @@ public class Play extends BasicGameState {
 	private final int right = 3;
 	public final static int PIXEL_OFFSET = 10;
 	private final double diagonalOffset = .7071;
-	boolean upKeyPressed;
-	boolean leftKeyPressed;
-	boolean downKeyPressed;
-	boolean rightKeyPressed;
-	boolean isAttacking;
-	boolean stopAttacking;
-	boolean movingDiagonal;
-	boolean debug;
+	private boolean upKeyPressed;
+	private boolean leftKeyPressed;
+	private boolean downKeyPressed;
+	private boolean rightKeyPressed;
+	private boolean isAttacking;
+	private boolean stopAttacking;
+	private boolean movingDiagonal;
+	private boolean debug;
 	private boolean showInventory;
 	private float mouseX;
 	private float mouseY;
@@ -86,26 +86,28 @@ public class Play extends BasicGameState {
 	private Shape attackAreaRight;
 	private Shape playerHitBox;
 	
-	Image inventory_20;
-	Image quickSlots;
-	Image healthBar;
-	Image energyBar;
-	Image experienceBar;
-	Image currentLevel;
+	private Image inventory_20;
+	private Image quickSlots;
+	private Image healthBar;
+	private Image energyBar;
+	private Image experienceBar;
+	private Image currentLevel;
 	
-	boolean paused = false;
+	private boolean paused = false;
 	
-	String mouse = "No input yet!";
+	private String mouse = "No input yet!";
 	private Player player;
 	
 	private Camera cam;
-	//private TiledMap map;
-	private int[][] map;
 	
-	float playerX;
-	float playerY;
-	float maxMapX;
-	float maxMapY;
+	private int[][] map;
+	private Chunk[][] chunkMap;
+	private Chunk currentChunk;
+	
+	private float playerX;
+	private float playerY;
+	private float maxMapX;
+	private float maxMapY;
 	
 	private boolean hoveringOverHUD = false;
 	
@@ -116,7 +118,6 @@ public class Play extends BasicGameState {
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{	
-		//map = new TiledMap("res/testworldv4.tmx");
 		map = new HexMapGenerator().getDiamondSquare();
 		cam = new Camera();
 		if(GameSessionFactory.hasGameSession())
@@ -315,14 +316,6 @@ public class Play extends BasicGameState {
 		//TODO cant have Absolute value here always. - chunk idea should solve this
 		maxMapX = Math.abs(Window.WIDTH / (Tile.TILE_WIDTH/2));
 		maxMapY = Math.abs(Window.HEIGHT / (Tile.TILE_HEIGHT/2));
-		
-		
-//		images.put("tiles_grass", loadSubImage("/res/tileset.png", 0, 0));
-//		images.put("tiles_deep_water", loadSubImage("/res/tileset.png", 32, 0));
-//		images.put("tiles_water", loadSubImage("/res/tileset.png", 64, 0));
-//		images.put("tiles_sand", loadSubImage("/res/tileset.png", 96, 0));
-//		images.put("tiles_stone", loadSubImage("/res/tileset.png", 0, 32));
-//		images.put("tiles_lava", loadSubImage("/res/tileset.png", 32, 32));
 		
 		for(int column = (int)playerX; column < (int)maxMapX + playerX; column++) {
 			for(int row = (int) playerY; row < map[column].length; row++) {
