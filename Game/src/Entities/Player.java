@@ -21,7 +21,7 @@ public abstract class Player extends Entity{
 	protected PlayerType playerType;
 	private Inventory inventory;
 	private int currency;
-	private int hitpoints;
+	private int skillPoints = 0;
 	
 	public Circle pickupRadius;
 
@@ -73,7 +73,15 @@ public abstract class Player extends Entity{
 		currency -= amountToSubtract;
 	}
 	
-	protected void levelUp() {
+	public int getSkillPoints() {
+		return this.skillPoints;
+	}
+	
+	public void levelUp() {
+		skillPoints++;
+		level++;
+		this.setExperienceNeeded();
+		this.setCurrentExperience(0);
 		//TODO implement a way to levelup, increasing stats and adding talent points etc.
 	}
 	

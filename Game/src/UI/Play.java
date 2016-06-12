@@ -44,7 +44,7 @@ public class Play extends BasicGameState {
 	private final int healthHeight = 25;
 	private final int energyWidth = 190;
 	private final int energyHeight = 25;
-	private final int experienceWidth = 190;
+	private final int experienceWidth = 465;
 	private final int experienceHeight = 25;
 	private final int currentLevelHeight = 85;
 	private final int currentLevelWidth = 85;
@@ -153,7 +153,7 @@ public class Play extends BasicGameState {
 		quickSlots = new Image("/res/hud/quickSlots.png");
 		healthBar = new Image("/res/hud/healthBar.png");
 		energyBar = new Image("/res/hud/energyBar.png");
-		/*experienceBar = new Image("/res/hud/experienceBar.png");*/
+		experienceBar = new Image("/res/hud/experienceBar.png");
 		currentLevel = new Image("/res/hud/currentLevel.png");
 		
 		isAttacking = false;
@@ -224,6 +224,10 @@ public class Play extends BasicGameState {
 
 		if( input.isKeyDown(Input.KEY_H))
 			player.addHitpoints(3);
+		if( input.isKeyDown(Input.KEY_Z))
+			player.addCurrentExperience(1);
+		if( input.isKeyPressed(Input.KEY_X) && player.getCurrentExperience() > 0)
+			player.addCurrentExperience(-1);
 		if( input.isKeyDown(Input.KEY_J))
 			try {
 				if(player.getCurrentHitpoints() > 0)
@@ -310,6 +314,7 @@ public class Play extends BasicGameState {
 		}
 		
 		checkForCollisions();
+		checkExperience();
 		GameSessionFactory.getGameSession().removeItemsFromGround();
 	}
 	
@@ -318,8 +323,8 @@ public class Play extends BasicGameState {
 		playerY = Math.abs(player.getyCoord() - Window.HEIGHT) / (Tile.TILE_HEIGHT); 
 		
 		//TODO cant have Absolute value here always. - chunk idea should solve this
-		maxMapX = Math.abs(Window.WIDTH / (Tile.TILE_WIDTH/2));
-		maxMapY = Math.abs(Window.HEIGHT / (Tile.TILE_HEIGHT/2));
+		maxMapX = Math.abs(Window.WIDTH / (Tile.TILE_WIDTH/1.6f));
+		maxMapY = Math.abs(Window.HEIGHT / (Tile.TILE_HEIGHT/1.75f));
 		
 		for(int column = (int)playerX; column < (int)maxMapX + playerX; column++) {
 			for(int row = (int) playerY; row < (int)maxMapY + playerY; row++) {
@@ -559,7 +564,12 @@ public class Play extends BasicGameState {
 		g.drawString("mapSizeY: " + map.length, cam.getX() + 30, cam.getY() + 350);
 		g.drawString("currentHP: " + player.getCurrentHitpoints(), cam.getX() + 30, cam.getY() + 370);
 		g.drawString("maxHP: " + player.getMaxHitpoints(), cam.getX() + 30, cam.getY() + 390);
-		g.drawString("hp percent: " + player.getHitpointsPerecentage(), cam.getX() + 30, cam.getY() + 410);
+		g.drawString("hp percent: " + player.getHitpointsPercentage(), cam.getX() + 30, cam.getY() + 410);
+		g.drawString("current XP: " + player.getCurrentExperience(), cam.getX() + 30, cam.getY() + 430);
+		g.drawString("xpneeded: " + player.getExperienceNeeded(), cam.getX() + 30, cam.getY() + 450);
+		g.drawString("xp percent: " + player.getExperiencePercentage(), cam.getX() + 30, cam.getY() + 470);
+		g.drawString("skillpoints: " + player.getSkillPoints(), cam.getX() + 30, cam.getY() + 490);
+		g.drawString("level: " + player.getLevel(), cam.getX() + 30, cam.getY() + 510);
 	}
 	
 	private void drawHUD(GameContainer gc, Graphics g)
@@ -580,35 +590,42 @@ public class Play extends BasicGameState {
 		
 		g.drawImage( currentLevel,
 				cam.getX() + (gc.getWidth()/2 - currentLevelWidth/2), 
-				cam.getY() + (gc.getHeight() - (itemSlotHeight + currentLevelHeight)));
+				cam.getY() + guiPadding + (gc.getHeight() - (itemSlotHeight + currentLevelHeight + experienceHeight)));
 
 		
-/*		g.drawImage( healthBar,
+		g.drawImage(experienceBar,
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
-				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight + healthHeight - guiPadding)));*/
+				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight)));
+		g.setColor(Color.cyan);
+		g.fillRect(
+				cam.getX() + guiPadding + (gc.getWidth()/2 - itemSlotWidth/2), 
+				cam.getY() + guiPadding + (gc.getHeight() - (itemSlotHeight + experienceHeight)),
+				(int)(player.getExperiencePercentage() * (experienceWidth - 10)),
+				15);
+		
 		
 		g.drawImage( healthBar,
 				cam.getX() + (gc.getWidth()/2 - itemSlotWidth/2), 
-				cam.getY() + (gc.getHeight() - (itemSlotHeight + energyHeight)));
+				cam.getY() + guiPadding + (gc.getHeight() - (itemSlotHeight + experienceHeight + healthHeight)));
 		g.setColor(Color.green);
-		if(player.getHitpointsPerecentage() < .75)
+		if(player.getHitpointsPercentage() < .75)
 			g.setColor(Color.yellow);
-		if(player.getHitpointsPerecentage() < .5)
+		if(player.getHitpointsPercentage() < .5)
 			g.setColor(Color.orange);
-		if(player.getHitpointsPerecentage() < .25)
+		if(player.getHitpointsPercentage() < .25)
 			g.setColor(Color.red);
 		if(player.getCurrentHitpoints() > 0)
 			g.fillRect(
 				cam.getX() + guiPadding + (gc.getWidth()/2 - itemSlotWidth/2), 
-				cam.getY() + guiPadding + (gc.getHeight() - (itemSlotHeight + energyHeight)),
-				(int)(player.getHitpointsPerecentage() * (healthWidth - 5)),
+				cam.getY() + guiPadding*2 + (gc.getHeight() - (itemSlotHeight + experienceHeight + energyHeight)),
+				(int)(player.getHitpointsPercentage() * (healthWidth - 5)),
 				15);
 		
 		
 		//TODO: See if there is a reason why this is 
 		g.drawImage( energyBar,
-				cam.getX() + (gc.getWidth()/2 + (-experienceWidth + itemSlotWidth/2 + -guiPadding + 1)), 
-				cam.getY() + (gc.getHeight() - (itemSlotHeight + experienceHeight)));
+				cam.getX() + (gc.getWidth()/2 + (-energyWidth + itemSlotWidth/2 + -guiPadding + 1)), 
+				cam.getY() + guiPadding + (gc.getHeight() - (itemSlotHeight + experienceHeight + energyHeight)));
 		g.setColor(Color.white);
 	}
 	
@@ -698,6 +715,12 @@ public class Play extends BasicGameState {
 						} catch (EntityDeadException e1) {
 							Enemy enemy = (Enemy)ee;
 							enemy.calculateDropItem();
+							/**
+							 * this should be add current experience of the entity
+							 * So it may be necessary that every entity has a varibale that is the amount of xp given
+							 * Currently only works with archer
+							 */
+							player.addCurrentExperience(10);
 							removeList.add(ee);
 						}
 						removeList.add(e);
@@ -755,7 +778,10 @@ public class Play extends BasicGameState {
 		GameSessionFactory.getGameSession().getEntities().removeAll(removeList);
 	}
 
-	
+	public void checkExperience() {
+		if(player.getCurrentExperience() >= player.getExperienceNeeded())
+			player.levelUp();
+	}
 	@Override
 	public int getID() 
 	{

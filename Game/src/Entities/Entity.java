@@ -34,10 +34,11 @@ public abstract class Entity implements Serializable
 	
 	
 	protected int level;
-	protected int experience;
-	
+	protected int currentExperience;
+	protected int experienceNeeded;
 	protected int damage; //how much damage the entity does
 	protected int maxHitpoints; //how many hitpoints the entity has maximum
+	
 	protected int defense; //how much defence the entity has
 	protected double speed; //how fast the entity is
 	protected float xCoord; //where on the map the entity is.
@@ -79,7 +80,8 @@ public abstract class Entity implements Serializable
 		this.height = height;
 		initAnimations();
 		level = 1;
-		experience = 0;
+		currentExperience = 0;
+		experienceNeeded = 11;
 		entityID = GameSession.entityId++;
 		currentHitPoints = maxHitpoints;
 	}
@@ -98,10 +100,12 @@ public abstract class Entity implements Serializable
 		return currentHitPoints;
 	}
 
-	public float getHitpointsPerecentage()
+	public float getHitpointsPercentage()
 	{
 		return (float)this.currentHitPoints / (float)this.maxHitpoints; 
 	}
+	
+	
 	/**
 	 * Sets the number of hitpoints the entity has
 	 * @param hitpoints
@@ -111,6 +115,11 @@ public abstract class Entity implements Serializable
 		this.maxHitpoints = hitpoints;
 	}
 
+	public float getExperiencePercentage()
+	{
+		return (float)this.currentExperience / (float)this.experienceNeeded; 
+	}
+	
 	/**
 	 * Gets the number of defense the entity has
 	 * @return defense
@@ -321,14 +330,27 @@ public abstract class Entity implements Serializable
 		this.level = level;
 	}
 
-	public int getExperience() {
-		return experience;
-	}
-
-	public void setExperience(int experience) {
-		this.experience = experience;
+	public int getCurrentExperience() {
+		return currentExperience;
 	}
 	
+	public int getExperienceNeeded() {
+		return experienceNeeded;
+	}
+
+	public void setCurrentExperience(int experience) {
+		this.currentExperience = experience;
+	}
+	
+	public void setExperienceNeeded() {
+		this.experienceNeeded += this.experienceNeeded/2;
+	}
+	
+	public void addCurrentExperience(int experience) {
+		this.currentExperience += experience;
+	}
+	
+
 	@Override
 	public String toString() {
 		return "EntityType: " + entityType + "\n"
