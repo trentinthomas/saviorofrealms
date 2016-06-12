@@ -47,6 +47,14 @@ public class Resources {
 	
 	private void loadTiles() throws SlickException {
 		images.put("tiles", loadImage("/res/tileset.png"));
+		
+		//We were loading subimages from tileset when rendering, im loading and putting in images.
+		images.put("tiles_grass", loadSubImage("/res/tileset.png", 0, 0));
+		images.put("tiles_deep_water", loadSubImage("/res/tileset.png", 32, 0));
+		images.put("tiles_water", loadSubImage("/res/tileset.png", 64, 0));
+		images.put("tiles_sand", loadSubImage("/res/tileset.png", 96, 0));
+		images.put("tiles_stone", loadSubImage("/res/tileset.png", 0, 32));
+		images.put("tiles_lava", loadSubImage("/res/tileset.png", 32, 32));
 	}
 
 	private void loadSpriteSheets() throws SlickException {
@@ -72,6 +80,10 @@ public class Resources {
 	
 	private Image loadImage(String path) throws SlickException {
 		return new Image(path, false, Image.FILTER_NEAREST);
+	}
+	
+	private Image loadSubImage(String pathToGet, int x, int y) throws SlickException {
+		return loadImage(pathToGet).getSubImage(x, y, 32, 32);
 	}
 	
 	private Sound loadSound(String path) throws SlickException {

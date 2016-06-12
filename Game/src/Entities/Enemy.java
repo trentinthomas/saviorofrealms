@@ -49,11 +49,11 @@ public abstract class Enemy extends Entity implements ItemsDroppable
 		
 		if(Math.abs(vector.x) > Math.abs(vector.y)) 
 		{
-			setCurrentAnimation(vector.x > 0 ? walking[RIGHT] : walking[LEFT]);
+			setCurrentAnimation(vector.x > 0 ? walking[RIGHT] : walking[LEFT]); //if x we are moving in a positive direction we are going right, otherwise left
 		}
 		else
 		{
-			setCurrentAnimation(vector.y > 0 ? walking[DOWN] : walking[UP]);
+			setCurrentAnimation(vector.y > 0 ? walking[DOWN] : walking[UP]); //if y we are moving in a positive direction we are going down, otherwise up
 		}
 		
 		xCoord += vector.x*speed;

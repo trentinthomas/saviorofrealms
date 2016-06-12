@@ -317,15 +317,37 @@ public class Play extends BasicGameState {
 		maxMapY = Math.abs(Window.HEIGHT / (Tile.TILE_HEIGHT/2));
 		
 		
+//		images.put("tiles_grass", loadSubImage("/res/tileset.png", 0, 0));
+//		images.put("tiles_deep_water", loadSubImage("/res/tileset.png", 32, 0));
+//		images.put("tiles_water", loadSubImage("/res/tileset.png", 64, 0));
+//		images.put("tiles_sand", loadSubImage("/res/tileset.png", 96, 0));
+//		images.put("tiles_stone", loadSubImage("/res/tileset.png", 0, 32));
+//		images.put("tiles_lava", loadSubImage("/res/tileset.png", 32, 32));
+		
 		for(int column = (int)playerX; column < (int)maxMapX + playerX; column++) {
 			for(int row = (int) playerY; row < map[column].length; row++) {
 				switch(map[column][row])
 				{
-				case 0:
-					g.drawImage(Resources.getImage("tiles").getSubImage(32, 0, 32, 32), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+				case 0: //Deep water
+					g.drawImage(Resources.getImage("tiles_deep_water"), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
 					break;
-				default:
-					g.drawImage(Resources.getImage("tiles").getSubImage(0, 0, 32, 32), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+				case 1: //Regular water
+					g.drawImage(Resources.getImage("tiles_water"), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+					break;
+				case 2: //sand
+					g.drawImage(Resources.getImage("tiles_sand"), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+					break;
+				case 3: //grass
+					g.drawImage(Resources.getImage("tiles_grass"), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+					break;
+				case 7: //stone
+					g.drawImage(Resources.getImage("tiles_stone"), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+					break;
+				case 8: //lava
+					g.drawImage(Resources.getImage("tiles_lava"), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
+					break;
+				default: //grass
+					g.drawImage(Resources.getImage("tiles_grass"), column*Tile.TILE_WIDTH, row*Tile.TILE_HEIGHT);
 					break;
 				}
 			}

@@ -1,15 +1,16 @@
 package Items;
 
-public class InventorySlot 
+import java.io.Serializable;
+
+public class InventorySlot implements Serializable
 {
 	
+	private static final long serialVersionUID = 2851985060611918082L;
 	private Item item;
 	private int numItems;
 	
 	private float xCoord; //These are for drawing purposes.
 	private float yCoord;
-	private float width;
-	private float height;
 	
 	public InventorySlot() {
 		numItems = 0;
