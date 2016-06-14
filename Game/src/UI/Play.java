@@ -28,6 +28,7 @@ import Util.EnemyFactory;
 import Util.GameSessionFactory;
 import Util.Resources;
 import Util.Window;
+import saviorOfRealms.HUD.HeadsUpDisplay;
 import saviorOfRealms.Tiles.Tile;
 import saviorOfRealms.WorldGeneration.Chunk;
 import saviorOfRealms.WorldGeneration.HexMapGenerator;
@@ -112,6 +113,8 @@ public class Play extends BasicGameState {
 	
 	private boolean hoveringOverHUD = false;
 	
+	private HeadsUpDisplay hud;
+	
 	public Play(int state)
 	{
 		
@@ -119,6 +122,7 @@ public class Play extends BasicGameState {
 	
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{	
+		hud = new HeadsUpDisplay(gc);
 		map = new HexMapGenerator().getDiamondSquare();
 		cam = new Camera();
 		if(GameSessionFactory.hasGameSession())
