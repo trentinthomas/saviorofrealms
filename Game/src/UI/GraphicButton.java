@@ -1,71 +1,104 @@
 package UI;
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Point;
-import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.GUIContext;
 
-import Util.Window;
+public class GraphicButton extends AbstractComponent{
 
-public class GraphicButton 
-{
-	private Image buttonUp;
-	private Image buttonHover;
-	private Image currentImage;
-	private float width;
-	private float height;
+	protected int width;
+	protected int height;
+	protected int x;
+	protected int y;
+	protected int mouseX;
+	protected int mouseY;
+	protected boolean pressed;
+	protected Shape hitbox;
+	protected boolean over;
+	protected String text;
 	
-	private float x;
-	private float y;
+	protected Image buttonUp;
+	protected Image buttonHover;
+	protected Image currentImage;
 	
-	public GraphicButton(Image buttonUp, Image buttonHover, float x, float y) {
-		this.buttonUp = buttonUp;
-		this.buttonHover = buttonHover;
-		this.currentImage = buttonUp;
-		this.x = x;
-		this.y = y;
-		this.width = buttonUp.getWidth();
-		this.height = buttonUp.getHeight();
+	public GraphicButton(GUIContext container, int x, int y, Image buttonUp, Image buttonHover) {
+	    super(container);
+	    setLocation(x, y);
+	    this.width = buttonUp.getWidth();
+	    this.height = buttonUp.getHeight();
+	    this.buttonUp = buttonUp;
+	    this.buttonHover = buttonHover;
+	    hitbox = new Rectangle(x, y, width, height);
+	    currentImage = buttonUp;
 	}
 	
-	public GraphicButton(Image buttonUp, Image buttonHover, float x, float y, String text) {
-		this.buttonUp = buttonUp;
-		this.buttonHover = buttonHover;
-		this.x = x;
-		this.y = y;
-		this.currentImage = buttonUp;
-		this.width = buttonUp.getWidth();
-		this.height = buttonUp.getHeight();
+	public GraphicButton(GUIContext container, int x, int y, Image buttonUp, Image buttonHover, String text) {
+	    super(container);
+	    setLocation(x, y);
+	    this.width = buttonUp.getWidth();
+	    this.height = buttonUp.getHeight();
+	    this.buttonUp = buttonUp;
+	    this.buttonHover = buttonHover;
+	    this.text = text;
+	    hitbox = new Rectangle(x, y, width, height);
+	    currentImage = buttonUp;
 	}
 	
-	public boolean contains(float x, float y) {
-		System.out.println("does it contain?: " + (x <= this.x + this.width
-				&& y <= this.y + this.height
-				&& x >= this.x
-				&& y >= this.y));
-		
-		System.out.println("Mouse values: " + Mouse.getX() + " " + Mouse.getY());
-		
-		return x <= this.x + this.width
-				&& y <= this.y + this.height
-				&& x >= this.x
-				&& y >= this.y;
+	@Override
+	public int getHeight() {
+	    return height;
 	}
 	
-	public boolean contains(Point p) {
-		return new Polygon( new float[] { x, y, x+width, y, x, y+height, x+width, y+height } ).contains(p);
+	@Override
+	public int getWidth() {
+	    return width;
 	}
 	
-	public void draw(Graphics g) {
-		setCurrentImage(contains(Mouse.getX(), Window.HEIGHT - Mouse.getY()));
+	@Override
+	public int getX() {
+	    return x;
+	}
+	
+	@Override
+	public int getY() {
+	    return y;
+	}
+	
+	public boolean isPressed() {
+	    return pressed;
+	}
+	public void update(GUIContext container) {
+	    mouseX = container.getInput().getMouseX();
+	    mouseY = container.getInput().getMouseY();
+	    over = hitbox.contains(mouseX, mouseY);
+	
+	    if (over && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+	        pressed = true;
+	    }else{
+	        pressed = false;
+	    }
+	}
+	
+	@Override
+	public void render(GUIContext container, Graphics g) throws SlickException {
+		setCurrentImage();
 		g.drawImage(currentImage, x, y);
 	}
 	
-	
-	
-	public void setCurrentImage(boolean isHovering) {
-		this.currentImage = isHovering ? buttonHover : buttonUp;
+	@Override
+	public void setLocation(int x, int y) {
+	    this.x = x;
+	    this.y = y;
 	}
-
+	
+	public void setCurrentImage() {
+		currentImage = over ? buttonHover : buttonUp;
+	}
+	
+	
 }

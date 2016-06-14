@@ -1,5 +1,8 @@
 package UI;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -7,6 +10,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -58,7 +63,7 @@ public class Menu extends BasicGameState {
 		down_exit = new Image("/res/buttons/down_exit.png");
 		
 		
-		graphicButton = new GraphicButton(up_singleplayer, down_singleplayer, 100, 100);
+		graphicButton = new GraphicButton(gc, 100, 100, up_singleplayer, down_singleplayer);
 		
 /*		gc.setAlwaysRender(true);
 		gc.setTargetFrameRate(60);
@@ -105,7 +110,7 @@ public class Menu extends BasicGameState {
 		else
 			g.drawImage(down_exit, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 + buttonHeight);
 		
-		graphicButton.draw(g);
+		graphicButton.render(gc, g);
 		
 		
 	}
@@ -170,7 +175,12 @@ public class Menu extends BasicGameState {
 		}
 		else
 			hoverExit = false;
+		graphicButton.update(gc);
 		
+		
+		if (graphicButton.isPressed()) {
+			System.out.println("hello");
+		}
 		
 	}
 
