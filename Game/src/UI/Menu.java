@@ -33,6 +33,8 @@ public class Menu extends BasicGameState {
 	boolean hoverExit = false;
 	boolean hoveringOverAButton = false;
 	
+	GraphicButton graphicButton;
+	
 
 	public String mouse = "No input yet!";
 	
@@ -55,6 +57,8 @@ public class Menu extends BasicGameState {
 		down_options = new Image("/res/buttons/down_options.png");
 		down_exit = new Image("/res/buttons/down_exit.png");
 		
+		
+		graphicButton = new GraphicButton(up_singleplayer, down_singleplayer, 100, 100);
 		
 /*		gc.setAlwaysRender(true);
 		gc.setTargetFrameRate(60);
@@ -100,6 +104,8 @@ public class Menu extends BasicGameState {
 			g.drawImage(up_exit, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 + buttonHeight);
 		else
 			g.drawImage(down_exit, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 + buttonHeight);
+		
+		graphicButton.draw(g);
 		
 		
 	}
