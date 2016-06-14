@@ -1,17 +1,12 @@
 package UI;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.gui.AbstractComponent;
-import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -38,7 +33,13 @@ public class Menu extends BasicGameState {
 	boolean hoverExit = false;
 	boolean hoveringOverAButton = false;
 	
-	GraphicButton graphicButton;
+	private final int SINGLEPLAYER_BUTTON_ID = 1;
+	private final int MULTIPLAYER_BUTTON_ID = 2;
+	private final int OPTIONS_BUTTON_ID = 3;
+	private final int EXIT_BUTTON_ID = 4;
+	
+	GraphicButton singlePlayerButton, multiPlayerButton, optionsButton, exitButton;
+	private ArrayList<GraphicButton> buttons;
 	
 
 	public String mouse = "No input yet!";
@@ -63,11 +64,26 @@ public class Menu extends BasicGameState {
 		down_exit = new Image("/res/buttons/down_exit.png");
 		
 		
-		graphicButton = new GraphicButton(gc, 100, 100, up_singleplayer, down_singleplayer);
+		singlePlayerButton = new GraphicButton(gc, 100, 100, up_singleplayer, down_singleplayer);
+		multiPlayerButton = new GraphicButton(gc, 100, 100, up_multiplayer, down_multiplayer);
+		optionsButton = new GraphicButton(gc, 100, 100, up_options, down_options);
+		exitButton = new GraphicButton(gc, 100, 100, up_exit, down_exit);
 		
-/*		gc.setAlwaysRender(true);
-		gc.setTargetFrameRate(60);
-		gc.setMaximumLogicUpdateInterval(60);*/
+		singlePlayerButton.setLocation(gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight*2);
+		multiPlayerButton.setLocation(gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight);
+		optionsButton.setLocation(gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2);
+		exitButton.setLocation(gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 + buttonHeight);
+		
+		singlePlayerButton.setButtonId(SINGLEPLAYER_BUTTON_ID);
+		multiPlayerButton.setButtonId(MULTIPLAYER_BUTTON_ID);
+		optionsButton.setButtonId(OPTIONS_BUTTON_ID);
+		exitButton.setButtonId(EXIT_BUTTON_ID);
+		
+		buttons = new ArrayList<GraphicButton>();
+		buttons.add(singlePlayerButton);
+		buttons.add(multiPlayerButton);
+		buttons.add(optionsButton);
+		buttons.add(exitButton);
 		
 	}
 	
@@ -76,110 +92,24 @@ public class Menu extends BasicGameState {
 	{
 		g.drawString(mouse, 10, 30);
 		g.setBackground(Color.black);
-		//g.drawLine(0, gc.getHeight()/2, gc.getWidth(), gc.getHeight()/2);
-		
-/*		g.drawLine(0, gc.getHeight()/2, gc.getWidth(), gc.getHeight()/2);
-		g.drawLine(0, gc.getHeight()/2 - buttonHeight*2, gc.getWidth(), gc.getHeight()/2 - buttonHeight*2);
-		g.drawLine(0, gc.getHeight()/2 - buttonHeight, gc.getWidth(), gc.getHeight()/2 - buttonHeight); // this is the middle 
-		g.drawLine(0, gc.getHeight()/2 + buttonHeight, gc.getWidth(), gc.getHeight()/2 + buttonHeight);
-		g.drawLine(0, gc.getHeight()/2 + buttonHeight*2, gc.getWidth(), gc.getHeight()/2 + buttonHeight*2);
-		
-		//vertical lines
-		g.drawLine(gc.getWidth()/2 - buttonWidth/2, 0, gc.getWidth()/2 - buttonWidth/2, gc.getHeight());
-		g.drawLine(gc.getWidth()/2 + buttonWidth/2, 0, gc.getWidth()/2 + buttonWidth/2, gc.getHeight());*/
-		
-		//g.drawString("Savior of Realms", 325, 100);
-		
-		if(!hoverSingleplayer)
-			g.drawImage(up_singleplayer, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight*2);
-		else
-			g.drawImage(down_singleplayer, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight*2);
-		
-		if(!hoverMultiplayer)
-			g.drawImage(up_multiplayer, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight);
-		else
-			g.drawImage(down_multiplayer, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 - buttonHeight);
-		
-		if(!hoverOptions)
-			g.drawImage(up_options, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2);
-		else
-			g.drawImage(down_options, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2);
-		
-		if(!hoverExit)
-			g.drawImage(up_exit, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 + buttonHeight);
-		else
-			g.drawImage(down_exit, gc.getWidth()/2 - buttonWidth/2, gc.getHeight()/2 + buttonHeight);
-		
-		graphicButton.render(gc, g);
-		
+
+		for( GraphicButton button : buttons)
+		{
+			button.render(gc, g);
+		}
 		
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException 
 	{
-		Input input = gc.getInput();
-		int mouseX = Mouse.getX();
-		int mouseY = Mouse.getY();
-		mouse = "Mouse Position: x(" + mouseX + ") y(" + mouseY + ")";
-		
-		if(input.isKeyPressed(Input.KEY_ENTER))
+		for( GraphicButton button : buttons)
 		{
-			sbg.enterState(Engine.gameSelect);
-		}
-		
-		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
-				(mouseY > gc.getHeight()/2 + buttonHeight && mouseY < gc.getHeight()/2 + buttonHeight*2))
-		{
-			hoverSingleplayer = true;
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+			button.update(gc);
+			if( button.isPressed() )
 			{
-				sbg.enterState(Engine.gameSelect);
+				handleEvent(button.getButtonId(), sbg);
 			}
-		}
-		else
-			hoverSingleplayer = false;		
-		
-		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
-				(mouseY > gc.getHeight()/2 && mouseY < gc.getHeight()/2 + buttonHeight))
-		{
-			hoverMultiplayer = true;
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
-			{
-				//sbg.enterState(Engine.multiplayerOptions);
-			}
-		}
-		else
-			hoverMultiplayer = false;	
-		
-		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
-				(mouseY > gc.getHeight()/2 - buttonHeight && mouseY < gc.getHeight()/2))
-		{
-			hoverOptions = true;
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
-			{
-				//sbg.enterState(Engine.options);
-			}
-		}
-		else
-			hoverOptions = false;
-		
-		if((mouseX > gc.getWidth()/2 - buttonWidth/2 && mouseX < gc.getWidth()/2 + buttonWidth/2) && 
-				(mouseY > gc.getHeight()/2 - buttonHeight*2 && mouseY < gc.getHeight()/2 - buttonHeight))
-		{
-			hoverExit = true;
-			if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON))
-			{
-				System.exit(0);
-			}
-		}
-		else
-			hoverExit = false;
-		graphicButton.update(gc);
-		
-		
-		if (graphicButton.isPressed()) {
-			System.out.println("hello");
 		}
 		
 	}
@@ -188,6 +118,24 @@ public class Menu extends BasicGameState {
 	public int getID() 
 	{
 		return 0;
+	}
+	
+	public void handleEvent(int buttonId, StateBasedGame sbg) {
+		switch(buttonId)
+		{
+			case SINGLEPLAYER_BUTTON_ID:
+				sbg.enterState(Engine.gameSelect);
+				break;
+			case MULTIPLAYER_BUTTON_ID:
+				//sbg.enterState(Engine.multiplayer); TODO
+				break;
+			case OPTIONS_BUTTON_ID:
+				//sbg.enterState(Engine.options); TODO
+				break;
+			case EXIT_BUTTON_ID:
+				System.exit(0);
+				break;
+		}
 	}
 
 }

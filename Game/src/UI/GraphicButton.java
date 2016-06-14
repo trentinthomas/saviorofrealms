@@ -26,6 +26,8 @@ public class GraphicButton extends AbstractComponent{
 	protected Image buttonHover;
 	protected Image currentImage;
 	
+	protected int buttonId;
+	
 	public GraphicButton(GUIContext container, int x, int y, Image buttonUp, Image buttonHover) {
 	    super(container);
 	    setLocation(x, y);
@@ -94,10 +96,19 @@ public class GraphicButton extends AbstractComponent{
 	public void setLocation(int x, int y) {
 	    this.x = x;
 	    this.y = y;
+	    hitbox = new Rectangle(x, y, width, height);
 	}
 	
 	public void setCurrentImage() {
 		currentImage = over ? buttonHover : buttonUp;
+	}
+	
+	public void setButtonId(int buttonId) {
+		this.buttonId = buttonId;
+	}
+	
+	public int getButtonId() {
+		return buttonId;
 	}
 	
 	
